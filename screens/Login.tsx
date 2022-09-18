@@ -22,6 +22,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStoreValue, setStoreValue } from '../common/LocalStorage';
+import logo from '../constants/images/Logo.png';
 import {
   GoogleSignin,
   statusCodes,
@@ -31,10 +32,13 @@ import { Profile } from 'react-native-fbsdk-next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ASSET_BASE_URL } from '../URL';
 import Loader from '../common/Loader';
+import { Center } from 'native-base';
 const loginIn = new LoginApi();
 
 const Login = ({ navigation }: any) => {
   const [phoneNo, setphoneNo] = useState<any>('');
+  const [emailId, setEmailId] = useState<any>('');
+  const [password, setPassword] = useState<any>('');
   const { t, i18n } = useTranslation();
   const [accessToken, setAccessToken] = useState();
   const [userInfo, setUserInfo] = useState();
@@ -59,22 +63,23 @@ const Login = ({ navigation }: any) => {
   }, []);
 
   const onLogin = async () => {
+    Alert.alert('Sucess!','Login Successfully')
     setShowLoader(true);
-    let selectedLanguage = await getStoreValue('language');
-    let requestBody: any = {
-      mobile: Number(phoneNo),
-      language: selectedLanguage,
-    };
-    await setStoreValue({ key: 'phoneNo', value: Number(phoneNo) });
-    let res = await loginIn.checkUser(requestBody);
+    // let selectedLanguage = await getStoreValue('language');
+    // let requestBody: any = {
+    //   mobile: Number(phoneNo),
+    //   language: selectedLanguage,
+    // };
+    // await setStoreValue({ key: 'phoneNo', value: Number(phoneNo) });
+    // let res = await loginIn.checkUser(requestBody);
     setShowLoader(false);
-    if (res?.data?.data?.userId) {
-      storeData(res.data.data.token, res.data.data.userId);
-      navigation.navigate('ContractorDashboard');
-    } else {
-      storeData(res.data.data.token, '');
-      navigation.navigate('Otp', { otp: res.data.data.otp, mobile: phoneNo });
-    }
+    navigation.navigate('ContractorDashboard');
+    // if (res?.data?.data?.userId) {
+    //   storeData(res.data.data.token, res.data.data.userId);
+    // } else {
+    //   storeData(res.data.data.token, '');
+    //   navigation.navigate('Otp', { otp: res.data.data.otp, mobile: phoneNo });
+    // }
   };
 
   useEffect(() => {
@@ -157,135 +162,186 @@ const Login = ({ navigation }: any) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    // <View style={{ flex: 1 }}>
+    //   <KeyboardAwareScrollView
+    //     keyboardShouldPersistTaps={'always'}
+    //     style={{ flex: 1 }}
+    //     showsVerticalScrollIndicator={false}>
+    //     <ScrollView>
+    //       <View style={styles.LoginContainer}>
+    //         <View style={styles.firstPortion}>
+    //           <View style={styles.starterHeaderContainer}>
+    //           <Image
+    //               style={styles.karigarLogo}
+    //               source={logo}
+    //             />
+    //           </View>
+              
+    //         </View>
+    //         <View style={styles.loginFieldContainer}>
+    //           <View>
+    //             <Text style={styles.loginFirstFieldHeader}>
+    //               {'Login'}
+    //             </Text>
+    //           </View>
+    //           <View>
+    //             <Text style={styles.loginFieldDesc}>{t('weSendAnOtp')}</Text>
+    //           </View>
+    //           <View>
+    //             <Text style={styles.phoneNo}>{t('phoneNo')}</Text>
+    //           </View>
+    //           <View>
+    //             <TextInput
+    //               // ref={}
+    //               selectionColor={'#FEA700'}
+    //               keyboardType={'number-pad'}
+    //               style={styles.phoneNoInput}
+    //               maxLength={10}
+    //               onSubmitEditing={() => {
+    //                 if (phoneNo.length === 10) {
+    //                   onLogin();
+    //                 }
+    //               }}
+    //               onChangeText={(value: any) => {
+    //                 setphoneNo(value);
+    //               }}></TextInput>
+    //           </View>
+    //           <TouchableOpacity
+    //             onPress={() => {
+    //               if (phoneNo.length === 10) {
+    //                 onLogin();
+    //               }
+    //             }}
+    //             style={
+    //               phoneNo.length < 10
+    //                 ? styles.sendDisableOtpBtn
+    //                 : styles.sendOtpBtn
+    //             }>
+    //             <View>
+    //               <Text style={styles.otpText}>{t('requestOtp')}</Text>
+    //             </View>
+    //           </TouchableOpacity>
+    //           {showLoader && <View style={{
+    //             display: 'flex',
+    //             justifyContent: 'center',
+    //             alignItems: 'center',
+    //           }}>
+    //             <Image
+    //               style={{
+    //                 display: 'flex',
+    //                 justifyContent: 'center',
+    //                 width: 60,
+    //                 height: 60,
+    //                 resizeMode: 'cover',
+    //               }}
+    //               source={{
+    //                 uri: 'http://assets.datahayinfotech.com/assets/images/loader.gif',
+    //               }}
+    //             />
+    //           </View>}
+              
+    //         </View>
+    //       </View>
+    //     </ScrollView>
+    //   </KeyboardAwareScrollView>
+    // </View>
+    <View style={{flex:1}}>
       <KeyboardAwareScrollView
-        keyboardShouldPersistTaps={'always'}
-        style={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}>
-        <ScrollView>
-          <View style={styles.LoginContainer}>
-            <View style={styles.firstPortion}>
-              <View style={styles.karigarLogoContainer}>
-                <ShapeIcon />
-                <Image
-                  style={styles.karigarLogo}
-                  source={{
-                    uri: `https://assets.datahayinfotech.com/assets/images/karigar_babu/contactor-removebg-preview.png`,
-                  }}
-                />
-              </View>
-              <View style={styles.starterHeaderContainer}>
-                <Text style={styles.starterHeader}>{t('letSStart')}</Text>
-              </View>
-              <View style={styles.starterHeaderDescContainer}>
-                <Text style={styles.starterDescHeader}>
-                  {t('welcomeToAccount')}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.loginFieldContainer}>
-              <View>
-                <Text style={styles.loginFirstFieldHeader}>
-                  {t('enterMobileText')}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.loginFieldDesc}>{t('weSendAnOtp')}</Text>
-              </View>
-              <View>
-                <Text style={styles.phoneNo}>{t('phoneNo')}</Text>
-              </View>
-              <View>
-                <TextInput
-                  // ref={}
-                  selectionColor={'#FEA700'}
-                  keyboardType={'number-pad'}
-                  style={styles.phoneNoInput}
-                  maxLength={10}
-                  onSubmitEditing={() => {
-                    if (phoneNo.length === 10) {
-                      onLogin();
-                    }
-                  }}
-                  onChangeText={(value: any) => {
-                    setphoneNo(value);
-                  }}></TextInput>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  if (phoneNo.length === 10) {
-                    onLogin();
-                  }
-                }}
-                style={
-                  phoneNo.length < 10
-                    ? styles.sendDisableOtpBtn
-                    : styles.sendOtpBtn
-                }>
-                <View>
-                  <Text style={styles.otpText}>{t('requestOtp')}</Text>
-                </View>
-              </TouchableOpacity>
-              {showLoader && <View style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Image
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: 60,
-                    height: 60,
-                    resizeMode: 'cover',
-                  }}
-                  source={{
-                    uri: 'http://assets.datahayinfotech.com/assets/images/loader.gif',
-                  }}
-                />
-              </View>}
-              {/* <View style={styles.loginButtonBorder}>
-              <View style={styles.loginBottomFirstLine} />
-              <Text style={styles.signUpText}>{t('signInWith')}</Text>
-              <View style={styles.loginBottomSecLine} />
-            </View> */}
+      keyboardShouldPersistTaps={'always'}
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}>
+            <ScrollView>
+                <View style={styles.LoginContainer}> 
+                    <View style={styles.boxMain}>
+                        <View style={styles.LogoContainer}>
+                            <Image 
+                            style={styles.karigarLogo}
+                            source={logo}
+                            />
+                        </View>
+                        <Text style={styles.title}>{'Login'}</Text>
+                        <View>
+                           <Text style={styles.phoneNo}>{'Email'}</Text>
+                        </View>
+                        <View>
+                          <TextInput
+                          selectionColor={'#FEA700'}
+                          keyboardType={'email-address'}
+                          style={styles.phoneNoInput}
+                          onSubmitEditing={() => {
+                            if (phoneNo.length === 10) {
+                              onLogin();
+                            }
+                          }}
+                          onChangeText={(value: any) => {
+                            setEmailId(value);
+                          }}
+                          >
 
-              {/* <View style={styles.authContainer}>
-              <View style={styles.googleBtn}>
-                <TouchableOpacity
-                  onPress={googleSign}
-                  // accessToken ? getUserData : signInWithGoogleAsync
-                  style={{display: 'flex', flexDirection: 'row'}}>
-                  <GoogleIcon />
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text> Google</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.faceBookBtn}>
-                <TouchableOpacity
-                  onPress={handleFacebookLogin}
-                  style={{display: 'flex', flexDirection: 'row'}}>
-                  <FacebookIcon />
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text> Facebook</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View> */}
-            </View>
-          </View>
-        </ScrollView>
+                          </TextInput>
+                        </View>
+                        <View>
+                           <Text style={styles.password}>{'Password'}</Text>
+                        </View>
+                        <View>
+                          <TextInput
+                          selectionColor={'#FEA700'}
+                          keyboardType={'default'}
+                          secureTextEntry
+                          style={styles.phoneNoInput}
+                          onSubmitEditing={() => {
+                            if (password.length === 10) {
+                              onLogin();
+                            }
+                          }}
+                          onChangeText={(value: any) => {
+                            setPassword(value);
+                          }}
+                          >
+
+                          </TextInput>
+                        </View>
+                          <TouchableOpacity
+                          onPress={() => {
+                            if (emailId==='admin@admin.com' && password==='password') {
+                              onLogin();
+                            }
+                            else{
+                              Alert.alert('Error','Please Enter Correct Email and password')
+                            }
+                          }}
+                          // style={
+                          //   phoneNo.length < 10
+                          //     ? styles.sendDisableOtpBtn
+                          //     : styles.sendOtpBtn
+                          // }
+                          style={styles.sendOtpBtn}
+                          >
+                            <View>
+                              <Text style={styles.otpText}>{'Login'}</Text>
+                            </View>
+                          </TouchableOpacity>
+                          {showLoader && <View style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                            <Image
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                width: 60,
+                                height: 60,
+                                resizeMode: 'cover',
+                              }}
+                              source={{
+                                uri: 'https://www.google.com/search?q=loader+gif&rlz=1C1RXQR_enIN1017IN1017&oq=loader&aqs=chrome.1.69i57j0i433i512j0i20i263i512j0i433i512j0i512l3j0i20i263i512j0i512l2.4878j0j7&sourceid=chrome&ie=UTF-8#imgrc=JxOslC3Zg3kkJM',
+                              }}
+                            />
+                          </View>}
+                      </View>
+                </View>
+            </ScrollView>
       </KeyboardAwareScrollView>
     </View>
   );
@@ -294,85 +350,57 @@ const Login = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   LoginContainer: {
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent:'center',
     height: hp('110%'),
     width: wp('100%'),
-    backgroundColor: '#1c3857',
+    backgroundColor: '#FDBD01',
   },
-  firstPortion: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: -120,
-  },
-  karigarLogoContainer: {
-    height: hp('20%'),
-    width: 100,
-    marginTop: hp('30%'),
-    marginLeft: '-80%',
-    resizeMode: 'cover',
-    display: 'flex',
-    flexDirection: 'row',
+  LogoContainer:{
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    height:100,
+    width:'100%',
+    marginTop:30
   },
   karigarLogo: {
     height: 100,
     width: 100,
-    marginLeft: wp('-40%'),
-    marginTop: wp('30%'),
-    resizeMode: 'contain',
   },
-  starterHeader: {
-    fontSize: 24,
-    color: 'white',
+  boxMain:{
+    display:'flex',
+    backgroundColor:'#28282B',
+    height: 500,
+    width: 354,
+    borderRadius:10,
+    zIndex:1
   },
-  starterHeaderContainer: {
-    marginTop: 140,
-  },
-  starterHeaderDescContainer: {
-    height: 200,
-  },
-  starterDescHeader: {
-    marginTop: 10,
-    color: 'rgba(255, 255, 255, 0.65)',
-  },
-  loginFieldContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    height: 350,
-    width: 314,
-    backgroundColor: 'white',
-    borderRadius: 18,
-    marginBottom: hp('50%'),
-  },
-  loginFirstFieldHeader: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginLeft: 15,
-  },
-  loginSecFieldHeader: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginLeft: 15,
-  },
-  loginFieldDesc: {
-    fontSize: 14,
-    color: '#121212',
-    marginLeft: 15,
-    marginTop: 10,
+  title:{
+    fontSize:22,
+    color:'#FFD700',
+    textAlign:'center',
+    marginTop:20
   },
   phoneNo: {
     fontSize: 12,
-    color: 'rgba(18, 18, 18, 0.35)',
+    color: '#FFD700',
     marginTop: 50,
+    marginLeft: 15,
+  },
+  password: {
+    fontSize: 12,
+    color: '#FFD700',
+    marginTop: 20,
     marginLeft: 15,
   },
   phoneNoInput: {
     width: '90%',
     height: 40,
-    marginLeft: 15,
+    marginLeft: 15, 
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1);',
+    color:'white',
+    borderBottomColor: '#FFD700',
   },
   sendOtpBtn: {
     display: 'flex',
@@ -385,84 +413,13 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(228, 151, 4, 0.2)',
     shadowOpacity: 1.0,
     borderRadius: 8,
-    marginTop: 15,
+    marginTop: 50,
     marginRight: 15,
     marginLeft: 15,
-  },
-  sendDisableOtpBtn: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '90%',
-    height: 50,
-    backgroundColor: '#fce0a9',
-    shadowOffset: { width: 10, height: 10 },
-    shadowColor: 'rgba(228, 151, 4, 0.2)',
-    shadowOpacity: 1.0,
-    borderRadius: 8,
-    marginTop: 15,
-    marginRight: 15,
-    marginLeft: 15,
-    opacity: 0.8,
   },
   otpText: {
+    fontSize:16,
     color: 'white',
-  },
-  loginBottomFirstLine: {
-    marginTop: 4,
-    marginLeft: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1);',
-    width: '28%',
-  },
-  loginBottomSecLine: {
-    marginTop: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1);',
-    width: '28%',
-  },
-  loginButtonBorder: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 15,
-    width: '95%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  signUpText: {
-    fontSize: 12,
-    color: 'rgba(18, 18, 18, 0.35)',
-  },
-
-  googleBtn: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    height: 44,
-    width: '45%',
-    borderColor: 'rgba(18, 18, 18, 0.1)',
-    borderRadius: 8,
-  },
-  faceBookBtn: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    height: 44,
-    width: '45%',
-    borderColor: 'rgba(18, 18, 18, 0.1)',
-    borderRadius: 8,
-  },
-  authContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '90%',
-    justifyContent: 'space-between',
-    marginLeft: 15,
-    marginTop: 15,
   },
 });
 

@@ -15,6 +15,8 @@ import { RootStackParamList } from '../types';
 import '../common/axios.config';
 import { getStoreValue } from '../common/LocalStorage';
 import Login from '../screens/Login';
+import Dashboard from '../screens/Dashboard';
+import ContractorDrawerNavigator from './ContractorDrawerNavigator';
 
 export default function Navigation({
   colorScheme,
@@ -71,6 +73,11 @@ function RootNavigator() {
         options={horizontalAnimation}
         name="Login"
         component={Login}
+      />
+      <Stack.Screen 
+      options={horizontalAnimation}
+      name="ContractorDashboard"
+      component={ContractorDrawerNavigator}
       />
     </Stack.Navigator>
   );
