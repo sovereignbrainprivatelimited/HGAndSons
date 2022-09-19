@@ -267,6 +267,7 @@ const Login = ({ navigation }: any) => {
                           <TextInput
                           selectionColor={'#FEA700'}
                           keyboardType={'email-address'}
+                          returnKeyType={"next"}
                           style={styles.phoneNoInput}
                           onSubmitEditing={() => {
                             if (phoneNo.length === 10) {
@@ -286,7 +287,8 @@ const Login = ({ navigation }: any) => {
                         <View>
                           <TextInput
                           selectionColor={'#FEA700'}
-                          keyboardType={'default'}
+                          // keyboardType={'default'}
+                          returnKeyType={"done"}
                           secureTextEntry
                           style={styles.phoneNoInput}
                           onSubmitEditing={() => {
