@@ -7,10 +7,10 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-  } from 'react-native';
+} from 'react-native';
 
-const OrderReport =({navigation}:any)=>{
-    return(
+const OrderReport = ({ navigation }: any) => {
+    return (
         <View>
             <Text>{'OrderEntery Page'}</Text>
         </View>
