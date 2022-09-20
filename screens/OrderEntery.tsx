@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
 import CardView from "../common/components/CardView";
 import moment from 'moment'
@@ -42,7 +43,7 @@ const OrderEntry = ({ navigation }: any) => {
     )
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ marginTop: 8, width: '90%', marginVertical: 5, borderRadius: 5, alignSelf: 'center', height: 50 }} >
+            <View style={{ marginTop: 8, width: '90%', marginVertical: 5, borderRadius: 5, alignSelf: 'center', height: 50,display:'flex',flexDirection:'row' }} >
                 <SearchBox
                     searchPlaceholder='Search Order'
                     value={searchBox}
@@ -50,6 +51,9 @@ const OrderEntry = ({ navigation }: any) => {
                         setSearchBox(data);
                     }}
                 />
+                <TouchableOpacity style={styles.addOrder} onPress={ () => navigation.navigate('CreateOrder')}>
+                    <Text style={{color:'#28282B',fontSize:18,fontWeight:'500'}}>{'Create'}</Text>
+                </TouchableOpacity>
             </View>
             <Text style={styles.opsText} >
                 {'Single Order'}
@@ -97,4 +101,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: 'white'
     },
+    addOrder:{
+        width:80,
+        height:50,
+        backgroundColor:'#FDBD01',
+        borderRadius:50,
+        marginLeft:10,
+        alignItems:'center',
+        textAlign:'center',
+        justifyContent:'center',
+    }
 })

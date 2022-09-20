@@ -28,6 +28,7 @@ export type RootStackParamList = {
   WorkHistory: undefined;
   FAQ:undefined;
   Dashboard:undefined;
+  CreateOrder:undefined;
 };
 
 export type BottomTabParamList = {

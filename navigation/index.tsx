@@ -17,6 +17,7 @@ import { getStoreValue } from '../common/LocalStorage';
 import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
 import ContractorDrawerNavigator from './ContractorDrawerNavigator';
+import CreateOrder from '../screens/CreateOrder';
 
 export default function Navigation({
   colorScheme,
@@ -78,6 +79,11 @@ function RootNavigator() {
       options={horizontalAnimation}
       name="ContractorDashboard"
       component={ContractorDrawerNavigator}
+      />
+      <Stack.Screen 
+      options={horizontalAnimation}
+      name="CreateOrder"
+      component={CreateOrder}
       />
     </Stack.Navigator>
   );

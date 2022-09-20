@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
-import { Image, Text } from 'native-base';
-import logo from '../../constants/images/Logo.png'
+import { Image, Text, TextArea } from 'native-base';
+import logo from '../../constants/images/Logo.png';
+import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 // import CardLogo from '../../assets/images/cardViewLogo.svg';
 // import Label from '../Label';
@@ -16,6 +17,17 @@ const CardView = (props: any) => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showNotifyModal, setShowNotifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [value, setValue] = useState(null);
+  const data = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+    { label: 'Item 3', value: '3' },
+    { label: 'Item 4', value: '4' },
+    { label: 'Item 5', value: '5' },
+    { label: 'Item 6', value: '6' },
+    { label: 'Item 7', value: '7' },
+    { label: 'Item 8', value: '8' },
+  ];
 
   return (
     <View style={{ flex: 1 }}>
@@ -46,7 +58,7 @@ const CardView = (props: any) => {
       </TouchableOpacity>
 
       {showUpdateModal &&
-        <View >
+        <View>
           <Modal
             animationType='slide'
             transparent={true}
@@ -55,9 +67,51 @@ const CardView = (props: any) => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Update Order Status</Text>
-                <View>
-                  <Button title='Close' onPress={() => setShowUpdateModal(!showUpdateModal)}>Close</Button>
+                <Text style={styles.modalTitle}>Update Order Status</Text>
+                  <View style={styles.modalBody}>
+                      <Text style={styles.label}>Order Status :</Text>
+                      <View style={styles.dataValue}>
+                      <Dropdown
+                          style={styles.dropdown}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={data}
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Select item"
+                          searchPlaceholder="Search..."
+                          value={value}
+                          onChange={item => {
+                          setValue(item.value);
+                          }} 
+                        />
+                        </View>
+                  </View>
+                  <View style={styles.modalBody}>
+                      <Text style={styles.label} >Remarks :</Text>
+                      <View style={styles.dataValue}>
+                      <TextArea h={10} placeholder="Text Area Placeholder" w={190} borderColor={'#FDBD01'} color={'#FDBD01'} placeholderTextColor={''} marginLeft={-6}/>
+                      </View>
+                  </View>
+                  <View style={styles.BtnMain}>
+                  <TouchableOpacity style={styles.close} onPress={()=>{
+                    setShowUpdateModal(false)
+                  }}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Close'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.close}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Update'}
+                    </Text>
+                  </TouchableOpacity>
+                  {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                  {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                 </View>
               </View>
             </View>
@@ -65,7 +119,7 @@ const CardView = (props: any) => {
         </View>
       }
       {showNotifyModal &&
-        <View >
+        <View>
           <Modal
             animationType='slide'
             transparent={true}
@@ -73,10 +127,73 @@ const CardView = (props: any) => {
             onRequestClose={() => setShowNotifyModal(!showNotifyModal)}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Notify Order</Text>
-                <View>
-                  <Button title='Close' onPress={() => setShowNotifyModal(!showNotifyModal)}>Close</Button>
+              <View style={[styles.modalView,styles.notifyModal]}>
+                <Text style={styles.modalTitle}>Notify Order</Text>
+                <View style={styles.modalBody}>
+                      <Text style={[styles.label,styles.longName]}>Customer Name</Text>
+                      <View style={styles.dataValue}>
+                      <Dropdown
+                          style={styles.dropdown}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={data}
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Select item"
+                          searchPlaceholder="Search..."
+                          value={value}
+                          onChange={item => {
+                          setValue(item.value);
+                          }} 
+                        />
+                        </View>
+                  </View>
+                <View style={styles.modalBody}>
+                      <Text style={styles.label}>Kariar Name </Text>
+                      <View style={styles.dataValue}>
+                      <Dropdown
+                          style={styles.dropdown}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={data}
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Select item"
+                          searchPlaceholder="Search..."
+                          value={value}
+                          onChange={item => {
+                          setValue(item.value);
+                          }} 
+                        />
+                        </View>
+                  </View>
+                  <View style={styles.modalBody}>
+                      <Text style={styles.label} >Narration </Text>
+                      <View style={styles.dataValue}>
+                      <TextArea h={10} placeholder="Text Area Placeholder" w={190} borderColor={'#FDBD01'} color={'#FDBD01'} placeholderTextColor={'#FDBD01'}  marginLeft={-6}/>
+                      </View>
+                  </View>
+                  <View style={styles.BtnMain}>
+                  <TouchableOpacity style={styles.close} onPress={() => setShowNotifyModal(false)}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Close'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.close}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Update'}
+                    </Text>
+                  </TouchableOpacity>
+                  {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                  {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                 </View>
               </View>
             </View>
@@ -84,7 +201,7 @@ const CardView = (props: any) => {
         </View>
       }
       {showDeleteModal &&
-        <View >
+        <View>
           <Modal
             animationType='slide'
             transparent={true}
@@ -92,10 +209,21 @@ const CardView = (props: any) => {
             onRequestClose={() => setShowDeleteModal(!showDeleteModal)}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Are you sure ??</Text>
-                <View>
-                  <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button>
+              <View style={[styles.modalView,styles.deleteModal]}>
+                <Text style={styles.deleteTitle}>Are you sure you want to delete this order ??</Text>
+                <View style={styles.BtnMain}>
+                  <TouchableOpacity style={styles.close}  onPress={() => setShowDeleteModal(!showDeleteModal)}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Close'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.close}>
+                    <Text style={{color:'#28282B'}}>
+                      {'Update'}
+                    </Text>
+                  </TouchableOpacity>
+                  {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                  {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                 </View>
               </View>
             </View>
@@ -170,8 +298,8 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     width: 350,
-    height: 200,
-    backgroundColor: 'white',
+    height: 230,
+    backgroundColor: '#28282B',
     borderRadius: 20,
     alignItems: "center",
     shadowColor: "#000",
@@ -179,9 +307,15 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0,
     shadowRadius: 4,
     elevation: 5
+  },
+  notifyModal:{
+    height:300
+  },
+  deleteModal:{
+    height: 150,
   },
   button: {
     borderRadius: 20,
@@ -199,11 +333,102 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
-  modalText: {
+  modalTitle: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
+    fontSize:22,
+    fontWeight:'bold',
+    marginTop:20,
+    color:'#FDBD01'
   },
+  deleteTitle:{
+    textAlign:'center',
+    justifyContent:'flex-start',
+    display:'flex',
+    fontSize:22,
+    marginTop:30,
+    width:290,
+    color:'#FDBD01'
+  },
+  modalBody:{
+    display:'flex',
+    flexDirection:'row',
+    marginTop:20,
+    width:'90%',
+    marginLeft:10,
+  },
+  label:{
+    fontSize:16,
+    fontWeight:'400',
+    width:'40%',
+    color:'#FDBD01',
+    marginRight:10
+  },
+  longName:{
+    fontSize:14
+  },
+  dataValue:{
+    fontSize:16,
+    fontWeight:'400',
+    width:'40%',
+  },
+  dropdown: {
+    marginLeft: -30,
+    top:-5,
+    height: 30,
+    width:200,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    paddingLeft:15,
+    paddingRight:10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
 
+    elevation: 2,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  closeBtn:{
+    marginTop:10,
+    display:'flex',
+    width:100,
+    borderRadius:5
+  },
+  BtnMain:{
+    width:'90%',
+    height:50,
+    marginTop:10,
+    display:'flex',
+    justifyContent:'flex-end',
+    flexDirection:'row',
+  },
+  close:{
+    backgroundColor:'#FDBD01',
+    borderRadius:10,
+    alignItems:'center',
+    textAlign:'center',
+    justifyContent:'center',
+    height:40,
+    width:70,
+    marginRight:10
+  }
 })
 
 export default CardView;

@@ -48,6 +48,7 @@ SearchBox.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
+        width:'80%',
         borderRadius: 50,
         backgroundColor: "#fff",
         // marginBottom: 5,
