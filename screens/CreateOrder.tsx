@@ -1,14 +1,17 @@
 import { Text } from "native-base";
-import React, { useState } from "react";
-import { Alert, Image, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { Alert, Button, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Controller, useForm } from 'react-hook-form';
 import { Dropdown } from "react-native-element-dropdown";
 import Navigation from "../navigation";
 import DatePicker from 'react-native-date-picker';
+import moment from "moment";
+import logo from '../constants/images/golden.webp';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
-const CreateOrder = ({props}:any) => {
+const CreateOrder = ({props,navigation}:any) => {
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
     const [value1, setValue1] = useState(null);
@@ -16,6 +19,29 @@ const CreateOrder = ({props}:any) => {
     const [deliverydate, setDeliverydate] = useState(new Date());
     const [showReminderDate, setShowReminderDate] = useState(false);
     const [reminderdate, setReminderdate] = useState(new Date());
+
+    const options1={
+        title:'Select Image',
+        type:'library',
+        options:{
+            maxHeight:200,
+            maxWidth:200,
+            selectionLimit:0,
+            mediaType:'photo',
+            includeBase64:false
+        },
+    }
+
+    const openGallery=async()=>{
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: false,
+            includeBase64:true
+        }).then((res)=>{
+            console.log('-------------result-----------',res)
+        })
+    }
   const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
@@ -30,13 +56,13 @@ const CreateOrder = ({props}:any) => {
     const onSubmitPress = () => {
     }
     return(
-        <SafeAreaView style={{paddingBottom:200}}>
-        <View>
+        <SafeAreaView style={{paddingBottom:0,flex:1}}>
+        <View style={{flex:1}}>
+            <ImageBackground source={logo} style={{flex:1}}>
             <View style={styles.Title}>
-            <Text style={{fontSize:22,fontWeight:'bold',color:'#28282B'}}>{'Create Single Order'}</Text>
+            <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{'Create Single Order'}</Text>
             </View>
-            <ScrollView
-             >
+            <ScrollView>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Order No'}</Text>
                 <View style={styles.inputBox} >
@@ -45,14 +71,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Order No'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="orderNo"
@@ -67,21 +93,21 @@ const CreateOrder = ({props}:any) => {
                 <TouchableOpacity style={styles.inputBox} onPress={()=>setShowDeliveryDate(true)}>
                             <TextInput
                                 placeholder='Enter Approx Delivery Date'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='default'
-                                value={deliverydate.toString()}
+                                value={moment(deliverydate).format('YYYY-MM-DD').toString()}
                                 editable={false}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 // onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                 </TouchableOpacity>
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Select Party'}</Text>
-                <View style={styles.inputBox} >
+                <View style={[styles.inputBox,styles.select]} >
                     <Controller
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -113,7 +139,7 @@ const CreateOrder = ({props}:any) => {
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Select Item'}</Text>
-                <View style={styles.inputBox} >
+                <View style={[styles.inputBox,styles.select]} >
                     <Controller
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -151,14 +177,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Weight'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="weight"
@@ -176,14 +202,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Height'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="height"
@@ -201,14 +227,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Pcs'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="pcs"
@@ -226,14 +252,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Order date'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="orderDate"
@@ -249,22 +275,22 @@ const CreateOrder = ({props}:any) => {
                     
                             <TextInput
                                 placeholder='Enter Reminder Date'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
-                                value={reminderdate.toString()}
+                                value={moment(reminderdate).format('YYYY-MM-DD').toString()}
                                 editable={false}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 // onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                     
                 </TouchableOpacity>
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Select Karigar'}</Text>
-                <View style={styles.inputBox} >
+                <View style={[styles.inputBox,styles.select]} >
                     <Controller
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -302,14 +328,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Purity'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='default'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"done"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="Purity"
@@ -327,14 +353,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Size'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="size"
@@ -352,14 +378,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Width'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="width"
@@ -377,14 +403,14 @@ const CreateOrder = ({props}:any) => {
                         render={({ field: { onChange, value } }) => (
                             <TextInput
                                 placeholder='Enter Remarks'
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='default'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 returnKeyType={"done"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                         )}
                         name="Remarks"
@@ -396,39 +422,33 @@ const CreateOrder = ({props}:any) => {
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Upload Photo'}</Text>
-                <View style={styles.inputBox} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
+                <View style={[styles.inputBox,styles.upload]} >
                             <TextInput
                                 placeholder='Enter '
-                                placeholderTextColor={'black'}
+                                placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
-                                value={value}
+                                value={'Upload photo'}
                                 autoCorrect={false}
                                 autoCapitalize="none"
-                                onChangeText={onChange}
+                                // onChangeText={onChange}
                                 returnKeyType={"done"}
-                                style={{padding:0,paddingLeft:10}}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
-                        )}
-                        name="postCode"
-                        rules={{
-                            required: { value: true, message: 'Enter First Name' },
-                        }}
-                    />
+                            <TouchableOpacity style={styles.uploadBtn} onPress={openGallery}>
+                                <Text style={{color:'#28282B',fontWeight:'bold'}}>{'upload'}</Text>
+                            </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.saveBtn}>
-                  <TouchableOpacity style={{height:50,width:80,borderRadius:50,marginRight:10,backgroundColor:'yellow',justifyContent:'center',alignItems:'center'}}
+                  <TouchableOpacity style={{height:50,width:80,borderRadius:50,marginRight:10,backgroundColor:'#28282B',justifyContent:'center',alignItems:'center'}}
                   onPress={()=>Alert.alert('Success!','Created Order Successfully.')}
                   >
-                        <Text style={{color:'black'}}>{'Save'}</Text>
+                        <Text style={{color:'#FDBD01',fontWeight:'500'}}>{'Save'}</Text>
                     </TouchableOpacity>          
                   <TouchableOpacity style={{height:50,width:80,borderRadius:50,backgroundColor:'red',justifyContent:'center',alignItems:'center'}}
-                  onPress={()=>{props.navigation.goBack(null)}}
+                  onPress={()=>{navigation.goBack()}}
                   >
-                        <Text style={{color:'black'}}>{'Cancel'}</Text>
+                        <Text style={{color:'white',fontWeight:'500'}}>{'Cancel'}</Text>
                     </TouchableOpacity>          
             </View>
             {showDeliveryDate &&
@@ -452,6 +472,7 @@ const CreateOrder = ({props}:any) => {
               />
             }
             </ScrollView>
+        </ImageBackground>
         </View>
         </SafeAreaView>
     )
@@ -464,7 +485,7 @@ const styles = StyleSheet.create({
         width:'100%',
         marginTop:30,
         height:50,
-        backgroundColor:'#FDBD01',
+        // backgroundColor:'#FDBD01',
         textAlign:'center',
         alignItems:'center',
         justifyContent:'center'
@@ -472,10 +493,10 @@ const styles = StyleSheet.create({
     labelText:
     {
         // fontFamily: Font.MONTSERRAT_REGULAR,
-        color: 'black',
+        color: '#28282B',
         lineHeight: 17.07,
         fontSize: 16,
-        marginLeft:10,
+        marginLeft:5,
         fontWeight:'bold',
     },
     dataMain:{
@@ -491,12 +512,35 @@ const styles = StyleSheet.create({
     },
     inputBox:
     {
-        borderColor:'black',
+        borderColor:'gray',
         borderWidth:1,
-        height:25,
+        height:35,
         width:'100%',
         marginTop:10,
-        marginLeft:10
+        marginLeft:10,
+        borderRadius:5,
+        backgroundColor:'#F0F8FF'
+    },
+    select:{
+    borderWidth:0,
+    borderColor:'gray',
+    height:35,
+    },
+    upload:{
+        display:'flex',
+        flexDirection:'row'
+    },
+    uploadBtn:{
+        backgroundColor:'#7EC8E3',
+        justifyContent:'center',    
+        alignItems:'center',
+        padding:0,
+         right:0,
+        // top:-2,
+        height:35,
+        width:55,
+         position:'absolute',
+        borderRadius:5
     },
     saveBtn:{
         display:'flex',
@@ -505,16 +549,17 @@ const styles = StyleSheet.create({
         width:'100%',
         height:50,
         marginTop:20,
+        marginBottom:20,
         alignItems:'center'
     },
     dropdown: {
         top:-5,
-        height: 30,
+        height: 39,
         width:"100%",
-        backgroundColor: 'white',
-        // borderRadius: 12,
+        backgroundColor: '#F0F8FF',
+        borderRadius: 5,
         paddingLeft:15,
-        borderColor:'black',
+        borderColor:'gray',
         borderWidth:1,
         paddingRight:10,
         shadowColor: '#000',

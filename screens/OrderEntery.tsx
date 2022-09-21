@@ -10,6 +10,7 @@ import CardView from "../common/components/CardView";
 import moment from 'moment'
 import { Dimensions, Platform, NativeModules } from 'react-native';
 import SearchBox from "../common/components/SearchBox";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width, height } = Dimensions.get('window');
 const screenWidth = width;
@@ -42,7 +43,7 @@ const OrderEntry = ({ navigation }: any) => {
         />
     )
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1,backgroundColor:'white' }}>
             <View style={{ marginTop: 8, width: '90%', marginVertical: 5, borderRadius: 5, alignSelf: 'center', height: 50,display:'flex',flexDirection:'row' }} >
                 <SearchBox
                     searchPlaceholder='Search Order'
@@ -52,7 +53,10 @@ const OrderEntry = ({ navigation }: any) => {
                     }}
                 />
                 <TouchableOpacity style={styles.addOrder} onPress={ () => navigation.navigate('CreateOrder')}>
-                    <Text style={{color:'#28282B',fontSize:18,fontWeight:'500'}}>{'Create'}</Text>
+                      <Icon name="plus-circle" size={28} color={'#FFD700'} />
+
+                    {/* <Ionicons name="add" size={22} color='red' style={{width:50,height:50,backgroundColor:'red'}}  /> */}
+                    {/* <Text style={{color:'#28282B',fontSize:18,fontWeight:'500'}}>{'Create'}</Text> */}
                 </TouchableOpacity>
             </View>
             <Text style={styles.opsText} >
@@ -102,11 +106,11 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     addOrder:{
-        width:80,
+        width:60,
         height:50,
-        backgroundColor:'#FDBD01',
+        backgroundColor:'#28282B',
         borderRadius:50,
-        marginLeft:10,
+        marginLeft:20,
         alignItems:'center',
         textAlign:'center',
         justifyContent:'center',

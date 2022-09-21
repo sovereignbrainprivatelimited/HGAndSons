@@ -5,11 +5,7 @@ import { Image, Text, TextArea } from 'native-base';
 import logo from '../../constants/images/Logo.png';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
-// import CardLogo from '../../assets/images/cardViewLogo.svg';
-// import Label from '../Label';
-// import { Color, Font } from '../../utils/Themes';
-// import CustomIcon from '../CustomIcon';
-// import { screenWidth } from '../../utils/globals';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CardView = (props: any) => {
   const navigation = useNavigation();
@@ -30,17 +26,17 @@ const CardView = (props: any) => {
   ];
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,backgroundColor:'white' }}>
       <TouchableOpacity style={styles.cardMain}>
         <View style={styles.dataMain}>
-          <View style={styles.cardImage}>
-            <Image source={logo} style={{ width: '100%', height: '100%' }} />
-          </View>
-          <View style={{ display: 'flex', flexDirection: 'column' }}>
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
             <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
             <Text style={styles.datatitle}>{'Order No: ' + OrderNo}</Text>
             <Text style={styles.datatitle}>{'Order Date: ' + date}</Text>
             <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text>
+          </View>
+          <View style={styles.cardImage}>
+            <Image source={logo} style={{ width: '100%', height: '100%' }} />
           </View>
         </View>
         <View style={{ marginLeft: 10 }}>
@@ -50,10 +46,10 @@ const CardView = (props: any) => {
           <Text style={styles.datatitle}>{'Status: ' + Status}</Text>
         </View>
         <View style={styles.actionMain}>
-          <TouchableOpacity onPress={() => setShowUpdateModal(true)}><Text>{'Update'}</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowNotifyModal(true)}><Text>{'Notification'}</Text></TouchableOpacity>
-          <TouchableOpacity ><Text>{'Edit'}</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowDeleteModal(true)}><Text>{'Delete'}</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowUpdateModal(true)} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowNotifyModal(true)} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:20 }}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
         </View>
       </TouchableOpacity>
 
@@ -61,7 +57,7 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={true}
+            transparent={false}
             visible={showUpdateModal}
             onRequestClose={() => setShowUpdateModal(!showUpdateModal)}
           >
@@ -122,7 +118,7 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={true}
+            transparent={false}
             visible={showNotifyModal}
             onRequestClose={() => setShowNotifyModal(!showNotifyModal)}
           >
@@ -204,7 +200,7 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={true}
+            transparent={false}
             visible={showDeleteModal}
             onRequestClose={() => setShowDeleteModal(!showDeleteModal)}
           >
@@ -252,11 +248,19 @@ const styles = StyleSheet.create({
   cardMain: {
     display: 'flex',
     width: '80%',
-    height: 250,
+    height: 220,
     borderRadius: 5,
     backgroundColor: '#28282B',
     alignSelf: 'center',
-    marginVertical: 10
+    marginVertical: 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: -2,
+      height: 4
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 10
   },
   dataMain: {
     display: 'flex',
@@ -267,6 +271,8 @@ const styles = StyleSheet.create({
   cardImage: {
     width: 100,
     height: 100,
+    right:0,
+    position:'absolute',
     backgroundColor: 'white',
     borderRadius: 5,
     marginRight: 15,
@@ -278,13 +284,11 @@ const styles = StyleSheet.create({
   actionMain: {
     marginTop: 10,
     borderRadius: 5,
-    backgroundColor: 'white',
-    width: '80%',
+    width: '100%',
     height: 30,
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginHorizontal: 10,
-    padding: 5,
     flexDirection: 'row',
   },
   centeredView: {
@@ -299,7 +303,7 @@ const styles = StyleSheet.create({
     margin: 20,
     width: 350,
     height: 230,
-    backgroundColor: '#28282B',
+    backgroundColor: 'white',
     borderRadius: 20,
     alignItems: "center",
     shadowColor: "#000",
@@ -307,9 +311,9 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2
     },
-    shadowOpacity: 0,
+    shadowOpacity: 0.5,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 15
   },
   notifyModal:{
     height:300

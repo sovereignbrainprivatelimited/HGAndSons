@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   otpText: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight:'bold',
     color: 'white',
   },
 });

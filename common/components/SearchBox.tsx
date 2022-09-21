@@ -3,6 +3,8 @@ import { Animated, StyleSheet, TouchableWithoutFeedback, View, Text, TextInput, 
 import PropTypes from 'prop-types';
 // import CustomIcon from "../CustomIcon";
 // import { Color } from "../../utils/Themes";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 
@@ -14,7 +16,7 @@ const SearchBox = (props:any) => {
     return (
         <View style={styles.container} >
             <View style={styles.leftIconStyle}>
-                {/* <CustomIcon name="search" size={20} color={'black'} /> */}
+                <Icon name="search" size={20} color={'black'} />
             </View>
             <TextInput
                 onFocus={onFocus}
