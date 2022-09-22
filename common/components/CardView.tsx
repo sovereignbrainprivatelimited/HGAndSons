@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 import { Image, Text, TextArea } from 'native-base';
@@ -8,8 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CardView = (props: any) => {
-  const navigation = useNavigation();
   const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status } = props;
+  const navigation=useNavigation()
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showNotifyModal, setShowNotifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -48,7 +48,7 @@ const CardView = (props: any) => {
         <View style={styles.actionMain}>
           <TouchableOpacity onPress={() => setShowUpdateModal(true)} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowNotifyModal(true)} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
-          <TouchableOpacity style={{marginRight:20 }}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:20 }} onPress={ () => navigation.navigate('CreateOrder',{userId:'1'})}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -57,12 +57,13 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={false}
+            transparent={true}
             visible={showUpdateModal}
             onRequestClose={() => setShowUpdateModal(!showUpdateModal)}
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
+                <View style={styles.modalBodyMain}>
                 <Text style={styles.modalTitle}>Update Order Status</Text>
                   <View style={styles.modalBody}>
                       <Text style={styles.label}>Order Status :</Text>
@@ -78,7 +79,7 @@ const CardView = (props: any) => {
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
-                          placeholder="Select item"
+                          placeholder="Select Status"
                           searchPlaceholder="Search..."
                           value={value}
                           onChange={item => {
@@ -90,24 +91,25 @@ const CardView = (props: any) => {
                   <View style={styles.modalBody}>
                       <Text style={styles.label} >Remarks :</Text>
                       <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Text Area Placeholder" w={190} borderColor={'#FDBD01'} color={'#FDBD01'} placeholderTextColor={''} marginLeft={-6}/>
+                      <TextArea h={10} placeholder="Enter Remarks" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'} marginLeft={-6}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close} onPress={()=>{
                     setShowUpdateModal(false)
                   }}>
-                    <Text style={{color:'#28282B'}}>
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close}>
-                    <Text style={{color:'#28282B'}}>
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Update'}
                     </Text>
                   </TouchableOpacity>
                   {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                   {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                </View>
                 </View>
               </View>
             </View>
@@ -118,12 +120,13 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={false}
+            transparent={true}
             visible={showNotifyModal}
             onRequestClose={() => setShowNotifyModal(!showNotifyModal)}
           >
             <View style={styles.centeredView}>
-              <View style={[styles.modalView,styles.notifyModal]}>
+              <View style={styles.modalView}>
+              <View style={[styles.modalBodyMain,styles.notifyModal]}>
                 <Text style={styles.modalTitle}>Notify Order</Text>
                 <View style={styles.modalBody}>
                       <Text style={[styles.label,styles.longName]}>Customer Name</Text>
@@ -139,7 +142,7 @@ const CardView = (props: any) => {
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
-                          placeholder="Select item"
+                          placeholder="Select Customer"
                           searchPlaceholder="Search..."
                           value={value}
                           onChange={item => {
@@ -162,7 +165,7 @@ const CardView = (props: any) => {
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
-                          placeholder="Select item"
+                          placeholder="Select Karigar"
                           searchPlaceholder="Search..."
                           value={value}
                           onChange={item => {
@@ -174,22 +177,23 @@ const CardView = (props: any) => {
                   <View style={styles.modalBody}>
                       <Text style={styles.label} >Narration </Text>
                       <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Text Area Placeholder" w={190} borderColor={'#FDBD01'} color={'#FDBD01'} placeholderTextColor={'#FDBD01'}  marginLeft={-6}/>
+                      <TextArea h={10} placeholder="Enter Narration" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'}  marginLeft={-6}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close} onPress={() => setShowNotifyModal(false)}>
-                    <Text style={{color:'#28282B'}}>
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close}>
-                    <Text style={{color:'#28282B'}}>
-                      {'Update'}
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                      {'Save'}
                     </Text>
                   </TouchableOpacity>
                   {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                   {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                </View>
                 </View>
               </View>
             </View>
@@ -200,26 +204,28 @@ const CardView = (props: any) => {
         <View>
           <Modal
             animationType='slide'
-            transparent={false}
+            transparent={true}
             visible={showDeleteModal}
             onRequestClose={() => setShowDeleteModal(!showDeleteModal)}
           >
             <View style={styles.centeredView}>
-              <View style={[styles.modalView,styles.deleteModal]}>
+              <View style={styles.modalView}>
+              <View style={[styles.modalBodyMain,styles.deleteModal]}>
                 <Text style={styles.deleteTitle}>Are you sure you want to delete this order ??</Text>
                 <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close}  onPress={() => setShowDeleteModal(!showDeleteModal)}>
-                    <Text style={{color:'#28282B'}}>
-                      {'Close'}
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                      {'No'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close}>
-                    <Text style={{color:'#28282B'}}>
-                      {'Update'}
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                      {'Yes'}
                     </Text>
                   </TouchableOpacity>
                   {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                   {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
+                </View>
                 </View>
               </View>
             </View>
@@ -295,17 +301,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
-    // width:250,
-    // height:250
+    marginTop: 22
   },
   modalView: {
-    margin: 20,
-    width: 350,
-    height: 230,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    alignItems: "center",
+    marginTop:-20,
+    width: '100%',
+    height:'100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  modalBodyMain:{
+    width:350,
+    height:250,
+    borderRadius:20,
+    backgroundColor:'white',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -315,6 +326,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 15
   },
+
   notifyModal:{
     height:300
   },
@@ -347,12 +359,14 @@ const styles = StyleSheet.create({
   },
   deleteTitle:{
     textAlign:'center',
-    justifyContent:'flex-start',
+    alignSelf:'center',
+    justifyContent:'center',
     display:'flex',
     fontSize:22,
     marginTop:30,
     width:290,
-    color:'#FDBD01'
+    color:'#FDBD01',
+    fontWeight:'bold'
   },
   modalBody:{
     display:'flex',
@@ -363,7 +377,7 @@ const styles = StyleSheet.create({
   },
   label:{
     fontSize:16,
-    fontWeight:'400',
+    fontWeight:'bold',
     width:'40%',
     color:'#FDBD01',
     marginRight:10
@@ -381,6 +395,8 @@ const styles = StyleSheet.create({
     top:-5,
     height: 30,
     width:200,
+    borderColor:'yellow',
+    borderWidth:1,
     backgroundColor: 'white',
     borderRadius: 12,
     paddingLeft:15,

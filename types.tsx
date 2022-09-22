@@ -29,6 +29,7 @@ export type RootStackParamList = {
   FAQ:undefined;
   Dashboard:undefined;
   CreateOrder:undefined;
+  ViewCart:undefined;
 };
 
 export type BottomTabParamList = {

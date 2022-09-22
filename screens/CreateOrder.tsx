@@ -1,25 +1,23 @@
 import { Text } from "native-base";
-import React, { useLayoutEffect, useState } from "react";
-import { Alert, Button, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Controller, useForm } from 'react-hook-form';
 import { Dropdown } from "react-native-element-dropdown";
-import Navigation from "../navigation";
 import DatePicker from 'react-native-date-picker';
 import moment from "moment";
-import logo from '../constants/images/golden.webp';
 import ImagePicker from 'react-native-image-crop-picker';
 
 
-const CreateOrder = ({props,navigation}:any) => {
+const CreateOrder = (props:any,{navigation}:any) => {
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
+
     const [value1, setValue1] = useState(null);
     const [showDeliveryDate, setShowDeliveryDate] = useState(false);
     const [deliverydate, setDeliverydate] = useState(new Date());
     const [showReminderDate, setShowReminderDate] = useState(false);
     const [reminderdate, setReminderdate] = useState(new Date());
-
+    const [isEdit,setIsEdit]=useState(false);
     const options1={
         title:'Select Image',
         type:'library',
@@ -55,12 +53,18 @@ const CreateOrder = ({props,navigation}:any) => {
 
     const onSubmitPress = () => {
     }
+    useLayoutEffect(()=>{
+        if(props?.route?.params?.userId !== undefined){
+            setIsEdit(true)
+        }
+        console.log('-------props------',props?.route?.params?.userId)
+    },[])
     return(
         <SafeAreaView style={{paddingBottom:0,flex:1}}>
-        <View style={{flex:1}}>
-            <ImageBackground source={logo} style={{flex:1}}>
+        <View style={{flex:1,backgroundColor:'#FDBD01'}}>
+            {/* <ImageBackground source={logo} style={{flex:1}}> */}
             <View style={styles.Title}>
-            <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{'Create Single Order'}</Text>
+            <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{ isEdit ?'Edit Your Order':'Create Single Order'}</Text>
             </View>
             <ScrollView>
             <View style={styles.dataMain}>
@@ -435,7 +439,7 @@ const CreateOrder = ({props,navigation}:any) => {
                                 style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
                             <TouchableOpacity style={styles.uploadBtn} onPress={openGallery}>
-                                <Text style={{color:'#28282B',fontWeight:'bold'}}>{'upload'}</Text>
+                                <Text style={{color:'#FDBD01',fontWeight:'bold'}}>{'upload'}</Text>
                             </TouchableOpacity>
                 </View>
             </View>
@@ -443,12 +447,12 @@ const CreateOrder = ({props,navigation}:any) => {
                   <TouchableOpacity style={{height:50,width:80,borderRadius:50,marginRight:10,backgroundColor:'#28282B',justifyContent:'center',alignItems:'center'}}
                   onPress={()=>Alert.alert('Success!','Created Order Successfully.')}
                   >
-                        <Text style={{color:'#FDBD01',fontWeight:'500'}}>{'Save'}</Text>
+                        <Text style={{color:'#FDBD01',fontWeight:'bold',fontSize:16}}>{'Save'}</Text>
                     </TouchableOpacity>          
-                  <TouchableOpacity style={{height:50,width:80,borderRadius:50,backgroundColor:'red',justifyContent:'center',alignItems:'center'}}
+                  <TouchableOpacity style={{height:50,width:80,borderRadius:50,backgroundColor:'#28282B',justifyContent:'center',alignItems:'center'}}
                   onPress={()=>{navigation.goBack()}}
                   >
-                        <Text style={{color:'white',fontWeight:'500'}}>{'Cancel'}</Text>
+                        <Text style={{color:'#FDBD01',fontWeight:'bold',fontSize:16}}>{'Cancel'}</Text>
                     </TouchableOpacity>          
             </View>
             {showDeliveryDate &&
@@ -472,7 +476,7 @@ const CreateOrder = ({props,navigation}:any) => {
               />
             }
             </ScrollView>
-        </ImageBackground>
+        {/* </ImageBackground> */}
         </View>
         </SafeAreaView>
     )
@@ -531,7 +535,7 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     uploadBtn:{
-        backgroundColor:'#7EC8E3',
+        backgroundColor:'#28282B',
         justifyContent:'center',    
         alignItems:'center',
         padding:0,
@@ -545,12 +549,15 @@ const styles = StyleSheet.create({
     saveBtn:{
         display:'flex',
         flexDirection:'row',
-        marginLeft:'30%',
+        right:10,
+        bottom:0,
+        position:'relative',
         width:'100%',
         height:50,
         marginTop:20,
         marginBottom:20,
-        alignItems:'center'
+        justifyContent:'flex-end',
+        alignItems:'flex-end'
     },
     dropdown: {
         top:-5,

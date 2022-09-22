@@ -18,6 +18,7 @@ import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
 import ContractorDrawerNavigator from './ContractorDrawerNavigator';
 import CreateOrder from '../screens/CreateOrder';
+import ViewCart from '../screens/ViewCart';
 
 export default function Navigation({
   colorScheme,
@@ -84,6 +85,11 @@ function RootNavigator() {
       options={horizontalAnimation}
       name="CreateOrder"
       component={CreateOrder}
+      />
+      <Stack.Screen 
+      options={horizontalAnimation}
+      name="ViewCart"
+      component={ViewCart}
       />
     </Stack.Navigator>
   );
