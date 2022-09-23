@@ -58,11 +58,12 @@ export default Catalog;
 const styles=StyleSheet.create({
     container:{
      flex:1,
-     padding:20,
+    //  padding:20,
      backgroundColor:'white' ,
      display:'flex',
      flexDirection:'row',
-     flexWrap:'wrap'
+     flexWrap:'wrap',
+    paddingLeft:10
     },
     viewCart:{
         width:100,
@@ -74,21 +75,22 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         alignSelf:'flex-end',
-        marginRight:40,
+        marginRight:12,
         marginTop:10
     },
     catalogMain:{
         width:'50%',
+        paddingLeft:10,
+        paddingRight:10,
         paddingHorizontal:10,
         marginVertical:15,
         display:'flex',
         flexDirection:'row',
-        justifyContent:'center',
+        justifyContent:'space-between',
         alignItems:'center'
     },
     cardMian:{
-        marginRight:15,
-        width:170,
+        width:150,
         height:170,
         borderRadius:10,
         backgroundColor:'white',
@@ -124,7 +126,7 @@ const styles=StyleSheet.create({
     cartIcon:{
         position:'absolute',
         right:10,
-        top:-40,
+        top:-20,
         width:35,
         height:35,
         backgroundColor:'#FDBD01',

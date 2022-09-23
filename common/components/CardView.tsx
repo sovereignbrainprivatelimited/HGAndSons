@@ -66,7 +66,7 @@ const CardView = (props: any) => {
                 <View style={styles.modalBodyMain}>
                 <Text style={styles.modalTitle}>Update Order Status</Text>
                   <View style={styles.modalBody}>
-                      <Text style={styles.label}>Order Status :</Text>
+                      <Text style={styles.label}>Order Status</Text>
                       <View style={styles.dataValue}>
                       <Dropdown
                           style={styles.dropdown}
@@ -89,9 +89,9 @@ const CardView = (props: any) => {
                         </View>
                   </View>
                   <View style={styles.modalBody}>
-                      <Text style={styles.label} >Remarks :</Text>
+                      <Text style={styles.label} >Remarks</Text>
                       <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Enter Remarks" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'} marginLeft={-6}/>
+                      <TextArea h={10} placeholder="Enter Remarks" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'} marginLeft={-3}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
@@ -129,7 +129,7 @@ const CardView = (props: any) => {
               <View style={[styles.modalBodyMain,styles.notifyModal]}>
                 <Text style={styles.modalTitle}>Notify Order</Text>
                 <View style={styles.modalBody}>
-                      <Text style={[styles.label,styles.longName]}>Customer Name</Text>
+                      <Text style={[styles.label]}>Customer Name</Text>
                       <View style={styles.dataValue}>
                       <Dropdown
                           style={styles.dropdown}
@@ -177,7 +177,7 @@ const CardView = (props: any) => {
                   <View style={styles.modalBody}>
                       <Text style={styles.label} >Narration </Text>
                       <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Enter Narration" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'}  marginLeft={-6}/>
+                      <TextArea h={10} placeholder="Enter Narration" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'}  marginLeft={-3}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   modalBodyMain:{
-    width:350,
+    width:340,
     height:250,
     borderRadius:20,
     backgroundColor:'white',
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     width:'40%',
   },
   dropdown: {
-    marginLeft: -30,
+    marginLeft: -13,
     top:-5,
     height: 30,
     width:200,
@@ -432,9 +432,10 @@ const styles = StyleSheet.create({
     borderRadius:5
   },
   BtnMain:{
-    width:'90%',
+    width:'100%',
     height:50,
     marginTop:10,
+    paddingRight:10,
     display:'flex',
     justifyContent:'flex-end',
     flexDirection:'row',

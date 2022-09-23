@@ -44,19 +44,6 @@ const BarChartScreen = ({ navigation }: any) => {
     }
   };
 
-  //   handleSelect(event) {
-  //     let entry = event.nativeEvent
-  //     if (entry == null) {
-  //       this.setState({...this.state, selectedEntry: null})
-  //     } else {
-  //       this.setState({...this.state, selectedEntry: JSON.stringify(entry)})
-  //     }
-
-  //     console.log(event.nativeEvent)
-  //   }
-
-
-  //   render() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -79,15 +66,21 @@ const BarChartScreen = ({ navigation }: any) => {
     </View>
   );
 }
-// }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#F5FCFF',
+    width:'100%',
+    paddingBottom:50,
+    display:'flex',
+    justifyContent:'center',
+    alignItems:"center"
   },
   chart: {
-    flex: 1
+    flex: 1,
+    width:'80%',
+    
   }
 });
 

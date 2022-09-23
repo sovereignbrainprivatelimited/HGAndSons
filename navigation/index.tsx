@@ -15,7 +15,6 @@ import { RootStackParamList } from '../types';
 import '../common/axios.config';
 import { getStoreValue } from '../common/LocalStorage';
 import Login from '../screens/Login';
-import Dashboard from '../screens/Dashboard';
 import ContractorDrawerNavigator from './ContractorDrawerNavigator';
 import CreateOrder from '../screens/CreateOrder';
 import ViewCart from '../screens/ViewCart';

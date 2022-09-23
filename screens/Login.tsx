@@ -8,6 +8,8 @@ import {
   Image,
   ScrollView,
   Alert,
+  ToastAndroid,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -23,7 +25,11 @@ const Login = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
 
   const onLogin = async () => {
+    if(Platform.OS=='android'){
+      ToastAndroid.show('You have logged in successfully!',ToastAndroid.TOP)
+  }else{
     Alert.alert('Sucess!', 'Login Successfully')
+  }
     setShowLoader(true);
     // let selectedLanguage = await getStoreValue('language');
     // let requestBody: any = {
@@ -173,8 +179,8 @@ const styles = StyleSheet.create({
   boxMain: {
     display: 'flex',
     backgroundColor: '#28282B',
-    height: 500,
-    width: 354,
+    height: 480,
+    width: 334,
     borderRadius: 10,
     zIndex: 1
   },
@@ -182,12 +188,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#FFD700',
     textAlign: 'center',
-    marginTop: 20
+    marginTop: 10
   },
   phoneNo: {
     fontSize: 12,
     color: '#FFD700',
-    marginTop: 50,
+    marginTop: 30,
     marginLeft: 15,
   },
   password: {

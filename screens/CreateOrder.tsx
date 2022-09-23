@@ -6,6 +6,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import DatePicker from 'react-native-date-picker';
 import moment from "moment";
 import ImagePicker from 'react-native-image-crop-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const CreateOrder = (props:any,{navigation}:any) => {
@@ -17,6 +19,8 @@ const CreateOrder = (props:any,{navigation}:any) => {
     const [deliverydate, setDeliverydate] = useState(new Date());
     const [showReminderDate, setShowReminderDate] = useState(false);
     const [reminderdate, setReminderdate] = useState(new Date());
+    const [showOrderDate, setShowOrderDate] = useState(false);
+    const [orderdate, setOrderDate] = useState(new Date());
     const [isEdit,setIsEdit]=useState(false);
     const options1={
         title:'Select Image',
@@ -107,6 +111,7 @@ const CreateOrder = (props:any,{navigation}:any) => {
                                 returnKeyType={"next"}
                                 style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
+                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.dataMain}>
@@ -250,28 +255,21 @@ const CreateOrder = (props:any,{navigation}:any) => {
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Order Date'}</Text>
-                <View style={styles.inputBox} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
+                <TouchableOpacity style={styles.inputBox} onPress={()=>setShowOrderDate(true)}>
                             <TextInput
                                 placeholder='Enter Order date'
                                 placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
-                                value={value}
+                                value={moment(orderdate).format('YYYY-MM-DD').toString()}
                                 autoCorrect={false}
+                                editable={false}
                                 autoCapitalize="none"
-                                onChangeText={onChange}
+                                // onChangeText={onChange}
                                 returnKeyType={"next"}
                                 style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
-                        )}
-                        name="orderDate"
-                        rules={{
-                            required: { value: true, message: 'Enter Order Date' },
-                        }}
-                    />
-                </View>
+                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
+                </TouchableOpacity>
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Reminder Date'}</Text>
@@ -289,7 +287,7 @@ const CreateOrder = (props:any,{navigation}:any) => {
                                 returnKeyType={"next"}
                                 style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
-                    
+                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.dataMain}>
@@ -456,23 +454,57 @@ const CreateOrder = (props:any,{navigation}:any) => {
                     </TouchableOpacity>          
             </View>
             {showDeliveryDate &&
-                <DatePicker
-                modal
-                open={showDeliveryDate}
-                date={new Date()}
-                onConfirm={(date) => setDeliverydate(date)}
-                onCancel={() => setShowDeliveryDate(false)}
-                androidVariant="nativeAndroid"
+                <DateTimePicker
+
+                testID="dateTimePicker"
+                maximumDate={undefined}
+                minimumDate={undefined}
+                value={new Date()}
+                mode={"date"}
+                is24Hour
+                display={"calendar"}
+                onChange={()=>setShowDeliveryDate(false)}
+                // onChange={onChange}
+                textColor={"#28282B"}
+                accentColor={'#28282B'}
+                // neutralButtonLabel={'hello'}
+                disabled={false}
               />
             }
             {showReminderDate &&
-                <DatePicker
-                modal
-                open={showReminderDate}
-                date={new Date()}
-                onConfirm={(date) => setReminderdate(date)}
-                onCancel={() => setShowReminderDate(false)}
-                androidVariant="nativeAndroid"
+                <DateTimePicker
+
+                testID="dateTimePicker"
+                maximumDate={undefined}
+                minimumDate={undefined}
+                value={new Date()}
+                mode={"date"}
+                is24Hour
+                display={"calendar"}
+                onChange={()=>setShowReminderDate(false)}
+                // onChange={onChange}
+                textColor={"#28282B"}
+                accentColor={'#28282B'}
+                // neutralButtonLabel={'hello'}
+                disabled={false}
+              />
+            }
+            {showOrderDate &&
+                <DateTimePicker
+
+                testID="dateTimePicker"
+                maximumDate={undefined}
+                minimumDate={undefined}
+                value={new Date()}
+                mode={"date"}
+                is24Hour
+                display={"calendar"}
+                onChange={()=>setShowOrderDate(false)}
+                // onChange={onChange}
+                textColor={"#28282B"}
+                accentColor={'#28282B'}
+                // neutralButtonLabel={'hello'}
+                disabled={false}
               />
             }
             </ScrollView>

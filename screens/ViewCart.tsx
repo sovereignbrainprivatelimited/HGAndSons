@@ -96,6 +96,9 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         flexWrap:'wrap',
+        // padding:20,
+        paddingLeft:30,
+        paddingRight:30
        },
        catalogMain:{
            width:'100%',
@@ -107,8 +110,8 @@ const styles=StyleSheet.create({
            alignItems:'center'
        },
        cardMian:{
-           marginRight:15,
-           width:350,
+           marginRight:0,
+           width:330,
            height:160,
            borderRadius:10,
            backgroundColor:'#28282B',
