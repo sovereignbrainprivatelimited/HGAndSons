@@ -6,6 +6,8 @@ import logo from '../../constants/images/Logo.png';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
+import { getStoreValue } from '../LocalStorage';
 
 const CardView = (props: any) => {
   const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status } = props;
@@ -14,6 +16,25 @@ const CardView = (props: any) => {
   const [showNotifyModal, setShowNotifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [value, setValue] = useState(null);
+  const [orderStatusList,setOrderStatusList]=useState([]);
+
+
+
+   useEffect(()=>{
+    const getStatusList = async () => {
+      axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+          console.log('res_____',res.data.data);
+          res.data.data.map((item:any)=>{
+              const data={
+                  label:item.OrderStatus,
+                  value:item.OrderStatusId
+              }
+              orderStatusList.push(data);
+          })
+      })
+  }
+  getStatusList();
+   },[])
   const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
@@ -74,7 +95,7 @@ const CardView = (props: any) => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
-                          data={data}
+                          data={orderStatusList}
                           search
                           maxHeight={300}
                           labelField="label"

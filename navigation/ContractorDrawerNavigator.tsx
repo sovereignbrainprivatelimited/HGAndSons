@@ -6,6 +6,7 @@ import OrderEntry from '../screens/OrderEntery';
 import OrderReport from '../screens/OrderReport';
 import CustomDrawer from '../common/components/CustomDrawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text } from 'react-native-svg';
 
 const ContractorDrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
@@ -42,7 +43,8 @@ const ContractorDrawerNavigator = () => {
         )
       }}
       />
-      <Drawer.Screen  name="Catalog" component={Catalog} 
+      <Drawer.Screen  name="Catalog"
+      component={Catalog} 
       options={{
         drawerIcon: ({color}) => (
           <Icon name="file" size={22} color={'#FFD700'}/>

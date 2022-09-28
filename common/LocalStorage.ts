@@ -12,6 +12,8 @@ const getStoreValue = async (key: any) => {
 
 const setStoreValue = async (value: any) => {
   try {
+    console.log('here::',value.key,value.value);
+    
     await AsyncStorage.setItem(`${value.key}`, `${value.value}`);
   } catch (e) {
     console.log('Can not value');

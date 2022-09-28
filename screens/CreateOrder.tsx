@@ -1,27 +1,39 @@
 import { Text } from "native-base";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Alert, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,ToastAndroid, Platform } from "react-native";
 import { Controller, useForm } from 'react-hook-form';
 import { Dropdown } from "react-native-element-dropdown";
-import DatePicker from 'react-native-date-picker';
 import moment from "moment";
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {getStoreValue} from '../common/LocalStorage'
+import axios from "axios";
 
 
 const CreateOrder = (props:any,{navigation}:any) => {
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
 
-    const [value1, setValue1] = useState(null);
+    const [selectedParty, setSelectedParty] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedKarigar, setSelectedKarigar] = useState(null);
+
     const [showDeliveryDate, setShowDeliveryDate] = useState(false);
     const [deliverydate, setDeliverydate] = useState(new Date());
+    
     const [showReminderDate, setShowReminderDate] = useState(false);
     const [reminderdate, setReminderdate] = useState(new Date());
+    
     const [showOrderDate, setShowOrderDate] = useState(false);
     const [orderdate, setOrderDate] = useState(new Date());
+    
     const [isEdit,setIsEdit]=useState(false);
+    const [selecteImage,setSelectedImage]=useState('');
+    const [partyList,setPartyList]=useState([]);
+    const [itemList,setItemList]=useState([]);
+    const [karigarList,setKarigarList]=useState([]);
+    
     const options1={
         title:'Select Image',
         type:'library',
@@ -41,7 +53,8 @@ const CreateOrder = (props:any,{navigation}:any) => {
             cropping: false,
             includeBase64:true
         }).then((res)=>{
-            console.log('-------------result-----------',res)
+            setSelectedImage(res.path);
+            console.log('-------------result-----------',res.path)
         })
     }
   const data = [
@@ -54,19 +67,83 @@ const CreateOrder = (props:any,{navigation}:any) => {
     { label: 'Item 7', value: '7' },
     { label: 'Item 8', value: '8' },
   ];
-
-    const onSubmitPress = () => {
+  
+    useEffect(() => {
+    const getDropdownList = async()=>{
+        axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+            res.data.data.forEach((item:any)=>{
+                const data={
+                    label:item.PartyName,
+                    value:item.PartyId
+                }
+                partyList.push(data);
+            })
+        }).catch((err)=>{
+            console.log('err:',err);
+        })
+        axios.post('https://hgsonsapp.hgsons.in/master/item_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+            res.data.data.forEach((item:any)=>{
+                const data={
+                    label:item.ItemName,
+                    value:item.ItemId
+                }
+                itemList.push(data)
+            })
+        }).catch((err)=>{
+            console.log('err:',err);
+        })
+        axios.post('https://hgsonsapp.hgsons.in/master/karigar_list.php',{UserType:1,Token:await getStoreValue("token")}).then((res)=>{
+            console.log("res::",res.data.data);
+            res.data.data.forEach((item:any)=>{
+                const data={
+                    label:item.KarigarName,
+                    value:item.PartyId
+                }
+                karigarList.push(data);
+            })
+        })
     }
+    getDropdownList()
+    },[])
     useLayoutEffect(()=>{
         if(props?.route?.params?.userId !== undefined){
             setIsEdit(true)
         }
         console.log('-------props------',props?.route?.params?.userId)
     },[])
+
+    const onCreateOrder =async(data:any)=>{
+
+        let param={ 
+            OrderNo: getValues('orderNo').toString(),
+            DeliveryDate:moment(deliverydate).format('YYYY-MM-DD').toString(),
+            PartyId:selectedParty,
+            ItemId:selectedItem,
+            Weight:getValues('weight').toString(),
+            Height:getValues('height').toString(),
+            Pcs:getValues('pcs').toString(),
+            OrderDate:moment(orderdate).format('YYYY-MM-DD').toString(),
+            ReminderDate:moment(reminderdate).format('YYYY-MM-DD').toString(),
+            KarigarId:selectedKarigar,
+            Purity:getValues('Purity').toString(),
+            Size:getValues('size').toString(),
+            Width:getValues('width').toString(),
+            Remarks:getValues('Remarks').toString(),
+            OrderType:"SO",
+            Token: await getStoreValue("token")
+        }
+        console.log('params::',param);
+        
+        axios.post('https://hgsonsapp.hgsons.in/master/create_order.php',param).then((res)=>{
+            console.log('res::',res.data.message);
+            ToastAndroid.show(res.data.message,ToastAndroid.TOP);
+        }).catch((err)=>{
+            console.log('err:',err);
+        })
+    }
     return(
         <SafeAreaView style={{paddingBottom:0,flex:1}}>
         <View style={{flex:1,backgroundColor:'#FDBD01'}}>
-            {/* <ImageBackground source={logo} style={{flex:1}}> */}
             <View style={styles.Title}>
             <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{ isEdit ?'Edit Your Order':'Create Single Order'}</Text>
             </View>
@@ -107,7 +184,8 @@ const CreateOrder = (props:any,{navigation}:any) => {
                                 editable={false}
                                 autoCorrect={false}
                                 autoCapitalize="none"
-                                // onChangeText={onChange}
+                                // onChangeText={(e)=>console.log('date::',e)
+                                // }
                                 returnKeyType={"next"}
                                 style={{padding:0,paddingLeft:10,color:'#28282B'}}
                             />
@@ -126,16 +204,16 @@ const CreateOrder = (props:any,{navigation}:any) => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
-                          data={data}
+                          data={partyList}
                           search
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
                           placeholder="Select Party"
                           searchPlaceholder="Search Party"
-                          value={value1}
+                          value={selectedParty}
                           onChange={item => {
-                          setValue1(item.value);
+                          setSelectedParty(item.value);
                           }} 
                         />
                         )}
@@ -158,16 +236,16 @@ const CreateOrder = (props:any,{navigation}:any) => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
-                          data={data}
+                          data={itemList}
                           search
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
                           placeholder="Select Item"
                           searchPlaceholder="Search Item"
-                          value={value1}
+                          value={selectedItem}
                           onChange={item => {
-                          setValue1(item.value);
+                          setSelectedItem(item.value);
                           }} 
                         />
                         )}
@@ -302,16 +380,16 @@ const CreateOrder = (props:any,{navigation}:any) => {
                                 selectedTextStyle={styles.selectedTextStyle}
                                 inputSearchStyle={styles.inputSearchStyle}
                                 iconStyle={styles.iconStyle}
-                                data={data}
+                                data={karigarList}
                                 search
                                 maxHeight={300}
                                 labelField="label"
                                 valueField="value"
                                 placeholder="Select Karigar"
                                 searchPlaceholder="Search Karigar"
-                                value={value1}
+                                value={selectedKarigar}
                                 onChange={item => {
-                                setValue1(item.value);
+                                setSelectedKarigar(item.value);
                                 }} 
                             />
                         )}
@@ -331,7 +409,7 @@ const CreateOrder = (props:any,{navigation}:any) => {
                             <TextInput
                                 placeholder='Enter Purity'
                                 placeholderTextColor={'#28282B'}
-                                keyboardType='default'
+                                keyboardType='number-pad'
                                 value={value}
                                 autoCorrect={false}
                                 autoCapitalize="none"
@@ -429,7 +507,7 @@ const CreateOrder = (props:any,{navigation}:any) => {
                                 placeholder='Enter '
                                 placeholderTextColor={'#28282B'}
                                 keyboardType='number-pad'
-                                value={'Upload photo'}
+                                value={selecteImage==''?'Upload photo':selecteImage}
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 // onChangeText={onChange}
@@ -443,7 +521,7 @@ const CreateOrder = (props:any,{navigation}:any) => {
             </View>
             <View style={styles.saveBtn}>
                   <TouchableOpacity style={{height:50,width:80,borderRadius:50,marginRight:10,backgroundColor:'#28282B',justifyContent:'center',alignItems:'center'}}
-                  onPress={()=>Alert.alert('Success!','Created Order Successfully.')}
+                  onPress={onCreateOrder}
                   >
                         <Text style={{color:'#FDBD01',fontWeight:'bold',fontSize:16}}>{'Save'}</Text>
                     </TouchableOpacity>          
@@ -459,15 +537,17 @@ const CreateOrder = (props:any,{navigation}:any) => {
                 testID="dateTimePicker"
                 maximumDate={undefined}
                 minimumDate={undefined}
-                value={new Date()}
+                value={deliverydate}
                 mode={"date"}
                 is24Hour
                 display={"calendar"}
-                onChange={()=>setShowDeliveryDate(false)}
-                // onChange={onChange}
+                // onChange={()=>}
+                onChange={(e,d)=>{
+                    setShowDeliveryDate(false)
+                    setDeliverydate(d);
+                }}
                 textColor={"#28282B"}
                 accentColor={'#28282B'}
-                // neutralButtonLabel={'hello'}
                 disabled={false}
               />
             }
@@ -477,15 +557,17 @@ const CreateOrder = (props:any,{navigation}:any) => {
                 testID="dateTimePicker"
                 maximumDate={undefined}
                 minimumDate={undefined}
-                value={new Date()}
+                value={reminderdate}
                 mode={"date"}
                 is24Hour
                 display={"calendar"}
-                onChange={()=>setShowReminderDate(false)}
+                onChange={(e,d)=>{
+                    setShowReminderDate(false)
+                    setReminderdate(d);
+                }}
                 // onChange={onChange}
                 textColor={"#28282B"}
                 accentColor={'#28282B'}
-                // neutralButtonLabel={'hello'}
                 disabled={false}
               />
             }
@@ -495,11 +577,14 @@ const CreateOrder = (props:any,{navigation}:any) => {
                 testID="dateTimePicker"
                 maximumDate={undefined}
                 minimumDate={undefined}
-                value={new Date()}
+                value={orderdate}
                 mode={"date"}
                 is24Hour
                 display={"calendar"}
-                onChange={()=>setShowOrderDate(false)}
+                onChange={(e,d)=>{
+                    setShowOrderDate(false)
+                    setOrderDate(d);
+                }}
                 // onChange={onChange}
                 textColor={"#28282B"}
                 accentColor={'#28282B'}
@@ -508,7 +593,6 @@ const CreateOrder = (props:any,{navigation}:any) => {
               />
             }
             </ScrollView>
-        {/* </ImageBackground> */}
         </View>
         </SafeAreaView>
     )
@@ -521,14 +605,12 @@ const styles = StyleSheet.create({
         width:'100%',
         marginTop:30,
         height:50,
-        // backgroundColor:'#FDBD01',
         textAlign:'center',
         alignItems:'center',
         justifyContent:'center'
     },
     labelText:
     {
-        // fontFamily: Font.MONTSERRAT_REGULAR,
         color: '#28282B',
         lineHeight: 17.07,
         fontSize: 16,
@@ -542,7 +624,6 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         alignItems:'flex-start',
-        // textAlign:'center',
         justifyContent:'flex-start',
         marginLeft:10
     },
@@ -572,7 +653,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         padding:0,
          right:0,
-        // top:-2,
         height:35,
         width:55,
          position:'absolute',

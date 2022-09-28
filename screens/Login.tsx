@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
@@ -16,36 +17,38 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import logo from '../constants/images/Logo.png';
+import { setStoreValue,getStoreValue } from '../common/LocalStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const Login = ({ navigation }: any) => {
-  const [phoneNo, setphoneNo] = useState<any>('');
   const [emailId, setEmailId] = useState<any>('');
   const [password, setPassword] = useState<any>('');
   const [showLoader, setShowLoader] = useState(false);
 
   const onLogin = async () => {
-    if(Platform.OS=='android'){
-      ToastAndroid.show('You have logged in successfully!',ToastAndroid.TOP)
-  }else{
-    Alert.alert('Sucess!', 'Login Successfully')
-  }
-    setShowLoader(true);
-    // let selectedLanguage = await getStoreValue('language');
-    // let requestBody: any = {
-    //   mobile: Number(phoneNo),
-    //   language: selectedLanguage,
-    // };
-    // await setStoreValue({ key: 'phoneNo', value: Number(phoneNo) });
-    // let res = await loginIn.checkUser(requestBody);
-    setShowLoader(false);
-    navigation.navigate('ContractorDashboard');
-    // if (res?.data?.data?.userId) {
-    //   storeData(res.data.data.token, res.data.data.userId);
-    // } else {
-    //   storeData(res.data.data.token, '');
-    //   navigation.navigate('Otp', { otp: res.data.data.otp, mobile: phoneNo });
-    // }
+    setTimeout(()=>{
+    let body={"Email":emailId,"Password":password,"token":""}
+    axios({
+      method: 'post',
+      url: 'https://hgsonsapp.hgsons.in/objects/login.php',
+      data: body
+    }).then((res)=>{
+      if(Platform.OS=='android'){
+        ToastAndroid.show(res.data.message,ToastAndroid.TOP)
+      }else{
+        Alert.alert('Sucess!', 'Login Successfully')
+      }
+      if(res.data.success===1){
+        setStoreValue({key:"token",value:res.data.data.Token})
+        navigation.navigate('ContractorDashboard');
+      }
+      setShowLoader(false)
+    }).catch((err)=>{
+      console.log('err:',err);
+      
+    });
+  },3000)
+
   };
 
 
@@ -75,16 +78,10 @@ const Login = ({ navigation }: any) => {
                   keyboardType={'email-address'}
                   returnKeyType={"next"}
                   style={styles.phoneNoInput}
-                  onSubmitEditing={() => {
-                    if (phoneNo.length === 10) {
-                      onLogin();
-                    }
-                  }}
                   onChangeText={(value: any) => {
                     setEmailId(value);
                   }}
                 >
-
                 </TextInput>
               </View>
               <View>
@@ -93,60 +90,40 @@ const Login = ({ navigation }: any) => {
               <View>
                 <TextInput
                   selectionColor={'#FEA700'}
-                  // keyboardType={'default'}
                   returnKeyType={"done"}
                   secureTextEntry
                   style={styles.phoneNoInput}
-                  onSubmitEditing={() => {
-                    if (password.length === 10) {
-                      onLogin();
-                    }
-                  }}
                   onChangeText={(value: any) => {
                     setPassword(value);
                   }}
                 >
-
                 </TextInput>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  if (emailId === 'admin@admin.com' && password === 'password') {
+                  setShowLoader(true)
                     onLogin();
-                  }
-                  else {
-                    Alert.alert('Error', 'Please Enter Correct Email and password')
-                  }
                 }}
-                // style={
-                //   phoneNo.length < 10
-                //     ? styles.sendDisableOtpBtn
-                //     : styles.sendOtpBtn
-                // }
                 style={styles.sendOtpBtn}
               >
-                <View>
+                {/* {!showLoader ? */}
+                <View> 
                   <Text style={styles.otpText}>{'Login'}</Text>
                 </View>
+                {/*   :
+                   <View>
+                     <Image
+                   style={{
+                     width: 60,
+                     height:60,
+                   }}
+                   source={{
+                     uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fgiphy.com%2Fexplore%2Floading&psig=AOvVaw33dAAndXXOjUkbXEliaFoq&ust=1664354565124000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLiT14bKtPoCFQAAAAAdAAAAABAb',
+                   }}
+                 />
+               </View>
+               }*/}
               </TouchableOpacity>
-              {showLoader && <View style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Image
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: 60,
-                    height: 60,
-                    resizeMode: 'cover',
-                  }}
-                  source={{
-                    uri: 'https://www.google.com/search?q=loader+gif&rlz=1C1RXQR_enIN1017IN1017&oq=loader&aqs=chrome.1.69i57j0i433i512j0i20i263i512j0i433i512j0i512l3j0i20i263i512j0i512l2.4878j0j7&sourceid=chrome&ie=UTF-8#imgrc=JxOslC3Zg3kkJM',
-                  }}
-                />
-              </View>}
             </View>
           </View>
         </ScrollView>
