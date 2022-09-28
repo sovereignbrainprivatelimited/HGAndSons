@@ -23,8 +23,8 @@ const OrderEntry = ({ navigation }: any) => {
     const [partyList,setPartyList]=useState([]);
     const [itemList,setItemList]=useState([]);
 
-    useEffect(()=>{
-        const getOrderList = async () =>{
+    // useEffect(()=>{
+    //     const getOrderList = async () =>{
 
                 // axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
                 //     res.data.data.forEach((item:any)=>{
@@ -50,37 +50,37 @@ const OrderEntry = ({ navigation }: any) => {
                 //     console.log('err:',err);
                 // })
 
-            axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
-                res.data.data.map((item)=>{
-                    // const partyName=partyList.find(e => e.value == item.PartyId);
+        //     axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
+        //         res.data.data.map((item)=>{
+        //             // const partyName=partyList.find(e => e.value == item.PartyId);
                     
-                    const data = { 
-                        srNo: 1, 
-                        OrderNo: item.OrderNo, 
-                        date: item.OrderDate,
-                        orderType: item.OrderType,
-                        Party: 'Admin', 
-                        Karigar: 'Emarald',
-                        Item: 'Ring',
-                        Status: 'Assigned to Karigar'
-                    }
-                    orderList.push(data);
-                })
+        //             const data = { 
+        //                 srNo: 1, 
+        //                 OrderNo: item.OrderNo, 
+        //                 date: item.OrderDate,
+        //                 orderType: item.OrderType,
+        //                 Party: 'Admin', 
+        //                 Karigar: 'Emarald',
+        //                 Item: 'Ring',
+        //                 Status: 'Assigned to Karigar'
+        //             }
+        //             orderList.push(data);
+        //         })
 
-            }).catch((err)=>{
-                console.log('err:',err);
-            })
-        }
-        getOrderList();
-    })
+        //     }).catch((err)=>{
+        //         console.log('err:',err);
+        //     })
+        // }
+        // getOrderList();
+    // })
     const [searchBox, setSearchBox] = useState('')
 
     const data = [
         { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }, 
-        { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }
+        { srNo: 1, OrderNo: '002', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
+        { srNo: 1, OrderNo: '003', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
+        { srNo: 1, OrderNo: '004', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }, 
+        { srNo: 1, OrderNo: '005', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }
         ]
     const renderItem = ({ item, index }: any) => (
         <CardView
@@ -121,7 +121,7 @@ const OrderEntry = ({ navigation }: any) => {
             {/* {oppsDetails.length > 0 ? */}
             <FlatList
                 style={{ marginHorizontal: -10, height: 330 }}
-                data={orderList}
+                data={data}
                 keyExtractor={(_, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItem}
