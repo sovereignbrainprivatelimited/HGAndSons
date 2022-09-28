@@ -26,29 +26,29 @@ const OrderEntry = ({ navigation }: any) => {
     useEffect(()=>{
         const getOrderList = async () =>{
 
-                axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                    res.data.data.forEach((item:any)=>{
-                        const data={
-                            label:item.PartyName,
-                            value:item.PartyId
-                        }
-                        partyList.push(data);
-                    })
-                }).catch((err)=>{
-                    console.log('err:',err);
-                })
+                // axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                //     res.data.data.forEach((item:any)=>{
+                //         const data={
+                //             label:item.PartyName,
+                //             value:item.PartyId
+                //         }
+                //         partyList.push(data);
+                //     })
+                // }).catch((err)=>{
+                //     console.log('err:',err);
+                // })
 
-                axios.post('https://hgsonsapp.hgsons.in/master/item_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                    res.data.data.forEach((item:any)=>{
-                        const data={
-                            label:item.ItemName,
-                            value:item.ItemId
-                        }
-                        itemList.push(data)
-                    })
-                }).catch((err)=>{
-                    console.log('err:',err);
-                })
+                // axios.post('https://hgsonsapp.hgsons.in/master/item_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                //     res.data.data.forEach((item:any)=>{
+                //         const data={
+                //             label:item.ItemName,
+                //             value:item.ItemId
+                //         }
+                //         itemList.push(data)
+                //     })
+                // }).catch((err)=>{
+                //     console.log('err:',err);
+                // })
 
             axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
                 res.data.data.map((item)=>{
