@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
     View,
@@ -17,6 +17,10 @@ import { Dropdown } from "react-native-element-dropdown";
 
 
 const OrderReport = ({ navigation }: any) => {
+
+    useEffect(()=>{
+        navigation.closeDrawer();
+      },[navigation])
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
     const [showFromDate,setShowFromDate]=useState(false);

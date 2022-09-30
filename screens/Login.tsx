@@ -26,7 +26,6 @@ const Login = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
 
   const onLogin = async () => {
-    setTimeout(()=>{
     let body={"Email":emailId,"Password":password,"token":""}
     axios({
       method: 'post',
@@ -47,7 +46,6 @@ const Login = ({ navigation }: any) => {
       console.log('err:',err);
       
     });
-  },3000)
 
   };
 

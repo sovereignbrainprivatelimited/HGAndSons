@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -13,14 +13,35 @@ import {
   } from 'react-native';
 import ring from '../constants/images/ring.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from "axios";
+import { getStoreValue } from "../common/LocalStorage";
 
 
 const Catalog =({navigation}:any)=>{
-    const arr=[1,2,3,4,5,6,7,8,9]
-    const onAddProduct =(value:any)=>{
-        if(Platform.OS=='android'){
-            ToastAndroid.show(`${value} Added to cart Successfully`,ToastAndroid.TOP)
+
+    const [catalogData,setCatalogData]=useState([]);
+
+    useEffect(()=>{
+        navigation.closeDrawer();
+      },[]);
+
+      useEffect(()=>{
+        const getCatalog = async ()=>{
+            axios.post('https://hgsonsapp.hgsons.in/master/itemview.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                console.log('res::::',res.data.data);
+                const arr=res.data.data.map((item)=> {return item});
+                setCatalogData(arr);
+            }).catch((err)=>{
+                console.log('err:',err);
+            })
         }
+        getCatalog();
+      },[])
+    const arr=[1,2,3,4,5,6,7,8,9]
+    const onAddProduct = async (value:any,name:any)=>{
+        axios.post('https://hgsonsapp.hgsons.in/master/add_to_cart.php',{CatalogId:value,Token:await getStoreValue("token")}).then((res)=>{
+            ToastAndroid.show(`${name} Added to cart Successfully`,ToastAndroid.TOP)
+        })
     }
     return(
         <SafeAreaView style={{flex:1}}>
@@ -30,16 +51,16 @@ const Catalog =({navigation}:any)=>{
                 <Icon size={22} name='shopping-cart' color={'#28282B'}/>
             </TouchableOpacity>
         <View style={styles.container}>
-            {arr.map(()=>{
+            {catalogData.map((item)=>{
                 return(
                     <View style={styles.catalogMain}>
                         <View style={styles.cardMian}>
                             <View style={styles.imageMain}>
-                                <Image source={ring} style={{width:'100%',height:'100%',borderRadius:15}}/>
+                                <Image source={{uri:`${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}}/>
                             </View>
                             <View style={styles.descMain}>
-                                <Text style={styles.productName}>{'Ring'}</Text>
-                                <TouchableOpacity style={styles.cartIcon} onPress={()=>{onAddProduct('Ring')}}>
+                                <Text style={styles.productName}>{`${item.Remarks}`}</Text>
+                                <TouchableOpacity style={styles.cartIcon} onPress={()=>{onAddProduct(item.CatalogId,item.Remarks)}}>
                                 <Icon  name="shopping-cart" size={22} color={'black'} />
                                 </TouchableOpacity>
                             </View>

@@ -7,14 +7,15 @@ import moment from "moment";
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 import {getStoreValue} from '../common/LocalStorage'
 import axios from "axios";
 
 
-const CreateOrder = (props:any,{navigation}:any) => {
+const CreateOrder = (props:any) => {
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
-
+    const navigation=useNavigation()
     const [selectedParty, setSelectedParty] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedKarigar, setSelectedKarigar] = useState(null);
@@ -113,7 +114,10 @@ const CreateOrder = (props:any,{navigation}:any) => {
     },[])
 
     const onCreateOrder =async(data:any)=>{
-
+        
+        if(getValues('orderNo') === undefined){
+            ToastAndroid.show('Please Enter Valid Data.',ToastAndroid.TOP)
+        }
         let param={ 
             OrderNo: getValues('orderNo').toString(),
             DeliveryDate:moment(deliverydate).format('YYYY-MM-DD').toString(),

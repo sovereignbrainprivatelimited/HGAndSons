@@ -23,64 +23,69 @@ const OrderEntry = ({ navigation }: any) => {
     const [partyList,setPartyList]=useState([]);
     const [itemList,setItemList]=useState([]);
 
-    // useEffect(()=>{
-    //     const getOrderList = async () =>{
 
-                // axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                //     res.data.data.forEach((item:any)=>{
-                //         const data={
-                //             label:item.PartyName,
-                //             value:item.PartyId
-                //         }
-                //         partyList.push(data);
-                //     })
-                // }).catch((err)=>{
-                //     console.log('err:',err);
-                // })
+    useEffect(()=>{
+        navigation.closeDrawer()
+        const getOrderList = async () =>{
 
-                // axios.post('https://hgsonsapp.hgsons.in/master/item_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                //     res.data.data.forEach((item:any)=>{
-                //         const data={
-                //             label:item.ItemName,
-                //             value:item.ItemId
-                //         }
-                //         itemList.push(data)
-                //     })
-                // }).catch((err)=>{
-                //     console.log('err:',err);
-                // })
+                axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                    res.data.data.forEach((item:any)=>{
 
-        //     axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
-        //         res.data.data.map((item)=>{
-        //             // const partyName=partyList.find(e => e.value == item.PartyId);
-                    
-        //             const data = { 
-        //                 srNo: 1, 
-        //                 OrderNo: item.OrderNo, 
-        //                 date: item.OrderDate,
-        //                 orderType: item.OrderType,
-        //                 Party: 'Admin', 
-        //                 Karigar: 'Emarald',
-        //                 Item: 'Ring',
-        //                 Status: 'Assigned to Karigar'
-        //             }
-        //             orderList.push(data);
-        //         })
+                        const data={
+                            label:item.PartyName,
+                            value:item.PartyId
+                        }
+                        partyList.push(data);
+                    })
+                }).catch((err)=>{
+                    console.log('err:',err);
+                })
+                
+                axios.post('https://hgsonsapp.hgsons.in/master/item_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                    res.data.data.forEach((item:any)=>{
+                        const data={
+                            label:item.ItemName,
+                            value:item.ItemId
+                        }
+                        itemList.push(data)
+                    })
+                }).catch((err)=>{
+                    console.log('err:',err);
+                })
 
-        //     }).catch((err)=>{
-        //         console.log('err:',err);
-        //     })
-        // }
-        // getOrderList();
-    // })
+            axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
+
+                const arr=[];
+                res.data.data.map((item)=>{
+                    const data= { 
+                        srNo: 1, 
+                        OrderNo: item.OrderNo, 
+                        date: item.OrderDate,
+                        orderType: item.OrderType,
+                        Party: 'Admin', 
+                        Karigar: 'Emarald',
+                        Item: 'Ring',
+                        Status: 'Assigned to Karigar'
+                    }
+                    arr.push(data);
+                })
+                console.log('length::::::',arr);
+                
+                setOrderList(arr);
+            }).catch((err)=>{
+                console.log('err:',err);
+            })
+        }
+        getOrderList();
+    },[])
     const [searchBox, setSearchBox] = useState('')
 
     const data = [
         { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '002', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '003', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        { srNo: 1, OrderNo: '004', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }, 
-        { srNo: 1, OrderNo: '005', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }
+        // { srNo: 1, OrderNo: '002', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
+        // { srNo: 1, OrderNo: '003', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
+        // { srNo: 1, OrderNo: '004', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }, 
+        // { srNo: 1, OrderNo: '005', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }
         ]
     const renderItem = ({ item, index }: any) => (
         <CardView
@@ -110,18 +115,15 @@ const OrderEntry = ({ navigation }: any) => {
                 />
                 <TouchableOpacity style={styles.addOrder} onPress={ () => navigation.navigate('CreateOrder')}>
                       <Icon name="plus-circle" size={28} color={'#FFD700'} />
-
-                    {/* <Ionicons name="add" size={22} color='red' style={{width:50,height:50,backgroundColor:'red'}}  /> */}
-                    {/* <Text style={{color:'#28282B',fontSize:18,fontWeight:'500'}}>{'Create'}</Text> */}
                 </TouchableOpacity>
             </View>
             <Text style={styles.opsText} >
                 {'Single Order'}
             </Text>
-            {/* {oppsDetails.length > 0 ? */}
+            
             <FlatList
                 style={{ marginHorizontal: -10, height: 330 }}
-                data={data}
+                data={orderList}
                 keyExtractor={(_, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItem}

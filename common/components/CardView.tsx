@@ -20,10 +20,9 @@ const CardView = (props: any) => {
 
 
 
-   useEffect(()=>{
+  //  useEffect(()=>{
     const getStatusList = async () => {
       axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-          console.log('res_____',res.data.data);
           res.data.data.map((item:any)=>{
               const data={
                   label:item.OrderStatus,
@@ -33,8 +32,17 @@ const CardView = (props: any) => {
           })
       })
   }
-  getStatusList();
-   },[])
+  // getStatusList();
+  //  },[])
+
+  const onDelete = async () => {
+    axios.post('https://hgsonsapp.hgsons.in/master/itemview.php',{OrderId:22,Token: await getStoreValue("token")}).then((res)=>{
+      console.log('res:::',res.data);
+    }).catch((err)=>{
+      console.log('err:',err);
+      
+    })
+  }
   const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
@@ -57,7 +65,7 @@ const CardView = (props: any) => {
             <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text>
           </View>
           <View style={styles.cardImage}>
-            <Image source={logo} style={{ width: '100%', height: '100%' }} />
+            <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
           </View>
         </View>
         <View style={{ marginLeft: 10 }}>
@@ -67,7 +75,7 @@ const CardView = (props: any) => {
           <Text style={styles.datatitle}>{'Status: ' + Status}</Text>
         </View>
         <View style={styles.actionMain}>
-          <TouchableOpacity onPress={() => setShowUpdateModal(true)} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowNotifyModal(true)} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity style={{marginRight:20 }} onPress={ () => navigation.navigate('CreateOrder',{userId:'1'})}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
@@ -239,13 +247,11 @@ const CardView = (props: any) => {
                       {'No'}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.close}>
+                  <TouchableOpacity style={styles.close} onPress={()=>onDelete()}>
                     <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Yes'}
                     </Text>
                   </TouchableOpacity>
-                  {/* <Button title='Close'  onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
-                  {/* <Button title='Close' onPress={() => setShowDeleteModal(!showDeleteModal)}>Close</Button> */}
                 </View>
                 </View>
               </View>

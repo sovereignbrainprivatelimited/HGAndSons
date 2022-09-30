@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,11 @@ import {
 import { BarChart } from 'react-native-charts-wrapper';
 
 const BarChartScreen = ({ navigation }: any) => {
+
+  useEffect(()=>{
+    navigation.closeDrawer();
+  },[])
+
   const chartData = {
     legend: {
       enabled: true,
