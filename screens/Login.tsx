@@ -11,6 +11,7 @@ import {
   Alert,
   ToastAndroid,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -104,23 +105,15 @@ const Login = ({ navigation }: any) => {
                 }}
                 style={styles.sendOtpBtn}
               >
-                {/* {!showLoader ? */}
+                {!showLoader ?
                 <View> 
                   <Text style={styles.otpText}>{'Login'}</Text>
                 </View>
-                {/*   :
+                  :
                    <View>
-                     <Image
-                   style={{
-                     width: 60,
-                     height:60,
-                   }}
-                   source={{
-                     uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fgiphy.com%2Fexplore%2Floading&psig=AOvVaw33dAAndXXOjUkbXEliaFoq&ust=1664354565124000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLiT14bKtPoCFQAAAAAdAAAAABAb',
-                   }}
-                 />
+                      <ActivityIndicator color={'white'} size='large'/>
                </View>
-               }*/}
+               }
               </TouchableOpacity>
             </View>
           </View>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 import {
     View,
     Text,
@@ -14,33 +15,102 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from "moment";
 import { Dropdown } from "react-native-element-dropdown";
+import { getStoreValue } from "../common/LocalStorage";
 
 
 const OrderReport = ({ navigation }: any) => {
 
-    useEffect(()=>{
-        navigation.closeDrawer();
-      },[navigation])
     const { control, handleSubmit, getValues, setValue, formState: { errors, isValid } } =
     useForm({ mode: "onChange" });
     const [showFromDate,setShowFromDate]=useState(false);
     const [showToDate,setShowToDate]=useState(false);
-    const [customer, setCustomer] = useState(null);
-    const [karigar, setKarigar] = useState(null);
-    const [status, setStatus] = useState(null);
-
-    const data = [
-        { label: 'Item 1', value: '1' },
-        { label: 'Item 2', value: '2' },
-        { label: 'Item 3', value: '3' },
-        { label: 'Item 4', value: '4' },
-        { label: 'Item 5', value: '5' },
-        { label: 'Item 6', value: '6' },
-        { label: 'Item 7', value: '7' },
-        { label: 'Item 8', value: '8' },
-      ];
+    const [customer, setCustomer] = useState([]);
+    const [karigar, setKarigar] = useState([]);
+    const [status, setStatus] = useState([]);
+    const [selectedFromDate,setSelectedFromDate]=useState(new Date());
+    const [selectedToDate,setSelectedToDate]=useState(new Date());
+    const[selectedStatus,setSelectedStatus]=useState('');
+    const[selectedKarigar,setSelectedKarigar]=useState('');
+    const[selectedcustomer,setSelectedCustomer]=useState('');
+    const [fromdate,setFromdate]=useState('');
+    const [toDate,setTodate]=useState('');
+    const [filterddata,setfilteredData]=useState([])
     
+    useEffect(()=>{
+        navigation.closeDrawer();
+      },[]);
 
+      useEffect(()=>{
+        const getDropdownList = async()=>{
+            axios.post('https://hgsonsapp.hgsons.in/master/karigar_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+              console.log('res:',res.data);
+              const arr=[];
+              res.data.data.forEach((item:any)=>{
+                const data={
+                    label:item.KarigarName,
+                    value:item.PartyId
+                }
+                arr.push(data);
+            })
+            setKarigar(arr)
+            }).catch((err)=>{
+              console.log('err:',err);
+            })
+        
+            axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+              const arr=[];
+                    res.data.data.forEach((item:any)=>{
+                        const data={
+                            label:item.PartyName,
+                            value:item.PartyId
+                        }
+                        arr.push(data);
+                    })
+                    setCustomer(arr)
+                }).catch((err)=>{
+                    console.log('err:',err);
+                })
+            axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UsetType:'1',Token:await getStoreValue("token")}).then((res)=>{
+                const arr=[];
+                console.log('res:::',res.data.data);
+                
+                    res.data.data.forEach((item:any)=>{
+                        const data={
+                            label:item.OrderStatus,
+                            value:item.OrderStatusId
+                        }
+                        arr.push(data);
+                    })
+                    setStatus(arr)
+            }).catch((err)=>{
+                console.log('err:',err);
+                
+            })
+          }
+          getDropdownList();
+      },[])
+    
+      const onSearch = async()=>{
+        axios.post('https://hgsonsapp.hgsons.in/master/search_order.php',{StartDate:fromdate,EndDate:toDate,PartyId:selectedcustomer,KarigarId:selectedKarigar,StatusId:selectedStatus,Token:await getStoreValue('token')}).then((res)=>{
+            const arr=Object.values(res.data.data);
+            console.log('res:',arr[1]);
+            let newArr=[];
+                arr.map((item)=>{
+                    const data= { 
+                        srNo: 1,
+                        orderNo:item.OrderNo,
+                        orderDate:item.OrderDate,
+                        orderType:item.OrderType,
+                        customerName:'Test'
+                    }
+                    newArr.push(data);
+                })    
+                setfilteredData(newArr);
+        }).catch((err)=>{
+            console.log('err:',err);
+        })
+      }
+      const arr=[1,2]
     return (
         <SafeAreaView style={{flex:1}}>
                 <View style={styles.container}>
@@ -54,11 +124,11 @@ const OrderReport = ({ navigation }: any) => {
                                 <TextInput
                                     placeholder='dd-mm-yyyy'
                                     placeholderTextColor={'#28282B'}
-                                    value={'01'}
+                                    value={moment(selectedFromDate).format('YYYY-MM-DD').toString()}
                                     autoCorrect={false}
                                     autoCapitalize="none"
                                     editable={false}
-                                    // onChangeText={onChange}
+                                    // onChangeText={(e)=>{setFromdate(moment(e).format('YYYY-DD-MM').toString())}}
                                     returnKeyType={"next"}
                                     style={{padding:0,paddingLeft:10,color:'#28282B'}}
                                 />
@@ -71,11 +141,11 @@ const OrderReport = ({ navigation }: any) => {
                                 <TextInput
                                     placeholder='dd-mm-yyyy'
                                     placeholderTextColor={'#28282B'}
-                                    value={'01'}
+                                    value={moment(selectedToDate).format('YYYY-MM-DD').toString()}
                                     autoCorrect={false}
                                     autoCapitalize="none"
                                     editable={false}
-                                    // onChangeText={onChange}
+                                    // onChangeText={(e)=>{console.log("e::",e);}}
                                     returnKeyType={"next"}
                                     style={{padding:0,paddingLeft:10,color:'#28282B'}}
                                 />
@@ -91,16 +161,16 @@ const OrderReport = ({ navigation }: any) => {
                                     selectedTextStyle={styles.selectedTextStyle}
                                     inputSearchStyle={styles.inputSearchStyle}
                                     iconStyle={styles.iconStyle}
-                                    data={data}
+                                    data={customer}
                                     search
                                     maxHeight={300}
                                     labelField="label"
                                     valueField="value"
                                     placeholder="Select Customer"
                                     searchPlaceholder="Search Customer"
-                                    value={customer}
+                                    value={selectedcustomer}
                                     onChange={item => {
-                                        setCustomer(item.value);
+                                        setSelectedCustomer(item.value);
                                     }} 
                                 />
                             </View>
@@ -114,16 +184,16 @@ const OrderReport = ({ navigation }: any) => {
                                     selectedTextStyle={styles.selectedTextStyle}
                                     inputSearchStyle={styles.inputSearchStyle}
                                     iconStyle={styles.iconStyle}
-                                    data={data}
+                                    data={karigar}
                                     search
                                     maxHeight={300}
                                     labelField="label"
                                     valueField="value"
                                     placeholder="Select Karigar"
                                     searchPlaceholder="Search Karigar"
-                                    value={karigar}
+                                    value={selectedKarigar}
                                     onChange={item => {
-                                        setKarigar(item.value);
+                                        setSelectedKarigar(item.value);
                                     }} 
                                 />
                             </View>
@@ -137,21 +207,21 @@ const OrderReport = ({ navigation }: any) => {
                                     selectedTextStyle={styles.selectedTextStyle}
                                     inputSearchStyle={styles.inputSearchStyle}
                                     iconStyle={styles.iconStyle}
-                                    data={data}
+                                    data={status}
                                     search
                                     maxHeight={300}
                                     labelField="label"
                                     valueField="value"
                                     placeholder="Select Status"
                                     searchPlaceholder="Search Status"
-                                    value={status}
+                                    value={selectedStatus}
                                     onChange={item => {
-                                        setStatus(item.value);
+                                        setSelectedStatus(item.value);
                                     }} 
                                 />
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.searchBtn}>
+                        <TouchableOpacity style={styles.searchBtn} onPress={()=>onSearch()}>
                             <Text style={styles.searchTxt}>{'Search'}</Text>
                         </TouchableOpacity>
                         {showFromDate && 
@@ -160,11 +230,11 @@ const OrderReport = ({ navigation }: any) => {
                         testID="dateTimePicker"
                         maximumDate={undefined}
                         minimumDate={undefined}
-                        value={new Date()}
+                        value={selectedFromDate}
                         mode={"date"}
                         is24Hour
                         display={"calendar"}
-                        onChange={()=>setShowFromDate(false)}
+                        onChange={(e,d)=>{setShowFromDate(false);setSelectedFromDate(d)}}
                         // onChange={onChange}
                         textColor={"#28282B"}
                         accentColor={'#28282B'}
@@ -179,11 +249,11 @@ const OrderReport = ({ navigation }: any) => {
                         testID="dateTimePicker"
                         maximumDate={undefined}
                         minimumDate={undefined}
-                        value={new Date()}
+                        value={selectedToDate}
                         mode={"date"}
                         is24Hour
                         display={"calendar"}
-                        onChange={()=>setShowToDate(false)}
+                        onChange={(e,d)=>{setShowToDate(false);setSelectedToDate(d)}}
                         // onChange={onChange}
                         textColor={"#28282B"}
                         accentColor={'#28282B'}
@@ -193,6 +263,8 @@ const OrderReport = ({ navigation }: any) => {
 
                         }
                         <View style={styles.cardContainer}>
+                            {filterddata.map((item)=>{
+                                return(
                             <View style={styles.cardMain}>
                                 <View style={styles.bodyMain}>
                                     <Text style={styles.bodyTxt}>{'SR NO : '+1}</Text>
@@ -202,6 +274,8 @@ const OrderReport = ({ navigation }: any) => {
                                     <Text style={styles.bodyTxt}>{'Customer Name : '+'Admin'}</Text>
                                 </View>
                             </View>
+                                )
+                            })}
                         </View>
                     </ScrollView>    
                 </View>
@@ -313,17 +387,26 @@ const styles=StyleSheet.create({
         fontSize: 16,
       },
       cardContainer:{
-        width:'100%',
-        display:"flex",
-        justifyContent:'center',
-        alignItems:'center',
-        padding:20,
-        marginTop:20,
+        flex:1,
+     backgroundColor:'white' ,
+     display:'flex',
+     flexDirection:'column',
+     marginTop:20,
+     justifyContent:'center',
+     alignItems:'center'
       },
       cardMain:{
+        width:'80%',
+        paddingRight:10,
+        marginVertical:15,
+        display:'flex',
+        flexDirection:'column'
+      },
+      bodyMain:{
         width:300,
-        height:300,
-        borderRadius:15,
+        height:170,
+        borderRadius:10,
+        display:'flex',
         padding:20,
         backgroundColor:'white',
         shadowColor: '#000',
@@ -335,12 +418,6 @@ const styles=StyleSheet.create({
     shadowRadius: 1.41,
 
     elevation: 20,
-      },
-      bodyMain:{
-        width:'80%',
-        // backgroundColor:"red",
-        display:'flex',
-        flexDirection:'column'
       },
       bodyTxt:{
         fontSize:18,

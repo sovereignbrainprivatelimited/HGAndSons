@@ -1,3 +1,4 @@
+import { Text } from 'native-base';
 import React, { useEffect } from 'react';
 import {
   StyleSheet,
@@ -50,8 +51,11 @@ const BarChartScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,backgroundColor:'white' }}>
       <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>{'Welcome To H.G. & Sons'}</Text>
+        </View>
         <BarChart
           style={styles.chart}
           data={chartData.data}
@@ -73,9 +77,22 @@ const BarChartScreen = ({ navigation }: any) => {
 }
 
 const styles = StyleSheet.create({
+  header:{
+    backgroundColor:'#28282B',
+    display:'flex',
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center',
+    height:50
+  },
+  title:{
+    fontSize:22,
+    color:'#FDBD01',
+    fontWeight:'bold'
+  },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
     width:'100%',
     paddingBottom:50,
     display:'flex',
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     width:'80%',
-    
+    height:'50%'
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Modal, ToastAndroid } from 'react-native';
 import PropTypes from 'prop-types';
 import { Image, Text, TextArea } from 'native-base';
 import logo from '../../constants/images/Logo.png';
@@ -10,18 +10,25 @@ import axios from 'axios';
 import { getStoreValue } from '../LocalStorage';
 
 const CardView = (props: any) => {
-  const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status } = props;
+  const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status,orderData} = props;
   const navigation=useNavigation()
+  const imagePath='https://order.hgsons.in/uploads/order_images/'
+
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showNotifyModal, setShowNotifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [value, setValue] = useState(null);
   const [orderStatusList,setOrderStatusList]=useState([]);
+  const [karigarList,setKarigarList]=useState([]);
+  const [partyList,setPartyList]=useState([]);
+  const [selectedCustomer,setSelectedCustomer]=useState('');
+  const [selectedKarigar,setSelectedKarigar]=useState('');
+  const [narration,setNarration]=useState('');
 
-
-
-  //  useEffect(()=>{
+ 
+    
     const getStatusList = async () => {
+      console.log('data:',orderData);
       axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
           res.data.data.map((item:any)=>{
               const data={
@@ -32,19 +39,101 @@ const CardView = (props: any) => {
           })
       })
   }
-  // getStatusList();
-  //  },[])
+
+  
+  const getNotifyList = async()=>{
+    axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+          res.data.data.forEach((item:any)=>{
+
+              const data={
+                  label:item.PartyName,
+                  value:item.PartyId
+              }
+              partyList.push(data);
+          })
+      }).catch((err)=>{
+          console.log('err:',err);
+      })
+      axios.post('https://hgsonsapp.hgsons.in/master/karigar_list.php',{UserType:1,Token:await getStoreValue("token")}).then((res)=>{
+            res.data.data.forEach((item:any)=>{
+                const data={
+                    label:item.KarigarName,
+                    value:item.PartyId
+                }
+                karigarList.push(data);
+            })
+        })
+
+  }
 
   const onDelete = async () => {
-    axios.post('https://hgsonsapp.hgsons.in/master/itemview.php',{OrderId:22,Token: await getStoreValue("token")}).then((res)=>{
+    axios.post('https://hgsonsapp.hgsons.in/master/delete_order.php',{OrderId:orderData.orderId,Token: await getStoreValue("token")}).then((res)=>{
       console.log('res:::',res.data);
     }).catch((err)=>{
       console.log('err:',err);
-      
+    })
+  } 
+
+  const onUpdate = async () => {
+    let param={}
+    if(value.value==='1'){
+    param = {
+    PartyId:'1',
+    OrderId:orderData.OrderId,
+    OrderStatusId:value.value,
+    ConfirmDeliveryDate:orderData.ConfirmDeliveryDate,
+    Remarks:orderData.Remarks,
+    Token:await getStoreValue("token")
+    }
+  }else if(value.value==='2'){
+    param={
+    PartyId:'1',
+    OrderId:orderData.OrderId,
+    OrderStatusId:value.value,
+    KarigarDeliveryDate:orderData.KarigarDeliveryDate,
+    Remarks:orderData.Remarks,
+    Token:await getStoreValue("token")
+    }
+  }else if(value.value==='3'){
+    param={
+      PartyId:'1',
+      OrderId:orderData.OrderId,
+      OrderStatusId:value.value,
+      KarigarReceivedDate:orderData.KarigarReceivedDate,
+      Remarks:orderData.Remarks,
+      Token:await getStoreValue("token")
+      }
+  }else if(value.value==='4'){
+    param={
+      PartyId:'1',
+      OrderId:orderData.OrderId,
+      OrderStatusId:value.value,
+      CustomerDeliveredDate:orderData.CustomerDeliveredDate,
+      Remarks:orderData.Remarks,
+      Token:await getStoreValue("token")
+      }
+  }
+    axios.post('https://hgsonsapp.hgsons.in/master/order_status.php',param).then((res)=>{
+      console.log('res::',res.data);
+      setShowUpdateModal(false)
+    }).catch((err)=>{
+      console.log('err:',err);
+    })
+  }
+
+  const onNotify = async () => {
+    console.log('data:',selectedCustomer,selectedKarigar,narration);
+    
+    axios.post('https://hgsonsapp.hgsons.in/master/order_notify.php',{PartyId:selectedCustomer,KarigarId:selectedKarigar,Narration:'abcd',OrderId:orderData.orderId,Token:await getStoreValue("token")}).then((res)=>{
+      console.log('res::',res.data);
+      ToastAndroid.show(res.data.message,ToastAndroid.TOP);
+      setShowNotifyModal(false)
+    }).catch((err)=>{
+      console.log('err:',err);
     })
   }
   const data = [
-    { label: 'Item 1', value: '1' },
+    { label: 'Item vndfjkvnjdfkvn1', value: '1' },
     { label: 'Item 2', value: '2' },
     { label: 'Item 3', value: '3' },
     { label: 'Item 4', value: '4' },
@@ -65,7 +154,11 @@ const CardView = (props: any) => {
             <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text>
           </View>
           <View style={styles.cardImage}>
+            {orderData.Image?
+            <Image source={{uri:`${imagePath}${orderData.Image[0]}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+            :  
             <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+          }
           </View>
         </View>
         <View style={{ marginLeft: 10 }}>
@@ -76,8 +169,8 @@ const CardView = (props: any) => {
         </View>
         <View style={styles.actionMain}>
           <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowNotifyModal(true)} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
-          <TouchableOpacity style={{marginRight:20 }} onPress={ () => navigation.navigate('CreateOrder',{userId:'1'})}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -112,15 +205,15 @@ const CardView = (props: any) => {
                           searchPlaceholder="Search..."
                           value={value}
                           onChange={item => {
-                          setValue(item.value);
+                          setValue(item);
                           }} 
                         />
                         </View>
                   </View>
                   <View style={styles.modalBody}>
                       <Text style={styles.label} >Remarks</Text>
-                      <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Enter Remarks" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'} marginLeft={-3}/>
+                      <View style={styles.dataValue}> 
+                      <TextArea h={10} placeholder="Enter Remarks" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'} marginLeft={-3} fontSize={14}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
@@ -131,7 +224,7 @@ const CardView = (props: any) => {
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.close}>
+                  <TouchableOpacity style={styles.close} onPress={()=>onUpdate()}>
                     <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Update'}
                     </Text>
@@ -166,16 +259,16 @@ const CardView = (props: any) => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
-                          data={data}
+                          data={partyList}
                           search
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
                           placeholder="Select Customer"
                           searchPlaceholder="Search..."
-                          value={value}
+                          value={selectedCustomer}
                           onChange={item => {
-                          setValue(item.value);
+                          setSelectedCustomer(item.value);
                           }} 
                         />
                         </View>
@@ -189,16 +282,16 @@ const CardView = (props: any) => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
-                          data={data}
+                          data={karigarList}
                           search
                           maxHeight={300}
                           labelField="label"
                           valueField="value"
                           placeholder="Select Karigar"
                           searchPlaceholder="Search..."
-                          value={value}
+                          value={selectedKarigar}
                           onChange={item => {
-                          setValue(item.value);
+                          setSelectedKarigar(item.value);
                           }} 
                         />
                         </View>
@@ -206,7 +299,7 @@ const CardView = (props: any) => {
                   <View style={styles.modalBody}>
                       <Text style={styles.label} >Narration </Text>
                       <View style={styles.dataValue}>
-                      <TextArea h={10} placeholder="Enter Narration" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'}  marginLeft={-3}/>
+                      <TextArea h={10} placeholder="Enter Narration" w={190} borderColor={'#FDBD01'} color={'#28282B'} placeholderTextColor={'#28282B'}  value={narration} marginLeft={-3} onChange={(e)=>setNarration('')}/>
                       </View>
                   </View>
                   <View style={styles.BtnMain}>
@@ -215,7 +308,7 @@ const CardView = (props: any) => {
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.close}>
+                  <TouchableOpacity style={styles.close} onPress={()=>onNotify()}>
                     <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Save'}
                     </Text>
@@ -435,14 +528,16 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
+    paddingTop:5,
+    paddingBottom:5,
+    display:'flex',
     elevation: 2,
   },
   placeholderStyle: {
     fontSize: 16,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 12,
   },
   iconStyle: {
     width: 20,

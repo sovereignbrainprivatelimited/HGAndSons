@@ -4,20 +4,21 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image,
     ScrollView,
     SafeAreaView,
-    ImageBackground,
     ToastAndroid,
-    Platform,
+    ActivityIndicator,
   } from 'react-native';
 import ring from '../constants/images/ring.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from "axios";
 import { getStoreValue } from "../common/LocalStorage";
+import { Image } from "native-base";
 
 
 const Catalog =({navigation}:any)=>{
+
+  const imagePath='https://order.hgsons.in/uploads/order_images/'
 
     const [catalogData,setCatalogData]=useState([]);
 
@@ -38,9 +39,12 @@ const Catalog =({navigation}:any)=>{
         getCatalog();
       },[])
     const arr=[1,2,3,4,5,6,7,8,9]
-    const onAddProduct = async (value:any,name:any)=>{
+    const onAddProduct = async (value:any)=>{
         axios.post('https://hgsonsapp.hgsons.in/master/add_to_cart.php',{CatalogId:value,Token:await getStoreValue("token")}).then((res)=>{
-            ToastAndroid.show(`${name} Added to cart Successfully`,ToastAndroid.TOP)
+            ToastAndroid.show('Product Added to cart Successfully',ToastAndroid.TOP);
+            console.log('res:',res.data);
+        }).catch((err)=>{
+            console.log('err:',err);
         })
     }
     return(
@@ -50,17 +54,17 @@ const Catalog =({navigation}:any)=>{
                 <Text style={{color:'#28282B'}}>{'View '}</Text>
                 <Icon size={22} name='shopping-cart' color={'#28282B'}/>
             </TouchableOpacity>
-        <View style={styles.container}>
+        {catalogData.length!==0?<View style={styles.container}>
             {catalogData.map((item)=>{
                 return(
                     <View style={styles.catalogMain}>
                         <View style={styles.cardMian}>
                             <View style={styles.imageMain}>
-                                <Image source={{uri:`${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}}/>
+                                <Image source={{uri:`${imagePath}${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
                             </View>
                             <View style={styles.descMain}>
                                 <Text style={styles.productName}>{`${item.Remarks}`}</Text>
-                                <TouchableOpacity style={styles.cartIcon} onPress={()=>{onAddProduct(item.CatalogId,item.Remarks)}}>
+                                <TouchableOpacity style={styles.cartIcon} onPress={()=>{onAddProduct(item.CatalogId)}}>
                                 <Icon  name="shopping-cart" size={22} color={'black'} />
                                 </TouchableOpacity>
                             </View>
@@ -68,7 +72,9 @@ const Catalog =({navigation}:any)=>{
                     </View>
                 )
             })}
-        </View>
+        </View>:
+                <ActivityIndicator size="large"  color={"#FDBD01"} style={{marginTop:250}}/>
+        }
         </ScrollView>
         </SafeAreaView>
     )
@@ -126,8 +132,8 @@ const styles=StyleSheet.create({
     elevation: 20,
     },
     imageMain:{
-        width: 150,
-        height: 130,
+        width: 130,
+        height: 120,
         backgroundColor: 'white',
         borderRadius: 15
     },
@@ -147,7 +153,7 @@ const styles=StyleSheet.create({
     cartIcon:{
         position:'absolute',
         right:10,
-        top:-20,
+        top:-30,
         width:35,
         height:35,
         backgroundColor:'#FDBD01',

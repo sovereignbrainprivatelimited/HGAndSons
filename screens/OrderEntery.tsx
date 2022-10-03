@@ -5,23 +5,23 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
+    ActivityIndicator,
+    ToastAndroid
 } from 'react-native';
 import CardView from "../common/components/CardView";
 import moment from 'moment'
-import { Dimensions, Platform, NativeModules } from 'react-native';
 import SearchBox from "../common/components/SearchBox";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from "axios";
 import { getStoreValue } from "../common/LocalStorage";
 
-const { width, height } = Dimensions.get('window');
-const screenWidth = width;
 
 const OrderEntry = ({ navigation }: any) => {
-
+    
     const [orderList,setOrderList]=useState([]);
     const [partyList,setPartyList]=useState([]);
     const [itemList,setItemList]=useState([]);
+    const [searchBox, setSearchBox] = useState('')
 
 
     useEffect(()=>{
@@ -54,39 +54,63 @@ const OrderEntry = ({ navigation }: any) => {
                 })
 
             axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
-
-                const arr=[];
-                res.data.data.map((item)=>{
+                const arr=Object.values(res.data.data);
+                let newArr=[];
+                arr.map((value)=>{
                     const data= { 
                         srNo: 1, 
-                        OrderNo: item.OrderNo, 
-                        date: item.OrderDate,
-                        orderType: item.OrderType,
-                        Party: 'Admin', 
-                        Karigar: 'Emarald',
-                        Item: 'Ring',
-                        Status: 'Assigned to Karigar'
+                        OrderNo: value.OrderNo!==undefined ? value.OrderNo:'', 
+                        date: value.OrderDate?value.OrderDate:'',
+                        orderType: value.OrderType?value.OrderType:'',
+                        Party:value.PartyName?value.PartyName:'', 
+                        Karigar: value.pname?value.pname:'',
+                        Item: value.ItemName?value.ItemName:'',
+                        Status: value.OrderStatus?value.OrderStatus:"",
+                        orderId:value.OrderId?value.OrderId:'',
+                        Image:value.Image
                     }
-                    arr.push(data);
-                })
-                console.log('length::::::',arr);
-                
-                setOrderList(arr);
+                    newArr.push(data);
+                })    
+                setOrderList(newArr);
             }).catch((err)=>{
                 console.log('err:',err);
             })
         }
         getOrderList();
-    },[])
-    const [searchBox, setSearchBox] = useState('')
+    },[]);
 
-    const data = [
-        { srNo: 1, OrderNo: '001', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        // { srNo: 1, OrderNo: '002', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        // { srNo: 1, OrderNo: '003', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' },
-        // { srNo: 1, OrderNo: '004', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }, 
-        // { srNo: 1, OrderNo: '005', date: new Date(), orderType: 'Order', Party: 'Admin', Karigar: 'Emarald', Item: 'Ring', Status: 'Assigned to Karigar' }
-        ]
+    useEffect(()=>{},[orderList])
+
+    const onSearch = async (value)=>{
+        console.log('valye',value);
+        axios.post('https://hgsonsapp.hgsons.in/master/search_order.php',{Search:value,Token:await getStoreValue('token')}).then((res)=>{
+        console.log('res:;',res);
+        const arr=Object.values(res.data.data);
+                let newArr=[];
+                arr.map((value)=>{
+                    const data= { 
+                        srNo: 1, 
+                        OrderNo: value.OrderNo!==undefined ? value.OrderNo:'', 
+                        date: value.OrderDate?value.OrderDate:'',
+                        orderType: value.OrderType?value.OrderType:'',
+                        Party:value.PartyName?value.PartyName:'', 
+                        Karigar: value.pname?value.pname:'',
+                        Item: value.ItemName?value.ItemName:'',
+                        Status: value.OrderStatus?value.OrderStatus:"",
+                        orderId:value.OrderId?value.OrderId:'',
+                        Image:value.Image
+                    }
+                    newArr.push(data);
+                })    
+                setOrderList(newArr);
+            
+        }).catch((err)=>{
+            setOrderList([])
+            console.log('err:',err);
+            
+        })
+    }
+
     const renderItem = ({ item, index }: any) => (
         <CardView
             OrganizationName={item.OrganizationName}
@@ -101,6 +125,7 @@ const OrderEntry = ({ navigation }: any) => {
             Karigar={item.Karigar}
             Item={item.Item}
             Status={item.Status}
+            orderData={item}
         />
     )
     return (
@@ -111,6 +136,7 @@ const OrderEntry = ({ navigation }: any) => {
                     value={searchBox}
                     onChangeText={(data) => {
                         setSearchBox(data);
+                        onSearch(data);
                     }}
                 />
                 <TouchableOpacity style={styles.addOrder} onPress={ () => navigation.navigate('CreateOrder')}>
@@ -120,7 +146,7 @@ const OrderEntry = ({ navigation }: any) => {
             <Text style={styles.opsText} >
                 {'Single Order'}
             </Text>
-            
+            {orderList.length!==0?
             <FlatList
                 style={{ marginHorizontal: -10, height: 330 }}
                 data={orderList}
@@ -129,11 +155,11 @@ const OrderEntry = ({ navigation }: any) => {
                 renderItem={renderItem}
                 numColumns={1}
             />
-            {/* : */}
-            {/* <View>
-                            <Text style={styles.notFoundText}>Unfortunately, we couldn't find any matches. Please use the search fields above to find an opportunity.</Text>
-                        </View> */}
-            {/* } */}
+            :
+             <View>
+                <ActivityIndicator size="large"  color={"#FDBD01"} style={{marginTop:190}}/>
+            </View> 
+            } 
         </View>
     )
 }
@@ -161,7 +187,10 @@ const styles = StyleSheet.create({
     notFoundText: {
         // fontFamily: Font.MONTSERRAT_REGULAR,
         fontSize: 16,
-        color: 'white'
+        textAlign:'center',
+        marginTop:190,
+        color: 'black',
+        alignSelf:'center'
     },
     addOrder:{
         width:60,

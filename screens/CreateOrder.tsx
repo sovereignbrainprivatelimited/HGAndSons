@@ -94,7 +94,6 @@ const CreateOrder = (props:any) => {
             console.log('err:',err);
         })
         axios.post('https://hgsonsapp.hgsons.in/master/karigar_list.php',{UserType:1,Token:await getStoreValue("token")}).then((res)=>{
-            console.log("res::",res.data.data);
             res.data.data.forEach((item:any)=>{
                 const data={
                     label:item.KarigarName,
@@ -106,11 +105,37 @@ const CreateOrder = (props:any) => {
     }
     getDropdownList()
     },[])
-    useLayoutEffect(()=>{
-        if(props?.route?.params?.userId !== undefined){
-            setIsEdit(true)
+    useEffect(() => { 
+        const getOrderData =async()=>{
+            if(props?.route?.params?.userId !== undefined){
+                axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{OrderId:props.route.params.userId,Token:await getStoreValue("token")}).then((res)=>{
+                    console.log('res:',res.data);
+                    const arr=Object.values(res.data.data);
+                    let data=arr.map((item)=>{
+                        return item 
+                    })
+                    console.log('datafcdsfsd:',data);
+                    setValue('orderNo',data[0].OrderNo);
+                    // setDeliverydate(moment(data.d).format('YYYY-MM-DD'))
+                    setSelectedParty(data[0].PartyId);
+                    setSelectedItem(data[0].ItemId);
+                    setValue('weight',data[0].Weight);
+                    setValue('height',data[0].Weight);
+                    setValue('pcs',data[0].Pcs);
+                    setOrderDate(data[0].OrderDate);
+                    setReminderdate(data[0].ReminderDate);
+                    setValue('size',data[0].Size);
+                    setValue('width',data[0].Width);
+                    setValue('Remarks',data[0].Remarks);
+                    setSelectedImage(data[0].imageOrder[0])
+                    
+                }).catch((err)=>{
+                    console.log('err:',err);
+                })
+                setIsEdit(true)
+            }
         }
-        console.log('-------props------',props?.route?.params?.userId)
+        getOrderData();
     },[])
 
     const onCreateOrder =async(data:any)=>{
@@ -137,13 +162,21 @@ const CreateOrder = (props:any) => {
             Token: await getStoreValue("token")
         }
         console.log('params::',param);
-        
-        axios.post('https://hgsonsapp.hgsons.in/master/create_order.php',param).then((res)=>{
-            console.log('res::',res.data.message);
-            ToastAndroid.show(res.data.message,ToastAndroid.TOP);
-        }).catch((err)=>{
-            console.log('err:',err);
-        })
+        if(props?.route?.params?.userId === undefined){
+            axios.post('https://hgsonsapp.hgsons.in/master/create_order.php',param).then((res)=>{
+                console.log('res::',res.data.message);
+                ToastAndroid.show(res.data.message,ToastAndroid.TOP);
+            }).catch((err)=>{
+                console.log('err:',err);
+            })
+        }else{
+            axios.post('https://hgsonsapp.hgsons.in/master/edit_order.php',param).then((res)=>{
+                console.log('res::',res.data);
+            }).catch((err)=>{
+                console.log('err',err);
+                
+            })
+        }
     }
     return(
         <SafeAreaView style={{paddingBottom:0,flex:1}}>

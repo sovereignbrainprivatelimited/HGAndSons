@@ -1,14 +1,31 @@
-import moment from "moment";
-import React,{useState} from "react";
-import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import axios from "axios";
+import { Image } from "native-base";
+import React,{useEffect, useState} from "react";
+import { Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ring from '../constants/images/ring.jpg';
+import { getStoreValue } from "../common/LocalStorage";
 
 
 
 const ViewCart =({navigation}:any)=>{
-    const arr=[1,2];
-    const [showDeleteModal,setShowDeleteModal]=useState(false);
+  const imagePath='https://order.hgsons.in/uploads/order_images/'
+
+
+  const [cartdata,setCartData]=useState([]);
+  const [showDeleteModal,setShowDeleteModal]=useState(false);
+
+    useEffect(()=>{
+      const getData=async()=>{
+        axios.post('https://hgsonsapp.hgsons.in/master/view_cart.php',{Token:await getStoreValue('token')}).then((res)=>{
+          console.log('res::',res.data.data);
+          setCartData(res.data.data);
+        }).catch((err)=>{
+          console.log('err:',err);
+        })
+      }
+      getData()
+    },[])
+
     return(
         <SafeAreaView style={{flex:1,marginTop:20,backgroundColor:'white'}}>
             <View style={styles.headerMain}>
@@ -16,17 +33,17 @@ const ViewCart =({navigation}:any)=>{
             </View>
         <ScrollView style={{backgroundColor:'white'}}>   
         <View style={styles.container}>
-            {arr.map(()=>{
+            {cartdata.map((item)=>{
                 return(
                     <View style={styles.catalogMain}>
                         <View style={styles.cardMian}>
                             <View style={styles.dataTitle}>
                                 <Text style={styles.dataValue}>{'SrNo : '+1}</Text>
-                                <Text style={styles.dataValue}>{'CatalogNo : '+'001'}</Text>
-                                <Text style={styles.dataValue}>{'Catalog Date: '+ moment(new Date()).format('YYYY-DD-MM')}</Text>
+                                <Text style={styles.dataValue}>{`CatalogNo : ${item.CatalogNo}`}</Text>
+                                <Text style={styles.dataValue}>{`Catalog Date: ${item.CatalogDate}`}</Text>
                             </View>
                             <View style={styles.imageMain}>
-                                <Image source={ring} style={{width:'100%',height:'100%',borderRadius:15}} />
+                                <Image source={{uri:`${imagePath}${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
                             </View>
                             <View style={{width:120,position:'absolute',bottom:10,right:0,display:'flex',flexDirection:'row' ,justifyContent:'flex-end'}}>
                                 <TouchableOpacity onPress={()=>{setShowDeleteModal(true)}}><Icon name='trash' size={20} style={{color:'#FDBD01',marginRight:20}}/></TouchableOpacity>
