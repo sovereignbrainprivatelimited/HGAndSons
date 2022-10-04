@@ -10,7 +10,7 @@ import axios from 'axios';
 import { getStoreValue } from '../LocalStorage';
 
 const CardView = (props: any) => {
-  const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status,orderData} = props;
+  const { date, onPress, srNo, OrderNo, orderType, Party, Karigar, Item, Status,orderData,showCatalogOrder} = props;
   const navigation=useNavigation()
   const imagePath='https://order.hgsons.in/uploads/order_images/'
 
@@ -24,9 +24,14 @@ const CardView = (props: any) => {
   const [selectedCustomer,setSelectedCustomer]=useState('');
   const [selectedKarigar,setSelectedKarigar]=useState('');
   const [narration,setNarration]=useState('');
+  const [userType,setUserType]=useState('');
 
  
     
+    useEffect(()=>{
+      console.log('orderData',orderData);
+    })
+
     const getStatusList = async () => {
       console.log('data:',orderData);
       axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
@@ -143,9 +148,20 @@ const CardView = (props: any) => {
     { label: 'Item 8', value: '8' },
   ];
 
+  useEffect(()=>{
+    const getUserInfo =async()=>{
+      let userId= await getStoreValue('userId');
+      let typeOfUser= await getStoreValue('userType');
+      console.log('type:',typeOfUser);
+      setUserType(typeOfUser);
+    }
+    getUserInfo();
+  },[])
+
   return (
-    <View style={{ flex: 1,backgroundColor:'white' }}>
-      <TouchableOpacity style={styles.cardMain}>
+    <View style={{ flex: 1,backgroundColor:'#FFFAF0' }}>
+    {showCatalogOrder ==false ?
+      <View style={styles.cardMain}>
         <View style={styles.dataMain}>
         <View style={{ display: 'flex', flexDirection: 'column' }}>
             <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
@@ -155,7 +171,7 @@ const CardView = (props: any) => {
           </View>
           <View style={styles.cardImage}>
             {orderData.Image?
-            <Image source={{uri:`${imagePath}${orderData.Image[0]}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+            <Image source={{uri:`${imagePath}${orderData.Image}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
             :  
             <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
           }
@@ -170,10 +186,45 @@ const CardView = (props: any) => {
         <View style={styles.actionMain}>
           <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
+          {userType!=='1' &&
+          <>
           <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
+          </>
+          }
         </View>
-      </TouchableOpacity>
+      </View>
+      :
+      <View style={styles.cardMain}>
+        <View style={styles.dataMain}>
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+            <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
+            <Text style={styles.datatitle}>{'C/Order No: ' + OrderNo}</Text>
+            <Text style={styles.datatitle}>{'C/Order Date: ' + date}</Text>
+            {/* <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text> */}
+          </View>
+          <View style={styles.cardImage}>
+            {orderData.Image?
+            <Image source={{uri:`${imagePath}${orderData.Image}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+            :  
+            <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+          }
+          </View>
+        </View>
+        <View style={{ marginLeft: 10 }}>
+          <Text style={styles.datatitle}>{'Party: ' + Party}</Text>
+          <Text style={styles.datatitle}>{'Karigar: ' + Karigar}</Text>
+          <Text style={styles.datatitle}>{'Item: ' + Item}</Text>
+          {/* <Text style={styles.datatitle}>{'Status: ' + Status}</Text> */}
+        </View>
+        {/* <View style={styles.actionMain}>
+          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
+        </View> */}
+      </View>
+      }
 
       {showUpdateModal &&
         <View>

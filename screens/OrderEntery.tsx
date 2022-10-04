@@ -21,8 +21,24 @@ const OrderEntry = ({ navigation }: any) => {
     const [orderList,setOrderList]=useState([]);
     const [partyList,setPartyList]=useState([]);
     const [itemList,setItemList]=useState([]);
-    const [searchBox, setSearchBox] = useState('')
+    const [searchBox, setSearchBox] = useState('');
+    const [showSingleOrder,setShowSingleOrder]=useState(true);
+    const [showCatalogOrder,setShowCatalogOrder]=useState(false);
 
+    const arr=[
+        { 
+            srNo: 1, 
+            OrderNo: 'orderNo', 
+            date: 'date',
+            orderType: 'type',
+            Party:'party', 
+            Karigar: 'karigar',
+            Item: 'item',
+            Status: 'status',
+            orderId:'id',
+            Image:'image'
+        }
+    ]
 
     useEffect(()=>{
         navigation.closeDrawer()
@@ -67,7 +83,7 @@ const OrderEntry = ({ navigation }: any) => {
                         Item: value.ItemName?value.ItemName:'',
                         Status: value.OrderStatus?value.OrderStatus:"",
                         orderId:value.OrderId?value.OrderId:'',
-                        Image:value.Image
+                        Image:value.order_image
                     }
                     newArr.push(data);
                 })    
@@ -126,10 +142,12 @@ const OrderEntry = ({ navigation }: any) => {
             Item={item.Item}
             Status={item.Status}
             orderData={item}
+            showCatalogOrder={showCatalogOrder}
         />
     )
+
     return (
-        <View style={{ flex: 1,backgroundColor:'white' }}>
+        <View style={{ flex: 1,backgroundColor:'#FFFAF0' }}>
             <View style={{ marginTop: 8, width: '90%', marginVertical: 5, borderRadius: 5, alignSelf: 'center', height: 50,display:'flex',flexDirection:'row' }} >
                 <SearchBox
                     searchPlaceholder='Search Order'
@@ -143,10 +161,23 @@ const OrderEntry = ({ navigation }: any) => {
                       <Icon name="plus-circle" size={28} color={'#FFD700'} />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.opsText} >
-                {'Single Order'}
-            </Text>
-            {orderList.length!==0?
+            <View style={styles.titleMain}>
+                <View style={{display:'flex',flexDirection:'column',width:'50%'}}>
+                <TouchableOpacity onPress={()=>{setShowSingleOrder(true);setShowCatalogOrder(false)}}>
+                    <Text style={styles.opsText} >
+                        {'Single Order'}
+                    </Text>
+                </TouchableOpacity>
+                {showSingleOrder && <View style={{height:5,backgroundColor:'#28282B',width:'100%',position:'absolute',bottom:10}}></View>}
+                </View>
+                <TouchableOpacity onPress={()=>{setShowCatalogOrder(true);setShowSingleOrder(false)}}>
+                    <Text style={styles.opsText} >
+                        {'Catalog Order'}
+                    </Text>
+                {showCatalogOrder && <View style={{height:5,backgroundColor:'#28282B',width:'100%',position:'absolute',bottom:10}}></View>}
+                </TouchableOpacity>
+            </View>
+            {(orderList.length!==0 && showSingleOrder) ?
             <FlatList
                 style={{ marginHorizontal: -10, height: 330 }}
                 data={orderList}
@@ -156,10 +187,23 @@ const OrderEntry = ({ navigation }: any) => {
                 numColumns={1}
             />
             :
+            (orderList.length !==0 && showCatalogOrder) ? 
+            <FlatList
+            style={{ marginHorizontal: -10, height: 330 }}
+            data={arr}
+            keyExtractor={(_, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            renderItem={renderItem}
+            numColumns={1}
+        />  
+            :
              <View>
                 <ActivityIndicator size="large"  color={"#FDBD01"} style={{marginTop:190}}/>
             </View> 
             } 
+            <View style={styles.footerMain}>
+                <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+            </View>
         </View>
     )
 }
@@ -173,6 +217,14 @@ const styles = StyleSheet.create({
         padding: 90,
         marginVertical: 10,
         marginHorizontal: 10
+    },
+    titleMain:{
+        width:'100%',
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingLeft:20,
+        paddingRight:20
     },
     opsText: {
         // fontFamily: Font.MONTSERRAT_BOLD,
@@ -201,5 +253,18 @@ const styles = StyleSheet.create({
         alignItems:'center',
         textAlign:'center',
         justifyContent:'center',
+    },
+    footerMain:{
+        width:'100%',
+        display:'flex',
+        backgroundColor:'#28282B',
+        height:30,
+        marginTop:20,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    footerTxt:{
+        fontSize:10,
+        color:'yellow'
     }
 })

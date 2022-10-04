@@ -39,6 +39,8 @@ const Login = ({ navigation }: any) => {
         Alert.alert('Sucess!', 'Login Successfully')
       }
       if(res.data.success===1){
+        setStoreValue({key:'userId',value:res.data.data.UserId})
+        setStoreValue({key:'userType',value:res.data.data.UserType})
         setStoreValue({key:"token",value:res.data.data.Token})
         navigation.navigate('ContractorDashboard');
       }
@@ -111,7 +113,7 @@ const Login = ({ navigation }: any) => {
                 </View>
                   :
                    <View>
-                      <ActivityIndicator color={'white'} size='large'/>
+                    <ActivityIndicator color={'white'} size='large'/>
                </View>
                }
               </TouchableOpacity>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: hp('110%'),
     width: wp('100%'),
-    backgroundColor: '#FDBD01',
+    backgroundColor: '#FFFAF0',
   },
   LogoContainer: {
     display: 'flex',

@@ -7,6 +7,8 @@ import OrderReport from '../screens/OrderReport';
 import CustomDrawer from '../common/components/CustomDrawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Text } from 'react-native-svg';
+import ContactUs from '../screens/ContactUs';
+import AboutUs from '../screens/AboutUs';
 
 const ContractorDrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
@@ -29,20 +31,28 @@ const ContractorDrawerNavigator = () => {
         )
       }}
        />
-      <Drawer.Screen name="Order Entry" component={OrderEntry} 
+       <Drawer.Screen  name="About Us"
+      component={AboutUs} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="list" size={22} color={'#FFD700'}/>
+          <Icon name="users" size={22} color={'#FFD700'}/>
         )
       }}
-       />
+      />
       <Drawer.Screen name="Order Report" component={OrderReport} 
       options={{
         drawerIcon: ({color}) => (
           <Icon name="book" size={22} color={'#FFD700'}/>
-        )
-      }}
+          )
+        }}
       />
+        <Drawer.Screen name="Order Entry" component={OrderEntry} 
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="list" size={22} color={'#FFD700'}/>
+          )
+        }}
+         />
       <Drawer.Screen  name="Catalog"
       component={Catalog} 
       options={{
@@ -51,6 +61,15 @@ const ContractorDrawerNavigator = () => {
         )
       }}
       />
+      <Drawer.Screen  name="Contact Us"
+      component={ContactUs} 
+      options={{
+        drawerIcon: ({color}) => (
+          <Icon name="comments" size={22} color={'#FFD700'}/>
+        )
+      }}
+      />
+      
     </Drawer.Navigator>
   );
 };

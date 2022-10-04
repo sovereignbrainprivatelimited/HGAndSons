@@ -180,9 +180,9 @@ const CreateOrder = (props:any) => {
     }
     return(
         <SafeAreaView style={{paddingBottom:0,flex:1}}>
-        <View style={{flex:1,backgroundColor:'#FDBD01'}}>
+        <View style={{flex:1,backgroundColor:'#FFFAF0'}}>
             <View style={styles.Title}>
-            <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{ isEdit ?'Edit Your Order':'Create Single Order'}</Text>
+                <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{ isEdit ?'Edit Your Order':'Create Single Order'}</Text>
             </View>
             <ScrollView>
             <View style={styles.dataMain}>
@@ -630,6 +630,9 @@ const CreateOrder = (props:any) => {
               />
             }
             </ScrollView>
+            <View style={styles.footerMain}>
+                <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+            </View>
         </View>
         </SafeAreaView>
     )
@@ -741,5 +744,17 @@ const styles = StyleSheet.create({
       inputSearchStyle: {
         height: 40,
         fontSize: 16,
-      }
+      },
+      footerMain:{
+        width:'100%',
+        display:'flex',
+        backgroundColor:'#28282B',
+        height:30,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    footerTxt:{
+        fontSize:10,
+        color:'yellow'
+    }
 })

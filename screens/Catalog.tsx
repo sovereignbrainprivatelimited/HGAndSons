@@ -49,7 +49,7 @@ const Catalog =({navigation}:any)=>{
     }
     return(
         <SafeAreaView style={{flex:1}}>
-        <ScrollView style={{backgroundColor:'white'}}>   
+        <ScrollView style={{backgroundColor:'#FFFAF0'}}>   
             <TouchableOpacity style={styles.viewCart} onPress={()=>navigation.navigate('ViewCart')}>
                 <Text style={{color:'#28282B'}}>{'View '}</Text>
                 <Icon size={22} name='shopping-cart' color={'#28282B'}/>
@@ -76,6 +76,9 @@ const Catalog =({navigation}:any)=>{
                 <ActivityIndicator size="large"  color={"#FDBD01"} style={{marginTop:250}}/>
         }
         </ScrollView>
+        <View style={styles.footerMain}>
+            <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+        </View>
         </SafeAreaView>
     )
 }
@@ -86,7 +89,7 @@ const styles=StyleSheet.create({
     container:{
      flex:1,
     //  padding:20,
-     backgroundColor:'white' ,
+    backgroundColor:"#FFFAF0",
      display:'flex',
      flexDirection:'row',
      flexWrap:'wrap',
@@ -156,10 +159,24 @@ const styles=StyleSheet.create({
         top:-30,
         width:35,
         height:35,
-        backgroundColor:'#FDBD01',
+        backgroundColor:'#FFFAF0',
+        borderWidth:1,
         borderRadius:50,
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
+    },
+    footerMain:{
+        width:'100%',
+        display:'flex',
+        backgroundColor:'#28282B',
+        height:30,
+        marginTop:20,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    footerTxt:{
+        fontSize:10,
+        color:'yellow'
     }
 })

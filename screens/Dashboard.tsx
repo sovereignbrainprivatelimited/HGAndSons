@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  processColor
+  SafeAreaView,
+  TouchableOpacity
 } from 'react-native';
-
-import { BarChart } from 'react-native-charts-wrapper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const BarChartScreen = ({ navigation }: any) => {
 
@@ -14,96 +14,161 @@ const BarChartScreen = ({ navigation }: any) => {
     navigation.closeDrawer();
   },[])
 
-  const chartData = {
-    legend: {
-      enabled: true,
-      textSize: 14,
-      form: 'SQUARE',
-      formSize: 14,
-      xEntrySpace: 10,
-      yEntrySpace: 5,
-      formToTextSpace: 5,
-      wordWrapEnabled: true,
-      maxSizePercent: 0.5
-    },
-    data: {
-      dataSets: [{
-        values: [{ y: 100 }, { y: 105 }, { y: 102 }, { y: 110 }, { y: 114 }, { y: 109 }, { y: 105 }, { y: 99 }, { y: 95 }],
-        label: 'Bar dataSet',
-        config: {
-          color: processColor('teal'),
-          barShadowColor: processColor('lightgrey'),
-          highlightAlpha: 90,
-          highlightColor: processColor('red'),
-        }
-      }],
-
-      config: {
-        barWidth: 0.7,
-      }
-    },
-    highlights: [{ x: 3 }, { x: 6 }],
-    xAxis: {
-      valueFormatter: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-      granularityEnabled: true,
-      granularity: 1,
-    }
-  };
-
   return (
-    <View style={{ flex: 1,backgroundColor:'white' }}>
+    <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>{'Welcome To H.G. & Sons'}</Text>
+            <Text style={styles.title}>{'Welcome To  H.G. Sons'}</Text>
         </View>
-        <BarChart
-          style={styles.chart}
-          data={chartData.data}
-          xAxis={chartData.xAxis}
-          animation={{ durationX: 2000 }}
-          legend={chartData.legend}
-          gridBackgroundColor={processColor('#ffffff')}
-          visibleRange={{ x: { min: 5, max: 5 } }}
-          drawBarShadow={false}
-          drawValueAboveBar={true}
-          drawHighlightArrow={true}
-          // onSelect={this.handleSelect.bind(this)}
-          highlights={chartData.highlights}
-        // onChange={(event) => console.log(event.nativeEvent)}
-        />
+        <View style={styles.bodyMain}>
+          <View style={styles.customerData}>
+              <Text style={styles.custdetails}>{'Welcome Customer Name'}</Text>
+          </View>
+          <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Party GST-In : '}</Text>
+              <Text style={styles.otherDataValue}>{'ABFDHN12348'}</Text>
+          </View>
+          <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Registered Mobile : '}</Text>
+              <Text style={styles.otherDataValue}>{'1234567890'}</Text>
+          </View>
+          <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Registered Email : '}</Text>
+              <Text style={styles.otherDataValue}>{'abc@gmail.com'}</Text>
+          </View>
+          <View style={styles.cardContainer}>
+            <View style={styles.cardMain}>
+                <View style={styles.cardbodyMain}>
+                  <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={styles.bodyTxt}>{'Order Details Counter  '}</Text>
+                    <TouchableOpacity>
+                      <Icon name={'info-circle'} size={22} color={'#D4AF37'} style={{marginTop:30}} onPress={()=>{}}/>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={styles.bodyTxt}>{'Order Status Counter '}</Text>
+                    <TouchableOpacity>
+                      <Icon name={'info-circle'} size={22} color={'#D4AF37'}  style={{marginTop:30}}/>
+                    </TouchableOpacity>
+                   </View> 
+                </View>
+            </View>
+          </View>
+        </View>
+          <View style={styles.footerMain}>
+              <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+          </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFAF0',
+    width:'100%',
+  },
   header:{
     backgroundColor:'#28282B',
     display:'flex',
     width:'100%',
     justifyContent:'center',
     alignItems:'center',
-    height:50
+    height:50,
   },
   title:{
     fontSize:22,
-    color:'#FDBD01',
+    color:'#FFFAF0',
     fontWeight:'bold'
   },
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
+  bodyMain:{
     width:'100%',
-    paddingBottom:50,
-    display:'flex',
-    justifyContent:'center',
-    alignItems:"center"
+    height:'100%',
+    paddingVertical:10
   },
-  chart: {
-    flex: 1,
-    width:'80%',
-    height:'50%'
-  }
+  customerData:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+    height:40
+  },
+  custdetails:{
+    fontSize:22,
+    color:'#28282B',
+    fontWeight:'bold'
+  },
+  otherData:{
+    display:'flex',
+    paddingLeft:30,
+    flexDirection:'row',
+    marginTop:25,
+    flexWrap:'wrap'
+  },
+  otherDateLabel:{
+    fontSize:20,
+    color:'#D4AF37',
+    fontWeight:'500'
+  },
+  otherDataValue:{
+    fontSize:20,
+    color:'#D4AF37',
+    fontWeight:'500',
+  },
+  cardContainer:{
+    marginTop:60,
+ backgroundColor:'#FFFAF0' ,
+ display:'flex',
+ flexDirection:'column',
+ justifyContent:'center',
+ alignItems:'center'
+  },
+  cardMain:{
+    width:'100%',
+    marginLeft:55,
+    // paddingRight:10,
+    marginVertical:15,
+    display:'flex',
+    flexDirection:'column'
+  },
+  cardbodyMain:{
+    width:300,
+    height:170,
+    borderRadius:10,
+    padding:10,
+    backgroundColor:'#28282B',
+    shadowColor: '#000',
+shadowOffset: {
+  width: 0,
+  height: 1,
+},
+shadowOpacity: 0.5,
+shadowRadius: 1.41,
+
+elevation: 20,
+  },
+  bodyTxt:{
+    paddingTop:10,
+    paddingLeft:20,
+    fontSize:22,
+    marginTop:20,
+    color:'#D4AF37',
+    fontWeight:'700'
+  },
+  footerMain:{
+    width:'100%',
+    display:'flex',
+    backgroundColor:'#28282B',
+    height:30,
+    position:'absolute',
+    bottom:0,
+    justifyContent:'center',
+    alignItems:'center'
+},
+footerTxt:{
+    fontSize:10,
+    color:'yellow'
+}
 });
 
 export default BarChartScreen;

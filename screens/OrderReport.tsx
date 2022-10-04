@@ -278,6 +278,9 @@ const OrderReport = ({ navigation }: any) => {
                             })}
                         </View>
                     </ScrollView>    
+                        <View style={styles.footerMain}>
+                            <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+                        </View>
                 </View>
         </SafeAreaView>
     )
@@ -288,7 +291,7 @@ export default OrderReport;
 const styles=StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'white'
+        backgroundColor:'#FFFAF0'
     },
     headerMain:{
         backgroundColor:'#28282B',
@@ -408,7 +411,7 @@ const styles=StyleSheet.create({
         borderRadius:10,
         display:'flex',
         padding:20,
-        backgroundColor:'white',
+        backgroundColor:'#FFFAF0',
         shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -423,5 +426,17 @@ const styles=StyleSheet.create({
         fontSize:18,
         color:'#FDBD01',
         fontWeight:'700'
-      }
+      },
+      footerMain:{
+        width:'100%',
+        display:'flex',
+        backgroundColor:'#28282B',
+        height:30,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    footerTxt:{
+        fontSize:10,
+        color:'yellow'
+    }
 })

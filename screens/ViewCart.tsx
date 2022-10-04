@@ -46,7 +46,7 @@ const ViewCart =({navigation}:any)=>{
                                 <Image source={{uri:`${imagePath}${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
                             </View>
                             <View style={{width:120,position:'absolute',bottom:10,right:0,display:'flex',flexDirection:'row' ,justifyContent:'flex-end'}}>
-                                <TouchableOpacity onPress={()=>{setShowDeleteModal(true)}}><Icon name='trash' size={20} style={{color:'#FDBD01',marginRight:20}}/></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{setShowDeleteModal(true)}}><Icon name='trash' size={20} style={{color:'#FFFAF0',marginRight:20}}/></TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -220,7 +220,7 @@ const styles=StyleSheet.create({
         flexDirection:'row',
       },
       close:{
-        backgroundColor:'#FDBD01',
+        backgroundColor:'#FFFAF0',
         borderRadius:10,
         alignItems:'center',
         textAlign:'center',
