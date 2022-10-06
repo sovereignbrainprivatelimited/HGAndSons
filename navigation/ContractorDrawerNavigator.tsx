@@ -19,7 +19,7 @@ const ContractorDrawerNavigator = () => {
         backgroundColor: '#28282B',
       },
       drawerLabelStyle:{
-        color:'#FFD700'
+        color:'#D4AF37'
       }
     }}
     drawerContent={(props) => <CustomDrawer {...props} />}
@@ -27,7 +27,7 @@ const ContractorDrawerNavigator = () => {
       <Drawer.Screen name="Home" component={Dashboard} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="home" size={22} color={'#FFD700'}/>
+          <Icon name="home" size={22} color={'#D4AF37'}/>
         )
       }}
        />
@@ -35,21 +35,21 @@ const ContractorDrawerNavigator = () => {
       component={AboutUs} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="users" size={22} color={'#FFD700'}/>
+          <Icon name="users" size={22} color={'#D4AF37'}/>
         )
       }}
       />
       <Drawer.Screen name="Order Report" component={OrderReport} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="book" size={22} color={'#FFD700'}/>
+          <Icon name="book" size={22} color={'#D4AF37'}/>
           )
         }}
       />
         <Drawer.Screen name="Order Entry" component={OrderEntry} 
         options={{
           drawerIcon: ({color}) => (
-            <Icon name="list" size={22} color={'#FFD700'}/>
+            <Icon name="list" size={22} color={'#D4AF37'}/>
           )
         }}
          />
@@ -57,7 +57,7 @@ const ContractorDrawerNavigator = () => {
       component={Catalog} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="file" size={22} color={'#FFD700'}/>
+          <Icon name="file" size={22} color={'#D4AF37'}/>
         )
       }}
       />
@@ -65,7 +65,7 @@ const ContractorDrawerNavigator = () => {
       component={ContactUs} 
       options={{
         drawerIcon: ({color}) => (
-          <Icon name="comments" size={22} color={'#FFD700'}/>
+          <Icon name="comments" size={22} color={'#D4AF37'}/>
         )
       }}
       />

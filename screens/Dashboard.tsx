@@ -24,7 +24,7 @@ const BarChartScreen = ({ navigation }: any) => {
           <View style={styles.customerData}>
               <Text style={styles.custdetails}>{'Welcome Customer Name'}</Text>
           </View>
-          <View style={styles.otherData}>
+          {/* <View style={styles.otherData}>
               <Text style={styles.otherDateLabel}>{'Party GST-In : '}</Text>
               <Text style={styles.otherDataValue}>{'ABFDHN12348'}</Text>
           </View>
@@ -35,20 +35,32 @@ const BarChartScreen = ({ navigation }: any) => {
           <View style={styles.otherData}>
               <Text style={styles.otherDateLabel}>{'Registered Email : '}</Text>
               <Text style={styles.otherDataValue}>{'abc@gmail.com'}</Text>
-          </View>
+          </View> */}
           <View style={styles.cardContainer}>
             <View style={styles.cardMain}>
                 <View style={styles.cardbodyMain}>
-                  <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                <View style={styles.otherData}>
+                  <Text style={styles.otherDateLabel}>{'Party GST-In : '}</Text>
+                  <Text style={styles.otherDataValue}>{'ABFDHN12348'}</Text>
+              </View>
+              <View style={styles.otherData}>
+                <Text style={styles.otherDateLabel}>{'Registered Mobile : '}</Text>
+                <Text style={styles.otherDataValue}>{'1234567890'}</Text>
+            </View>
+            <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Registered Email : '}</Text>
+              <Text style={styles.otherDataValue}>{'abc@gmail.com'}</Text>
+          </View>
+                  <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:20}}>
                     <Text style={styles.bodyTxt}>{'Order Details Counter  '}</Text>
-                    <TouchableOpacity>
-                      <Icon name={'info-circle'} size={22} color={'#D4AF37'} style={{marginTop:30}} onPress={()=>{}}/>
+                    <TouchableOpacity onPress={()=>{navigation.navigate('OrderInfo',{title:'OrderDetails'})}} style={{marginRight:10}}>
+                      <Icon name={'eye'} size={22} color={'#D4AF37'} style={{marginTop:30}}/>
                     </TouchableOpacity>
                   </View>
                   <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                     <Text style={styles.bodyTxt}>{'Order Status Counter '}</Text>
-                    <TouchableOpacity>
-                      <Icon name={'info-circle'} size={22} color={'#D4AF37'}  style={{marginTop:30}}/>
+                    <TouchableOpacity onPress={()=>{navigation.navigate('OrderInfo',{title:'OrderStatus'})}} style={{marginRight:10}}>
+                      <Icon name={'eye'} size={22} color={'#D4AF37'}  style={{marginTop:30}}/>
                     </TouchableOpacity>
                    </View> 
                 </View>
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
   },
   title:{
     fontSize:22,
-    color:'#FFFAF0',
+    color:'#D4AF37',
     fontWeight:'bold'
   },
   bodyMain:{
@@ -100,23 +112,23 @@ const styles = StyleSheet.create({
   },
   otherData:{
     display:'flex',
-    paddingLeft:30,
+    paddingLeft:10,
     flexDirection:'row',
     marginTop:25,
     flexWrap:'wrap'
   },
   otherDateLabel:{
-    fontSize:20,
+    fontSize:18,
     color:'#D4AF37',
     fontWeight:'500'
   },
   otherDataValue:{
-    fontSize:20,
+    fontSize:18,
     color:'#D4AF37',
     fontWeight:'500',
   },
   cardContainer:{
-    marginTop:60,
+    marginTop:10,
  backgroundColor:'#FFFAF0' ,
  display:'flex',
  flexDirection:'column',
@@ -125,18 +137,18 @@ const styles = StyleSheet.create({
   },
   cardMain:{
     width:'100%',
-    marginLeft:55,
+    marginLeft:35,
     // paddingRight:10,
-    marginVertical:15,
+    marginVertical:5,
     display:'flex',
     flexDirection:'column'
   },
   cardbodyMain:{
-    width:300,
-    height:170,
+    width:320,
+    height:370,
     borderRadius:10,
     padding:10,
-    backgroundColor:'#28282B',
+    backgroundColor:'white',
     shadowColor: '#000',
 shadowOffset: {
   width: 0,
@@ -149,8 +161,8 @@ elevation: 20,
   },
   bodyTxt:{
     paddingTop:10,
-    paddingLeft:20,
-    fontSize:22,
+    paddingLeft:10,
+    fontSize:18,
     marginTop:20,
     color:'#D4AF37',
     fontWeight:'700'
@@ -167,7 +179,7 @@ elevation: 20,
 },
 footerTxt:{
     fontSize:10,
-    color:'yellow'
+    color:'#D4AF37'
 }
 });
 

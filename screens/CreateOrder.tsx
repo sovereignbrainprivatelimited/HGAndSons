@@ -755,6 +755,6 @@ const styles = StyleSheet.create({
     },
     footerTxt:{
         fontSize:10,
-        color:'yellow'
+        color:'#D4AF37'
     }
 })

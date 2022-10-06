@@ -166,19 +166,19 @@ const styles = StyleSheet.create({
         paddingRight:20
     },
     btn:{
-        width:100,
-        height:30,
+        width:110,
+        height:45,
         borderRadius:8,
         display:'flex',
         borderColor:'#28282B',
         borderWidth:1,
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor:'#FFFAF0'
+        backgroundColor:'#28282B'
     },
     btnTxt:{
         fontSize:18,
-        color:'#28282B',
+        color:'#D4AF37',
         fontWeight:'900'
     },
     footerMain:{
@@ -192,6 +192,6 @@ const styles = StyleSheet.create({
     },
     footerTxt:{
         fontSize:10,
-        color:'yellow'
+        color:'#D4AF37'
     }
 })

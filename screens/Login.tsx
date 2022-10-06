@@ -20,11 +20,13 @@ import {
 import logo from '../constants/images/Logo.png';
 import { setStoreValue,getStoreValue } from '../common/LocalStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Login = ({ navigation }: any) => {
   const [emailId, setEmailId] = useState<any>('');
   const [password, setPassword] = useState<any>('');
   const [showLoader, setShowLoader] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const onLogin = async () => {
     let body={"Email":emailId,"Password":password,"token":""}
@@ -92,13 +94,15 @@ const Login = ({ navigation }: any) => {
                 <TextInput
                   selectionColor={'#FEA700'}
                   returnKeyType={"done"}
-                  secureTextEntry
+                  secureTextEntry={showPassword ? true:false}
                   style={styles.phoneNoInput}
                   onChangeText={(value: any) => {
                     setPassword(value);
                   }}
                 >
                 </TextInput>
+                      {showPassword === false && <Icon name={'eye'} size={22} color={'#D4AF37'}  style={{position:'absolute',right:20}} onPress={()=>setShowPassword(!showPassword)}/>}
+                      {showPassword && <Icon name={'eye-slash'} size={22} color={'#D4AF37'}  style={{position:'absolute',right:20}} onPress={()=>setShowPassword(!showPassword)}/>}
               </View>
               <TouchableOpacity
                 onPress={() => {
@@ -156,19 +160,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    color: '#FFD700',
+    color: '#D4AF37',
     textAlign: 'center',
     marginTop: 10
   },
   phoneNo: {
     fontSize: 12,
-    color: '#FFD700',
+    color: '#D4AF37',
     marginTop: 30,
     marginLeft: 15,
   },
   password: {
     fontSize: 12,
-    color: '#FFD700',
+    color: '#D4AF37',
     marginTop: 20,
     marginLeft: 15,
   },
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     borderBottomWidth: 1,
     color: 'white',
-    borderBottomColor: '#FFD700',
+    borderBottomColor: '#D4AF37',
   },
   sendOtpBtn: {
     display: 'flex',
@@ -186,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: 50,
-    backgroundColor: '#FEA700',
+    backgroundColor: '#D4AF37',
     shadowOffset: { width: 10, height: 10 },
     shadowColor: 'rgba(228, 151, 4, 0.2)',
     shadowOpacity: 1.0,

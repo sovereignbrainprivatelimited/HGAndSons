@@ -99,7 +99,7 @@ const styles=StyleSheet.create({
         width:100,
         height:40,
         borderRadius:50,
-        backgroundColor:'#FDBD01',
+        backgroundColor:'#D4AF37',
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
@@ -137,6 +137,10 @@ const styles=StyleSheet.create({
     imageMain:{
         width: 130,
         height: 120,
+        display:"flex",
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
         backgroundColor: 'white',
         borderRadius: 15
     },
@@ -159,7 +163,7 @@ const styles=StyleSheet.create({
         top:-30,
         width:35,
         height:35,
-        backgroundColor:'#FFFAF0',
+        backgroundColor:'#D4AF37',
         borderWidth:1,
         borderRadius:50,
         display:'flex',
@@ -177,6 +181,6 @@ const styles=StyleSheet.create({
     },
     footerTxt:{
         fontSize:10,
-        color:'yellow'
+        color:'#D4AF37'
     }
 })

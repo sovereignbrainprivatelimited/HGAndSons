@@ -30,6 +30,7 @@ export type RootStackParamList = {
   Dashboard:undefined;
   CreateOrder:undefined;
   ViewCart:undefined;
+  OrderInfo:undefined
 };
 
 export type BottomTabParamList = {

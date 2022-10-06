@@ -158,7 +158,7 @@ const OrderEntry = ({ navigation }: any) => {
                     }}
                 />
                 <TouchableOpacity style={styles.addOrder} onPress={ () => navigation.navigate('CreateOrder')}>
-                      <Icon name="plus-circle" size={28} color={'#FFD700'} />
+                      <Icon name="plus-circle" size={28} color={'#D4AF37'} />
                 </TouchableOpacity>
             </View>
             <View style={styles.titleMain}>
@@ -228,9 +228,9 @@ const styles = StyleSheet.create({
     },
     opsText: {
         // fontFamily: Font.MONTSERRAT_BOLD,
-        fontSize: 24,
+        fontSize: 20,
         lineHeight: 29.26,
-        color: '#FDBD01',
+        color: '#D4AF37',
         alignSelf: 'center',
         marginTop: 10,
         fontWeight: 'bold',
@@ -256,15 +256,16 @@ const styles = StyleSheet.create({
     },
     footerMain:{
         width:'100%',
-        display:'flex',
-        backgroundColor:'#28282B',
-        height:30,
-        marginTop:20,
-        justifyContent:'center',
-        alignItems:'center'
+    display:'flex',
+    backgroundColor:'#28282B',
+    height:30,
+    position:'absolute',
+    bottom:0,
+    justifyContent:'center',
+    alignItems:'center'
     },
     footerTxt:{
         fontSize:10,
-        color:'yellow'
+        color:'#D4AF37'
     }
 })

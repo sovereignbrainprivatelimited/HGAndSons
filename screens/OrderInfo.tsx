@@ -3,41 +3,38 @@ import { Image } from "native-base";
 import React,{useEffect, useState} from "react";
 import { Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import logo from '../constants/images/Logo.png'
 import { getStoreValue } from "../common/LocalStorage";
-import { Dimensions } from 'react-native';
+import moment from "moment";
 
 
-const ViewCart =({navigation}:any)=>{
-  const imagePath='https://order.hgsons.in/uploads/order_images/';
-  const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+
+const OrderInfo =(props:any)=>{
+  const imagePath='https://order.hgsons.in/uploads/order_images/'
 
 
-  const [cartdata,setCartData]=useState([]);
+  const [cartdata,setCartData]=useState([1,2,3,4,5]);
   const [showDeleteModal,setShowDeleteModal]=useState(false);
-  const [isError,setIsError] = useState(false)
+  const [headerTitle,setHeaderTitle]=useState('')
 
     useEffect(()=>{
-      const getData=async()=>{
-        console.log('lllll:',await getStoreValue('token'));
-        axios.post('https://hgsonsapp.hgsons.in/master/view_cart.php',{Token:await getStoreValue('token')}).then((res)=>{
-          console.log('res::',res.data.data);
-          setIsError(false);
-          setCartData(res.data.data);
-        }).catch((err)=>{
-          setIsError(true)
-          console.log('err:',err);
-        })
-      }
-      getData()
+        const getInfo = ()=>{
+            console.log('props:',props?.route?.params?.title);
+            if(props?.route?.params?.title === 'OrderDetails'){
+                setHeaderTitle('Order Details')
+            }else{
+                setHeaderTitle('Order Status')
+            }
+        }
+      getInfo()
     },[])
 
     return(
         <SafeAreaView style={{flex:1,marginTop:20,backgroundColor:'white'}}>
             <View style={styles.headerMain}>
-                <Text style={styles.title}>{'Your Order'}</Text>
+                <Text style={styles.title}>{`${headerTitle}`}</Text>
             </View>
-        <ScrollView style={{backgroundColor:'#FFFAF0'}}>   
+        <ScrollView style={{backgroundColor:'white'}}>   
         <View style={styles.container}>
             {cartdata.map((item)=>{
                 return(
@@ -45,20 +42,25 @@ const windowHeight = Dimensions.get('window').height;
                         <View style={styles.cardMian}>
                             <View style={styles.dataTitle}>
                                 <Text style={styles.dataValue}>{'SrNo : '+1}</Text>
-                                <Text style={styles.dataValue}>{`CatalogNo : ${item.CatalogNo}`}</Text>
-                                <Text style={styles.dataValue}>{`Catalog Date: ${item.CatalogDate}`}</Text>
+                                <Text style={styles.dataValue}>{'OrderNo : '+'001'}</Text>
+                                <Text style={styles.dataValue}>{'Order Date: '+moment(new Date()).format('YYYY-DD-MM')}</Text>
+                                <Text style={styles.dataValue}>{'Order Type: '+'Order'}</Text>
+                                <Text style={styles.dataValue}>{'Party: '+'Tina'}</Text>
+                                <Text style={styles.dataValue}>{'Karigar: '+'MARVEL'}</Text>
+                                <Text style={styles.dataValue}>{'ITEM: '+'BALI'}</Text>
+                                <Text style={styles.dataValue}>{'Order Status: '+'Waiting for confirmation'}</Text>
                             </View>
                             <View style={styles.imageMain}>
-                                <Image source={{uri:`${imagePath}${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
+                                <Image source={logo} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
                             </View>
-                            <View style={{width:120,position:'absolute',bottom:10,right:0,display:'flex',flexDirection:'row' ,justifyContent:'flex-end'}}>
-                                <TouchableOpacity onPress={()=>{setShowDeleteModal(true)}}><Icon name='trash' size={20} style={{color:'#D4AF37',marginRight:20}}/></TouchableOpacity>
-                            </View>
+                            {/* <View style={{width:120,position:'absolute',bottom:10,right:0,display:'flex',flexDirection:'row' ,justifyContent:'flex-end'}}>
+                                <TouchableOpacity onPress={()=>{setShowDeleteModal(true)}}><Icon name='trash' size={20} style={{color:'#FFFAF0',marginRight:20}}/></TouchableOpacity>
+                            </View> */}
                         </View>
-                    </View>                 
+                    </View>
                 )
             })}
-            {showDeleteModal &&
+            {/* {showDeleteModal &&
         <View>
           <Modal
             animationType='slide'
@@ -72,12 +74,12 @@ const windowHeight = Dimensions.get('window').height;
                 <Text style={styles.deleteTitle}>Are you sure you want to delete this order ??</Text>
                 <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close}  onPress={() => setShowDeleteModal(!showDeleteModal)}>
-                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'No'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close}>
-                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}} onPress={() => setShowDeleteModal(!showDeleteModal)}>
+                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
                       {'Yes'}
                     </Text>
                   </TouchableOpacity>
@@ -87,11 +89,8 @@ const windowHeight = Dimensions.get('window').height;
             </View>
           </Modal>
         </View>
-      }
+      } */}
         </View>
-        {isError && <View style={{width:windowWidth,height:windowHeight,backgroundColor:'#FFFAF0',display:'flex',justifyContent:'center',alignItems:'center'}}>
-            <Text style={styles.notFoundTxt}>{'No Data Found!'}</Text>
-        </View>}
         </ScrollView>
         <View style={styles.footerMain}>
             <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
@@ -100,7 +99,7 @@ const windowHeight = Dimensions.get('window').height;
     )
 }
 
-export default ViewCart;
+export default OrderInfo;
 
 const styles=StyleSheet.create({
     headerMain:{
@@ -121,7 +120,7 @@ const styles=StyleSheet.create({
     },
     container:{
         flex:1,
-        backgroundColor:'#FFFAF0' ,
+        backgroundColor:'white' ,
         display:'flex',
         flexDirection:'row',
         flexWrap:'wrap',
@@ -141,11 +140,9 @@ const styles=StyleSheet.create({
        cardMian:{
            marginRight:0,
            width:330,
-           height:160,
+           height:230,
            borderRadius:10,
            backgroundColor:'white',
-           display:'flex',
-           flexDirection:'row',
            padding:10,
            shadowColor: '#000',
             shadowOffset: {
@@ -172,13 +169,14 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         lineHeight:17,
-        width:200
+        width:300
        },
        dataValue:{
         fontSize:16,
         lineHeight:25,
         fontWeight:'500',
-        color:'#D4AF37'
+        color:'#D4AF37',
+        width:'100%'
        },
        centeredView: {
         flex: 1,
@@ -220,7 +218,7 @@ const styles=StyleSheet.create({
         fontSize:22,
         marginTop:30,
         width:290,
-        color:'#D4AF37',
+        color:'#FDBD01',
         fontWeight:'bold'
       },
       BtnMain:{
@@ -232,7 +230,7 @@ const styles=StyleSheet.create({
         flexDirection:'row',
       },
       close:{
-        backgroundColor:'#28282B',
+        backgroundColor:'#FFFAF0',
         borderRadius:10,
         alignItems:'center',
         textAlign:'center',
@@ -252,11 +250,5 @@ const styles=StyleSheet.create({
     footerTxt:{
         fontSize:10,
         color:'#D4AF37'
-    },
-    notFoundTxt:{
-    marginBottom:100,
-    color:'#28282B',
-    fontSize:20,
-    fontWeight:'400'
     }
 })

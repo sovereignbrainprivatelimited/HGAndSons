@@ -184,18 +184,18 @@ const CardView = (props: any) => {
           <Text style={styles.datatitle}>{'Status: ' + Status}</Text>
         </View>
         <View style={styles.actionMain}>
-          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
-          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#D4AF37'}/></TouchableOpacity>
           {userType!=='1' &&
           <>
-          <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#FFD700'}/></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#FFD700'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#D4AF37'}/></TouchableOpacity>
           </>
           }
         </View>
       </View>
       :
-      <View style={styles.cardMain}>
+      <View style={[styles.cardMain,styles.orderCardMain]}>
         <View style={styles.dataMain}>
         <View style={{ display: 'flex', flexDirection: 'column' }}>
             <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
@@ -271,12 +271,12 @@ const CardView = (props: any) => {
                   <TouchableOpacity style={styles.close} onPress={()=>{
                     setShowUpdateModal(false)
                   }}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close} onPress={()=>onUpdate()}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'Update'}
                     </Text>
                   </TouchableOpacity>
@@ -355,12 +355,12 @@ const CardView = (props: any) => {
                   </View>
                   <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close} onPress={() => setShowNotifyModal(false)}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'Close'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close} onPress={()=>onNotify()}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'Save'}
                     </Text>
                   </TouchableOpacity>
@@ -387,12 +387,12 @@ const CardView = (props: any) => {
                 <Text style={styles.deleteTitle}>Are you sure you want to delete this order ??</Text>
                 <View style={styles.BtnMain}>
                   <TouchableOpacity style={styles.close}  onPress={() => setShowDeleteModal(!showDeleteModal)}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'No'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.close} onPress={()=>onDelete()}>
-                    <Text style={{color:'#28282B',fontSize:16,fontWeight:'bold'}}>
+                    <Text style={{color:'#D4AF37',fontSize:16,fontWeight:'bold'}}>
                       {'Yes'}
                     </Text>
                   </TouchableOpacity>
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 220,
     borderRadius: 5,
-    backgroundColor: '#28282B',
+    backgroundColor: 'white',
     alignSelf: 'center',
     marginVertical: 10,
     shadowColor: "#000000",
@@ -438,6 +438,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 10
+  },
+  orderCardMain:{
+    height:160
   },
   dataMain: {
     display: 'flex',
@@ -456,7 +459,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   datatitle: {
-    color: '#FDBD01'
+    color: '#D4AF37'
   },
   actionMain: {
     marginTop: 10,
@@ -526,7 +529,7 @@ const styles = StyleSheet.create({
     fontSize:22,
     fontWeight:'bold',
     marginTop:20,
-    color:'#FDBD01'
+    color:'#D4AF37'
   },
   deleteTitle:{
     textAlign:'center',
@@ -536,7 +539,7 @@ const styles = StyleSheet.create({
     fontSize:22,
     marginTop:30,
     width:290,
-    color:'#FDBD01',
+    color:'#D4AF37',
     fontWeight:'bold'
   },
   modalBody:{
@@ -550,7 +553,7 @@ const styles = StyleSheet.create({
     fontSize:16,
     fontWeight:'bold',
     width:'40%',
-    color:'#FDBD01',
+    color:'#D4AF37',
     marginRight:10
   },
   longName:{
@@ -614,7 +617,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
   },
   close:{
-    backgroundColor:'#FDBD01',
+    backgroundColor:'#28282B',
     borderRadius:10,
     alignItems:'center',
     textAlign:'center',

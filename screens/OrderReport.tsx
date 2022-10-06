@@ -154,7 +154,7 @@ const OrderReport = ({ navigation }: any) => {
                         </View>
                         <View style={styles.dataMain}>
                             <Text style={styles.labelText}>{'Customer'}</Text>
-                            <View style={styles.inputBox} >
+                            {/* <View style={styles.inputBox} > */}
                                 <Dropdown
                                     style={styles.dropdown}
                                     placeholderStyle={styles.placeholderStyle}
@@ -173,11 +173,11 @@ const OrderReport = ({ navigation }: any) => {
                                         setSelectedCustomer(item.value);
                                     }} 
                                 />
-                            </View>
+                            {/* </View> */}
                         </View>
                         <View style={styles.dataMain}>
                             <Text style={styles.labelText}>{'Karigar'}</Text>
-                            <View style={styles.inputBox} >
+                            {/* <View style={styles.inputBox} > */}
                             <Dropdown
                                     style={styles.dropdown}
                                     placeholderStyle={styles.placeholderStyle}
@@ -196,11 +196,11 @@ const OrderReport = ({ navigation }: any) => {
                                         setSelectedKarigar(item.value);
                                     }} 
                                 />
-                            </View>
+                            {/* </View> */}
                         </View>
                         <View style={styles.dataMain}>
                             <Text style={styles.labelText}>{'Status'}</Text>
-                            <View style={styles.inputBox} >
+                            {/* <View style={styles.inputBox} > */}
                             <Dropdown
                                     style={styles.dropdown}
                                     placeholderStyle={styles.placeholderStyle}
@@ -219,7 +219,7 @@ const OrderReport = ({ navigation }: any) => {
                                         setSelectedStatus(item.value);
                                     }} 
                                 />
-                            </View>
+                            {/* </View> */}
                         </View>
                         <TouchableOpacity style={styles.searchBtn} onPress={()=>onSearch()}>
                             <Text style={styles.searchTxt}>{'Search'}</Text>
@@ -303,7 +303,7 @@ const styles=StyleSheet.create({
         alignItems:'center'
     },
     title:{
-        color:'#FDBD01',
+        color:'#D4AF37',
         fontSize:20,
         fontWeight:'bold'
     },
@@ -352,11 +352,13 @@ const styles=StyleSheet.create({
     },
     searchTxt:{
         fontSize:20,
-        color:'#FDBD01',
+        color:'#D4AF37',
         fontWeight:"bold"
     },
     dropdown: {
-        top:-5,
+        marginTop:8,
+        marginLeft:10,
+        // top:-5,
         height: 39,
         width:"100%",
         backgroundColor: '#F0F8FF',
@@ -391,7 +393,7 @@ const styles=StyleSheet.create({
       },
       cardContainer:{
         flex:1,
-     backgroundColor:'white' ,
+     backgroundColor:'#FFFAF0' ,
      display:'flex',
      flexDirection:'column',
      marginTop:20,
@@ -411,7 +413,7 @@ const styles=StyleSheet.create({
         borderRadius:10,
         display:'flex',
         padding:20,
-        backgroundColor:'#FFFAF0',
+        backgroundColor:'white',
         shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -424,7 +426,7 @@ const styles=StyleSheet.create({
       },
       bodyTxt:{
         fontSize:18,
-        color:'#FDBD01',
+        color:'#D4AF37',
         fontWeight:'700'
       },
       footerMain:{
@@ -437,6 +439,6 @@ const styles=StyleSheet.create({
     },
     footerTxt:{
         fontSize:10,
-        color:'yellow'
+        color:'#D4AF37'
     }
 })
