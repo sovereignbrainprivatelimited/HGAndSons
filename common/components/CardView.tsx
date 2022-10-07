@@ -164,10 +164,26 @@ const CardView = (props: any) => {
       <View style={styles.cardMain}>
         <View style={styles.dataMain}>
         <View style={{ display: 'flex', flexDirection: 'column' }}>
-            <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
-            <Text style={styles.datatitle}>{'Order No: ' + OrderNo}</Text>
-            <Text style={styles.datatitle}>{'Order Date: ' + date}</Text>
-            <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text>
+          <View style={{display:'flex',flexDirection:'row'}}>
+          <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between',width:'40%'}}>
+            <Text style={styles.datatitle}>{'Sr No'}</Text>
+            <Text style={styles.datatitle}>{srNo}</Text>
+            </View>
+          <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between',width:'40%'}}>
+            <Text style={styles.datatitle}>{'Order No'}</Text>
+            <Text style={styles.datatitle}>{OrderNo}</Text>
+            </View>
+            </View>
+        <View style={{display:'flex',flexDirection:'row'}}>
+          <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between',width:'40%'}}>
+            <Text style={styles.datatitle}>{'Order Date'}</Text>
+            <Text style={styles.datatitle}>{date}</Text>
+          </View>
+          <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between',width:'40%'}}>
+            <Text style={styles.datatitle}>{'Order type'}</Text>
+            <Text style={styles.datatitle}>{orderType}</Text>
+            </View>
+            </View>
           </View>
           <View style={styles.cardImage}>
             {orderData.Image?
@@ -177,13 +193,13 @@ const CardView = (props: any) => {
           }
           </View>
         </View>
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ marginLeft: 10,marginTop:10 }}>
           <Text style={styles.datatitle}>{'Party: ' + Party}</Text>
           <Text style={styles.datatitle}>{'Karigar: ' + Karigar}</Text>
           <Text style={styles.datatitle}>{'Item: ' + Item}</Text>
-          <Text style={styles.datatitle}>{'Status: ' + Status}</Text>
         </View>
         <View style={styles.actionMain}>
+          <Text style={styles.status}>{'Status: ' + Status}</Text>
           <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#D4AF37'}/></TouchableOpacity>
           <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#D4AF37'}/></TouchableOpacity>
           {userType!=='1' &&
@@ -215,7 +231,6 @@ const CardView = (props: any) => {
           <Text style={styles.datatitle}>{'Party: ' + Party}</Text>
           <Text style={styles.datatitle}>{'Karigar: ' + Karigar}</Text>
           <Text style={styles.datatitle}>{'Item: ' + Item}</Text>
-          {/* <Text style={styles.datatitle}>{'Status: ' + Status}</Text> */}
         </View>
         {/* <View style={styles.actionMain}>
           <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#FFD700'}/></TouchableOpacity>
@@ -459,6 +474,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   datatitle: {
+    color: '#D4AF37'
+  },
+  status:{
+    position:'absolute',
+    left:0,
     color: '#D4AF37'
   },
   actionMain: {

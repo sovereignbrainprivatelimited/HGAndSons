@@ -185,7 +185,8 @@ const CreateOrder = (props:any) => {
                 <Text style={{fontSize:22,fontWeight:'800',color:'#28282B'}}>{ isEdit ?'Edit Your Order':'Create Single Order'}</Text>
             </View>
             <ScrollView>
-            <View style={styles.dataMain}>
+            <View style={{display:'flex',justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
+            <View style={[styles.dataMain,styles.doubleValue]}>
                 <Text style={styles.labelText}>{'Order No'}</Text>
                 <View style={styles.inputBox} >
                     <Controller
@@ -210,7 +211,27 @@ const CreateOrder = (props:any) => {
                     />
                 </View>
             </View>
-            <View style={styles.dataMain}>
+            <View style={[styles.dataMain,styles.doubleValue]}>
+                <Text style={styles.labelText}>{'Order Date'}</Text>
+                <TouchableOpacity style={styles.inputBox} onPress={()=>setShowOrderDate(true)}>
+                            <TextInput
+                                placeholder='Enter Order date'
+                                placeholderTextColor={'#28282B'}
+                                keyboardType='number-pad'
+                                value={moment(orderdate).format('YYYY-MM-DD').toString()}
+                                autoCorrect={false}
+                                editable={false}
+                                autoCapitalize="none"
+                                // onChangeText={onChange}
+                                returnKeyType={"next"}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
+                            />
+                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
+                </TouchableOpacity>
+            </View>
+            </View>
+            <View style={{display:'flex',justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
+            <View style={[styles.dataMain,styles.doubleValue]}>
                 <Text style={styles.labelText}>{'Approx Delivery date'}</Text>
                 <TouchableOpacity style={styles.inputBox} onPress={()=>setShowDeliveryDate(true)}>
                             <TextInput
@@ -228,6 +249,26 @@ const CreateOrder = (props:any) => {
                             />
                                 <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
                 </TouchableOpacity>
+            </View>
+            <View style={[styles.dataMain,styles.doubleValue]}>
+                <Text style={styles.labelText}>{'Reminder Date'}</Text>
+                <TouchableOpacity style={styles.inputBox} onPress={()=>setShowReminderDate(true)} >
+                    
+                            <TextInput
+                                placeholder='Enter Reminder Date'
+                                placeholderTextColor={'#28282B'}
+                                keyboardType='number-pad'
+                                value={moment(reminderdate).format('YYYY-MM-DD').toString()}
+                                editable={false}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                // onChangeText={onChange}
+                                returnKeyType={"next"}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
+                            />
+                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
+                </TouchableOpacity>
+            </View>
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Select Party'}</Text>
@@ -257,6 +298,38 @@ const CreateOrder = (props:any) => {
                         name="party"
                         rules={{
                             required: { value: true, message: 'Enter Select Party' },
+                        }}
+                    />
+                </View>
+            </View>
+            <View style={styles.dataMain}>
+                <Text style={styles.labelText}>{'Select Karigar'}</Text>
+                <View style={[styles.inputBox,styles.select]} >
+                    <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <Dropdown
+                                style={styles.dropdown}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={karigarList}
+                                search
+                                maxHeight={300}
+                                labelField="label"
+                                valueField="value"
+                                placeholder="Select Karigar"
+                                searchPlaceholder="Search Karigar"
+                                value={selectedKarigar}
+                                onChange={item => {
+                                setSelectedKarigar(item.value);
+                                }} 
+                            />
+                        )}
+                        name="selectKarigar"
+                        rules={{
+                            required: { value: true, message: 'Enter Select Karigar' },
                         }}
                     />
                 </View>
@@ -293,151 +366,8 @@ const CreateOrder = (props:any) => {
                     />
                 </View>
             </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Weight'}</Text>
-                <View style={styles.inputBox} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <TextInput
-                                placeholder='Enter Weight'
-                                placeholderTextColor={'#28282B'}
-                                keyboardType='number-pad'
-                                value={value}
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                onChangeText={onChange}
-                                returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
-                            />
-                        )}
-                        name="weight"
-                        rules={{
-                            required: { value: true, message: 'Enter Weight' },
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Height'}</Text>
-                <View style={styles.inputBox} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <TextInput
-                                placeholder='Enter Height'
-                                placeholderTextColor={'#28282B'}
-                                keyboardType='number-pad'
-                                value={value}
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                onChangeText={onChange}
-                                returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
-                            />
-                        )}
-                        name="height"
-                        rules={{
-                            required: { value: true, message: 'Enter Height' },
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Pcs'}</Text>
-                <View style={styles.inputBox} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <TextInput
-                                placeholder='Enter Pcs'
-                                placeholderTextColor={'#28282B'}
-                                keyboardType='number-pad'
-                                value={value}
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                onChangeText={onChange}
-                                returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
-                            />
-                        )}
-                        name="pcs"
-                        rules={{
-                            required: { value: true, message: 'Enter Pcs' },
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Order Date'}</Text>
-                <TouchableOpacity style={styles.inputBox} onPress={()=>setShowOrderDate(true)}>
-                            <TextInput
-                                placeholder='Enter Order date'
-                                placeholderTextColor={'#28282B'}
-                                keyboardType='number-pad'
-                                value={moment(orderdate).format('YYYY-MM-DD').toString()}
-                                autoCorrect={false}
-                                editable={false}
-                                autoCapitalize="none"
-                                // onChangeText={onChange}
-                                returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
-                            />
-                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Reminder Date'}</Text>
-                <TouchableOpacity style={styles.inputBox} onPress={()=>setShowReminderDate(true)} >
-                    
-                            <TextInput
-                                placeholder='Enter Reminder Date'
-                                placeholderTextColor={'#28282B'}
-                                keyboardType='number-pad'
-                                value={moment(reminderdate).format('YYYY-MM-DD').toString()}
-                                editable={false}
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                // onChangeText={onChange}
-                                returnKeyType={"next"}
-                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
-                            />
-                                <Icon name='calendar' color={'#28282B'} size={20} style={{position:'absolute',right:10,top:7}}/>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.dataMain}>
-                <Text style={styles.labelText}>{'Select Karigar'}</Text>
-                <View style={[styles.inputBox,styles.select]} >
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <Dropdown
-                                style={styles.dropdown}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                iconStyle={styles.iconStyle}
-                                data={karigarList}
-                                search
-                                maxHeight={300}
-                                labelField="label"
-                                valueField="value"
-                                placeholder="Select Karigar"
-                                searchPlaceholder="Search Karigar"
-                                value={selectedKarigar}
-                                onChange={item => {
-                                setSelectedKarigar(item.value);
-                                }} 
-                            />
-                        )}
-                        name="selectKarigar"
-                        rules={{
-                            required: { value: true, message: 'Enter Select Karigar' },
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={styles.dataMain}>
+            <View style={{display:'flex',justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
+            <View style={[styles.dataMain,styles.threeData]}>
                 <Text style={styles.labelText}>{'Purity'}</Text>
                 <View style={styles.inputBox} >
                     <Controller
@@ -462,7 +392,32 @@ const CreateOrder = (props:any) => {
                     />
                 </View>
             </View>
-            <View style={styles.dataMain}>
+            <View style={[styles.dataMain,styles.threeData]}>
+                <Text style={styles.labelText}>{'Weight'}</Text>
+                <View style={styles.inputBox} >
+                    <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                placeholder='Enter Weight'
+                                placeholderTextColor={'#28282B'}
+                                keyboardType='number-pad'
+                                value={value}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                returnKeyType={"next"}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
+                            />
+                        )}
+                        name="weight"
+                        rules={{
+                            required: { value: true, message: 'Enter Weight' },
+                        }}
+                    />
+                </View>
+            </View>
+            <View style={[styles.dataMain,styles.threeData]}>
                 <Text style={styles.labelText}>{'Size'}</Text>
                 <View style={styles.inputBox} >
                     <Controller
@@ -487,7 +442,34 @@ const CreateOrder = (props:any) => {
                     />
                 </View>
             </View>
-            <View style={styles.dataMain}>
+            </View>
+            <View style={{display:'flex',justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
+            <View style={[styles.dataMain,styles.threeData]}>
+                <Text style={styles.labelText}>{'Height'}</Text>
+                <View style={styles.inputBox} >
+                    <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                placeholder='Enter Height'
+                                placeholderTextColor={'#28282B'}
+                                keyboardType='number-pad'
+                                value={value}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                returnKeyType={"next"}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
+                            />
+                        )}
+                        name="height"
+                        rules={{
+                            required: { value: true, message: 'Enter Height' },
+                        }}
+                    />
+                </View>
+            </View>
+            <View style={[styles.dataMain,styles.threeData]}>
                 <Text style={styles.labelText}>{'Width'}</Text>
                 <View style={styles.inputBox} >
                     <Controller
@@ -512,9 +494,35 @@ const CreateOrder = (props:any) => {
                     />
                 </View>
             </View>
+            <View style={[styles.dataMain,styles.threeData]}>
+                <Text style={styles.labelText}>{'Pcs'}</Text>
+                <View style={styles.inputBox} >
+                    <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                placeholder='Enter Pcs'
+                                placeholderTextColor={'#28282B'}
+                                keyboardType='number-pad'
+                                value={value}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                returnKeyType={"next"}
+                                style={{padding:0,paddingLeft:10,color:'#28282B'}}
+                            />
+                        )}
+                        name="pcs"
+                        rules={{
+                            required: { value: true, message: 'Enter Pcs' },
+                        }}
+                    />
+                </View>
+            </View>
+            </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Remarks'}</Text>
-                <View style={styles.inputBox} >
+                <View style={[styles.inputBox,styles.single]} >
                     <Controller
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -667,6 +675,12 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
         marginLeft:10
     },
+    doubleValue:{
+        width:'45%',
+    },
+    threeData:{
+        width:'29%'
+    },
     inputBox:
     {
         borderColor:'gray',
@@ -674,7 +688,7 @@ const styles = StyleSheet.create({
         height:35,
         width:'100%',
         marginTop:10,
-        marginLeft:10,
+        // marginLeft:10,
         borderRadius:5,
         backgroundColor:'#F0F8FF'
     },
@@ -683,7 +697,11 @@ const styles = StyleSheet.create({
     borderColor:'gray',
     height:35,
     },
+    single:{
+        marginLeft:10
+    },
     upload:{
+        marginLeft:10,
         display:'flex',
         flexDirection:'row'
     },
@@ -718,6 +736,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F0F8FF',
         borderRadius: 5,
         paddingLeft:15,
+        marginLeft:10,
         borderColor:'gray',
         borderWidth:1,
         paddingRight:10,
