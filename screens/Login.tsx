@@ -18,7 +18,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import logo from '../constants/images/Logo.png';
-import { setStoreValue,getStoreValue } from '../common/LocalStorage';
+import { setStoreValue, getStoreValue } from '../common/LocalStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -29,27 +29,27 @@ const Login = ({ navigation }: any) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const onLogin = async () => {
-    let body={"Email":emailId,"Password":password,"token":""}
+    let body = { "Email": emailId, "Password": password, "token": "" }
     axios({
       method: 'post',
       url: 'https://hgsonsapp.hgsons.in/objects/login.php',
       data: body
-    }).then((res)=>{
-      if(Platform.OS=='android'){
-        ToastAndroid.show(res.data.message,ToastAndroid.TOP)
-      }else{
+    }).then((res) => {
+      if (Platform.OS == 'android') {
+        ToastAndroid.show(res.data.message, ToastAndroid.TOP)
+      } else {
         Alert.alert('Sucess!', 'Login Successfully')
       }
-      if(res.data.success===1){
-        setStoreValue({key:'userId',value:res.data.data.UserId})
-        setStoreValue({key:'userType',value:res.data.data.UserType})
-        setStoreValue({key:"token",value:res.data.data.Token})
+      if (res.data.success === 1) {
+        setStoreValue({ key: 'userId', value: res.data.data.UserId })
+        setStoreValue({ key: 'userType', value: res.data.data.UserType })
+        setStoreValue({ key: "token", value: res.data.data.Token })
         navigation.navigate('ContractorDashboard');
       }
       setShowLoader(false)
-    }).catch((err)=>{
-      console.log('err:',err);
-      
+    }).catch((err) => {
+      console.log('err:', err);
+
     });
 
   };
@@ -64,13 +64,11 @@ const Login = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}>
         <ScrollView>
           <View style={styles.LoginContainer}>
+            <Image
+              style={styles.karigarLogo}
+              source={logo}
+            />
             <View style={styles.boxMain}>
-              <View style={styles.LogoContainer}>
-                <Image
-                  style={styles.karigarLogo}
-                  source={logo}
-                />
-              </View>
               <Text style={styles.title}>{'Login'}</Text>
               <View>
                 <Text style={styles.phoneNo}>{'Email'}</Text>
@@ -94,32 +92,32 @@ const Login = ({ navigation }: any) => {
                 <TextInput
                   selectionColor={'#FEA700'}
                   returnKeyType={"done"}
-                  secureTextEntry={showPassword ? true:false}
+                  secureTextEntry={showPassword ? true : false}
                   style={styles.phoneNoInput}
                   onChangeText={(value: any) => {
                     setPassword(value);
                   }}
                 >
                 </TextInput>
-                      {showPassword === false && <Icon name={'eye'} size={22} color={'#D4AF37'}  style={{position:'absolute',right:20}} onPress={()=>setShowPassword(!showPassword)}/>}
-                      {showPassword && <Icon name={'eye-slash'} size={22} color={'#D4AF37'}  style={{position:'absolute',right:20}} onPress={()=>setShowPassword(!showPassword)}/>}
+                {showPassword === false && <Icon name={'eye'} size={22} color={'#D4AF37'} style={{ position: 'absolute', right: 20 }} onPress={() => setShowPassword(!showPassword)} />}
+                {showPassword && <Icon name={'eye-slash'} size={22} color={'#D4AF37'} style={{ position: 'absolute', right: 20 }} onPress={() => setShowPassword(!showPassword)} />}
               </View>
               <TouchableOpacity
                 onPress={() => {
                   setShowLoader(true)
-                    onLogin();
+                  onLogin();
                 }}
                 style={styles.sendOtpBtn}
               >
                 {!showLoader ?
-                <View> 
-                  <Text style={styles.otpText}>{'Login'}</Text>
-                </View>
+                  <View>
+                    <Text style={styles.otpText}>{'Login'}</Text>
+                  </View>
                   :
-                   <View>
-                    <ActivityIndicator color={'white'} size='large'/>
-               </View>
-               }
+                  <View>
+                    <ActivityIndicator color={'white'} size='large' />
+                  </View>
+                }
               </TouchableOpacity>
             </View>
           </View>
@@ -151,9 +149,10 @@ const styles = StyleSheet.create({
     width: 100,
   },
   boxMain: {
+    marginTop:20,
     display: 'flex',
     backgroundColor: '#28282B',
-    height: 480,
+    height: 350,
     width: 334,
     borderRadius: 10,
     zIndex: 1
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
   },
   otpText: {
     fontSize: 18,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: 'white',
   },
 });
