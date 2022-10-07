@@ -64,13 +64,13 @@ const Login = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}>
         <ScrollView>
           <View style={styles.LoginContainer}>
-            <View style={styles.boxMain}>
-              <View style={styles.LogoContainer}>
+          <View style={styles.LogoContainer}>
                 <Image
                   style={styles.karigarLogo}
                   source={logo}
                 />
               </View>
+            <View style={styles.boxMain}>
               <Text style={styles.title}>{'Login'}</Text>
               <View>
                 <Text style={styles.phoneNo}>{'Email'}</Text>
@@ -125,6 +125,9 @@ const Login = ({ navigation }: any) => {
           </View>
         </ScrollView>
       </KeyboardAwareScrollView>
+        <View style={styles.footerMain}>
+              <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+          </View>
     </View>
   );
 };
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     width: '100%',
-    marginTop: 30
+    marginTop: -50
   },
   karigarLogo: {
     height: 100,
@@ -153,8 +156,10 @@ const styles = StyleSheet.create({
   boxMain: {
     display: 'flex',
     backgroundColor: '#28282B',
-    height: 480,
+    height: 380,
     width: 334,
+    marginTop:30,
+    paddingTop:40,
     borderRadius: 10,
     zIndex: 1
   },
@@ -204,6 +209,20 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color: 'white',
   },
+  footerMain:{
+    width:'100%',
+    display:'flex',
+    backgroundColor:'#28282B',
+    height:30,
+    position:'absolute',
+    bottom:0,
+    justifyContent:'center',
+    alignItems:'center'
+},
+  footerTxt:{
+    fontSize:10,
+    color:'#D4AF37'
+}
 });
 
 export default Login;

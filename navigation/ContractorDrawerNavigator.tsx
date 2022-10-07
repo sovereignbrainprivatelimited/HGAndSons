@@ -39,27 +39,27 @@ const ContractorDrawerNavigator = () => {
         )
       }}
       />
-      <Drawer.Screen name="Order Report" component={OrderReport} 
-      options={{
-        drawerIcon: ({color}) => (
-          <Icon name="book" size={22} color={'#D4AF37'}/>
-          )
-        }}
-      />
-        <Drawer.Screen name="Order Entry" component={OrderEntry} 
+      <Drawer.Screen name="Order Entry" component={OrderEntry} 
         options={{
           drawerIcon: ({color}) => (
             <Icon name="list" size={22} color={'#D4AF37'}/>
           )
         }}
          />
-      <Drawer.Screen  name="Catalog"
+         <Drawer.Screen  name="Catalog"
       component={Catalog} 
       options={{
         drawerIcon: ({color}) => (
           <Icon name="file" size={22} color={'#D4AF37'}/>
         )
       }}
+      />
+      <Drawer.Screen name="Order Status Report" component={OrderReport} 
+      options={{
+        drawerIcon: ({color}) => (
+          <Icon name="book" size={22} color={'#D4AF37'}/>
+          )
+        }}
       />
       <Drawer.Screen  name="Contact Us"
       component={ContactUs} 

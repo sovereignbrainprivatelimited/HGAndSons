@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
 import MapView from 'react-native-maps';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const ContactUs = () => {
@@ -14,6 +15,18 @@ const ContactUs = () => {
                 <View style={{flex:1}}>
                     <View style={styles.headerMain}>
                         <Text style={styles.headerTitle}>{'How Can We Help You?'}</Text>
+                    </View>
+                    <View style={styles.locationMain}>
+                            <Text style={styles.locationTitle}>{'Our Location'}</Text>
+                            {/* <Icon name={'map-marker'} size={20}  /> */}
+                            <Text style={styles.locationLabel}>{'H.G. & Sons  '}<Icon name={'map-marker'} size={20}  /></Text>
+                            <Text style={styles.locationValue}>{'Ashapura Main Rd, Prahlad Plot, Rajkot, Gujarat 360001'}</Text>
+                            <Text style={styles.locationLabel}>{'Telephone  '}<Icon name={'phone'} size={20}  /></Text>
+                            <Text style={styles.locationValue}>{'088662 75875'}</Text>
+                            <Text style={styles.locationLabel}>{'Fax  '}<Icon name={'fax'} size={20}  /></Text>
+                            <Text style={styles.locationValue}>{'88662 75875'}</Text>
+                            <Text style={styles.locationLabel}>{'Opening Times  '}<Icon name={'clock-o'} size={20}  /></Text>
+                            <Text style={styles.locationValue}>{'10:00 AM - 6:00 PM'}</Text>
                     </View>
                     <View style={styles.formMain}>
                         <View style={styles.dataMain}>
@@ -110,7 +123,7 @@ const styles = StyleSheet.create({
         display:'flex',
         width:'100%',
         flexDirection:"column",
-        marginTop:10,
+        marginTop:30,
         height:'100%'
     },
     labelText:
@@ -193,5 +206,26 @@ const styles = StyleSheet.create({
     footerTxt:{
         fontSize:10,
         color:'#D4AF37'
+    },
+    locationMain:{
+        width:'100%',
+        display:'flex',
+        alignItems:'flex-start',
+        flexDirection:'column',
+        marginTop:10,
+        paddingLeft:20
+    },
+    locationTitle:{
+        fontSize:18,
+        color:'#28282B',
+        fontWeight:'bold'
+    },
+    locationValue:{
+        width:200
+    },
+    locationLabel:{
+        marginTop:10,
+        fontSize:14 ,
+        fontWeight:'600',
     }
 })
