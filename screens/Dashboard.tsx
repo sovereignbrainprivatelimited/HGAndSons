@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { Text } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,26 +7,11 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getStoreValue } from '../common/LocalStorage';
 
 const BarChartScreen = ({ navigation }: any) => {
 
-  const [resData,setResData]=useState([])
-
   useEffect(()=>{
     navigation.closeDrawer();
-  },[])
-
-  useEffect(()=>{
-    const getPartyData = async ()=>{
-      axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:"1",Token:await getStoreValue('token')}).then((res)=>{
-        console.log('res:',res.data);
-        setResData(res.data.data)
-      }).catch((err)=>{
-        console.log('err:',err);
-      })
-    }
-    getPartyData()
   },[])
 
   return (
@@ -38,22 +22,34 @@ const BarChartScreen = ({ navigation }: any) => {
         </View>
         <View style={styles.bodyMain}>
           <View style={styles.customerData}>
-              <Text style={styles.custdetails}>{resData.length>0?`Welcome ${resData[0].PartyName}`:'Welcome ------'}</Text>
+              <Text style={styles.custdetails}>{'Welcome Customer Name'}</Text>
           </View>
+          {/* <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Party GST-In : '}</Text>
+              <Text style={styles.otherDataValue}>{'ABFDHN12348'}</Text>
+          </View>
+          <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Registered Mobile : '}</Text>
+              <Text style={styles.otherDataValue}>{'1234567890'}</Text>
+          </View>
+          <View style={styles.otherData}>
+              <Text style={styles.otherDateLabel}>{'Registered Email : '}</Text>
+              <Text style={styles.otherDataValue}>{'abc@gmail.com'}</Text>
+          </View> */}
           <View style={styles.cardContainer}>
             <View style={styles.cardMain}>
                 <View style={styles.cardbodyMain}>
                 <View style={styles.otherData}>
                   <Text style={styles.otherDateLabel}>{'Party GST-In : '}</Text>
-                  <Text style={styles.otherDataValue}>{(resData.length>0 && resData[0].GSTNO!=='') ?resData[0].GSTNO:'-------'}</Text>
+                  <Text style={styles.otherDataValue}>{'ABFDHN12348'}</Text>
               </View>
               <View style={styles.otherData}>
                 <Text style={styles.otherDateLabel}>{'Registered Mobile : '}</Text>
-                <Text style={styles.otherDataValue}>{resData.length>0?resData[0].Mobile1:'------'}</Text>
+                <Text style={styles.otherDataValue}>{'1234567890'}</Text>
             </View>
             <View style={styles.otherData}>
               <Text style={styles.otherDateLabel}>{'Registered Email : '}</Text>
-              <Text style={styles.otherDataValue}>{resData.length>0?resData[0].Email:'-------'}</Text>
+              <Text style={styles.otherDataValue}>{'abc@gmail.com'}</Text>
           </View>
                   <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:20}}>
                     <Text style={styles.bodyTxt}>{'Order Details Counter  '}</Text>
@@ -122,12 +118,12 @@ const styles = StyleSheet.create({
     flexWrap:'wrap'
   },
   otherDateLabel:{
-    fontSize:17,
+    fontSize:18,
     color:'#D4AF37',
     fontWeight:'500'
   },
   otherDataValue:{
-    fontSize:16,
+    fontSize:18,
     color:'#D4AF37',
     fontWeight:'500',
   },
