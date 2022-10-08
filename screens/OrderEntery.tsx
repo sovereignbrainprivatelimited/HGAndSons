@@ -19,6 +19,7 @@ import { getStoreValue } from "../common/LocalStorage";
 const OrderEntry = ({ navigation }: any) => {
     
     const [orderList,setOrderList]=useState([]);
+    const [catalogOrderList,setCatalogOrderList]=useState([]);
     const [partyList,setPartyList]=useState([]);
     const [itemList,setItemList]=useState([]);
     const [searchBox, setSearchBox] = useState('');
@@ -44,7 +45,7 @@ const OrderEntry = ({ navigation }: any) => {
         navigation.closeDrawer()
         const getOrderList = async () =>{
 
-                axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+                axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:await getStoreValue('userId'),UserType:1,Token: await getStoreValue("token")}).then((res)=>{
                     res.data.data.forEach((item:any)=>{
 
                         const data={
@@ -69,7 +70,7 @@ const OrderEntry = ({ navigation }: any) => {
                     console.log('err:',err);
                 })
 
-            axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:1,UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
+            axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:await getStoreValue('userId'),UserType:2,OrderType:"SO",Token: await getStoreValue("token")}).then((res)=>{
                 const arr=Object.values(res.data.data);
                 let newArr=[];
                 arr.map((value)=>{
@@ -83,24 +84,43 @@ const OrderEntry = ({ navigation }: any) => {
                         Item: value.ItemName?value.ItemName:'',
                         Status: value.OrderStatus?value.OrderStatus:"",
                         orderId:value.OrderId?value.OrderId:'',
+                        Image:value.imageOrder
+                    }
+                    newArr.push(data);
+                })    
+                // console.log('arr:',arr[0].imageOrder[0]);
+                setOrderList(newArr);
+            }).catch((err)=>{
+                console.log('err:',err);
+            })
+           
+            axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{PartyId:await getStoreValue('userId'),UserType:2,OrderType:"CO",Token: await getStoreValue("token")}).then((res)=>{
+                const arr=Object.values(res.data.data);
+                let newArr=[];
+                arr.map((value)=>{
+                    const data= { 
+                        srNo: 1, 
+                        OrderNo: value.OrderNo!==undefined ? value.OrderNo:'', 
+                        date: value.OrderDate?value.OrderDate:'',
+                        Party:value.PartyName?value.PartyName:'', 
+                        Karigar: value.pname?value.pname:'',
+                        Item: value.ItemName?value.ItemName:'',     
                         Image:value.order_image
                     }
                     newArr.push(data);
                 })    
-                setOrderList(newArr);
+                setCatalogOrderList(newArr);                
             }).catch((err)=>{
                 console.log('err:',err);
             })
         }
         getOrderList();
-    },[]);
+    },[showSingleOrder,showCatalogOrder]);
 
     useEffect(()=>{},[orderList])
 
     const onSearch = async (value)=>{
-        console.log('valye',value);
         axios.post('https://hgsonsapp.hgsons.in/master/search_order.php',{Search:value,Token:await getStoreValue('token')}).then((res)=>{
-        console.log('res:;',res);
         const arr=Object.values(res.data.data);
                 let newArr=[];
                 arr.map((value)=>{
@@ -190,7 +210,7 @@ const OrderEntry = ({ navigation }: any) => {
             (orderList.length !==0 && showCatalogOrder) ? 
             <FlatList
             style={{ marginHorizontal: -10, height: 330 }}
-            data={arr}
+            data={catalogOrderList}
             keyExtractor={(_, index) => index.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={renderItem}

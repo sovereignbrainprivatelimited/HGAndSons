@@ -19,8 +19,7 @@ const BarChartScreen = ({ navigation }: any) => {
   },[])
   useEffect(()=>{
     const getPartyData = async ()=>{
-      axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:"1",Token:await getStoreValue('token')}).then((res)=>{
-        console.log('res:',res.data);
+      axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:await getStoreValue('userId'),Token:await getStoreValue('token')}).then((res)=>{
         setResData(res.data.data)
       }).catch((err)=>{
         console.log('err:',err);

@@ -19,7 +19,6 @@ const OrderInfo =(props:any)=>{
 
     useEffect(()=>{
         const getInfo = ()=>{
-            console.log('props:',props?.route?.params?.title);
             if(props?.route?.params?.title === 'OrderDetails'){
                 setHeaderTitle('Order Details')
             }else{

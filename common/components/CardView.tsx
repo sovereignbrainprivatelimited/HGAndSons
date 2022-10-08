@@ -26,14 +26,12 @@ const CardView = (props: any) => {
   const [narration,setNarration]=useState('');
   const [userType,setUserType]=useState('');
 
- 
+  useEffect(()=>{
+    console.log('orderData:',typeof orderData.Image);
     
-    useEffect(()=>{
-      console.log('orderData',orderData);
-    })
+  })
 
     const getStatusList = async () => {
-      console.log('data:',orderData);
       axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
           res.data.data.map((item:any)=>{
               const data={
@@ -47,7 +45,7 @@ const CardView = (props: any) => {
 
   
   const getNotifyList = async()=>{
-    axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+    axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:await getStoreValue('userId'),UserType:1,Token: await getStoreValue("token")}).then((res)=>{
           res.data.data.forEach((item:any)=>{
 
               const data={
@@ -73,7 +71,6 @@ const CardView = (props: any) => {
 
   const onDelete = async () => {
     axios.post('https://hgsonsapp.hgsons.in/master/delete_order.php',{OrderId:orderData.orderId,Token: await getStoreValue("token")}).then((res)=>{
-      console.log('res:::',res.data);
     }).catch((err)=>{
       console.log('err:',err);
     })
@@ -83,7 +80,7 @@ const CardView = (props: any) => {
     let param={}
     if(value.value==='1'){
     param = {
-    PartyId:'1',
+    PartyId:await getStoreValue('userId'),
     OrderId:orderData.OrderId,
     OrderStatusId:value.value,
     ConfirmDeliveryDate:orderData.ConfirmDeliveryDate,
@@ -92,7 +89,7 @@ const CardView = (props: any) => {
     }
   }else if(value.value==='2'){
     param={
-    PartyId:'1',
+    PartyId:await getStoreValue('userId'),
     OrderId:orderData.OrderId,
     OrderStatusId:value.value,
     KarigarDeliveryDate:orderData.KarigarDeliveryDate,
@@ -101,7 +98,7 @@ const CardView = (props: any) => {
     }
   }else if(value.value==='3'){
     param={
-      PartyId:'1',
+      PartyId:await getStoreValue('userId'),
       OrderId:orderData.OrderId,
       OrderStatusId:value.value,
       KarigarReceivedDate:orderData.KarigarReceivedDate,
@@ -110,7 +107,7 @@ const CardView = (props: any) => {
       }
   }else if(value.value==='4'){
     param={
-      PartyId:'1',
+      PartyId:await getStoreValue('userId'),
       OrderId:orderData.OrderId,
       OrderStatusId:value.value,
       CustomerDeliveredDate:orderData.CustomerDeliveredDate,
@@ -119,7 +116,6 @@ const CardView = (props: any) => {
       }
   }
     axios.post('https://hgsonsapp.hgsons.in/master/order_status.php',param).then((res)=>{
-      console.log('res::',res.data);
       setShowUpdateModal(false)
     }).catch((err)=>{
       console.log('err:',err);
@@ -127,10 +123,7 @@ const CardView = (props: any) => {
   }
 
   const onNotify = async () => {
-    console.log('data:',selectedCustomer,selectedKarigar,narration);
-    
     axios.post('https://hgsonsapp.hgsons.in/master/order_notify.php',{PartyId:selectedCustomer,KarigarId:selectedKarigar,Narration:'abcd',OrderId:orderData.orderId,Token:await getStoreValue("token")}).then((res)=>{
-      console.log('res::',res.data);
       ToastAndroid.show(res.data.message,ToastAndroid.TOP);
       setShowNotifyModal(false)
     }).catch((err)=>{
@@ -152,7 +145,6 @@ const CardView = (props: any) => {
     const getUserInfo =async()=>{
       let userId= await getStoreValue('userId');
       let typeOfUser= await getStoreValue('userType');
-      console.log('type:',typeOfUser);
       setUserType(typeOfUser);
     }
     getUserInfo();
@@ -187,7 +179,7 @@ const CardView = (props: any) => {
           </View>
           <View style={styles.cardImage}>
             {orderData.Image?
-            <Image source={{uri:`${imagePath}${orderData.Image}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
+            <Image source={{uri:`${imagePath}${orderData.Image[0]}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
             :  
             <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
           }
@@ -200,12 +192,12 @@ const CardView = (props: any) => {
         </View>
         <View style={styles.actionMain}>
           <Text style={styles.status}>{'Status: ' + Status}</Text>
-          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:20}}><Icon name="edit" size={22} color={'#D4AF37'}/></TouchableOpacity>
-          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:20}}><Icon name="bell" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getStatusList();setShowUpdateModal(true)}} style={{marginRight:10}}><Icon name="edit" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => {getNotifyList();setShowNotifyModal(true)}} style={{marginRight:userType!=='1' ?30:10}}><Icon name="bell" size={22} color={'#D4AF37'}/></TouchableOpacity>
           {userType!=='1' &&
           <>
-          <TouchableOpacity style={{marginRight:20 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#D4AF37'}/></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:30}}><Icon name="trash" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity style={{marginRight:10 }} onPress={()=>{ navigation.navigate('CreateOrder',{userId:orderData.orderId})}}><Icon name="pencil" size={22} color={'#D4AF37'}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowDeleteModal(true)} style={{marginRight:20}}><Icon name="trash" size={22} color={'#D4AF37'}/></TouchableOpacity>
           </>
           }
         </View>
@@ -217,10 +209,9 @@ const CardView = (props: any) => {
             <Text style={styles.datatitle}>{'Sr No: ' + srNo}</Text>
             <Text style={styles.datatitle}>{'C/Order No: ' + OrderNo}</Text>
             <Text style={styles.datatitle}>{'C/Order Date: ' + date}</Text>
-            {/* <Text style={styles.datatitle}>{'Order type: ' + orderType}</Text> */}
           </View>
           <View style={styles.cardImage}>
-            {orderData.Image?
+            {orderData.Image!==''?
             <Image source={{uri:`${imagePath}${orderData.Image}`}} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
             :  
             <Image source={logo} style={{ width: '100%', height: '100%' }} alt="Alternate Text"/>
@@ -479,7 +470,8 @@ const styles = StyleSheet.create({
   status:{
     position:'absolute',
     left:0,
-    color: '#D4AF37'
+    color: '#D4AF37',
+    // fontSize:12
   },
   actionMain: {
     marginTop: 10,

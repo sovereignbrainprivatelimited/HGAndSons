@@ -29,7 +29,6 @@ const Catalog =({navigation}:any)=>{
       useEffect(()=>{
         const getCatalog = async ()=>{
             axios.post('https://hgsonsapp.hgsons.in/master/itemview.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                console.log('res::::',res.data.data);
                 const arr=res.data.data.map((item)=> {return item});
                 setCatalogData(arr);
             }).catch((err)=>{
@@ -42,7 +41,6 @@ const Catalog =({navigation}:any)=>{
     const onAddProduct = async (value:any)=>{
         axios.post('https://hgsonsapp.hgsons.in/master/add_to_cart.php',{CatalogId:value,Token:await getStoreValue("token")}).then((res)=>{
             ToastAndroid.show('Product Added to cart Successfully',ToastAndroid.TOP);
-            console.log('res:',res.data);
         }).catch((err)=>{
             console.log('err:',err);
         })

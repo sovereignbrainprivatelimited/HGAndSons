@@ -1,13 +1,28 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
 import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getStoreValue } from "../common/LocalStorage";
+import Navigation from "../navigation";
 
 
-const ContactUs = () => {
+const ContactUs = ({navigation}:any) => {
 
-   const onSubmit =()=>{
-    ToastAndroid.show('Thanks for Contacting us!',ToastAndroid.TOP)
+    const [fullName,setFullName]=useState('')
+    const [email,setEmail]=useState('')
+    const [remarks,setRemarks]=useState('')
+
+   const onSubmit =async()=>{
+    let data={FullName:fullName,Email:email,Remarks:remarks,PartyId:await getStoreValue('userId'),Token:await getStoreValue('token')}
+    
+    axios.post('https://hgsonsapp.hgsons.in/master/contact_us.php',{FullName:fullName,Email:email,Remarks:remarks,PartyId:await getStoreValue('userId'),Token:await getStoreValue('token')}).then((res)=>{
+        ToastAndroid.show(res.data.message,ToastAndroid.TOP);
+        // navigation.navigate('ContractorDashboard')
+    }).catch((err)=>{
+        ToastAndroid.show('Something went wrong!',ToastAndroid.TOP)
+        console.log('err:',err);
+    })
    }
     return(
         <SafeAreaView style={{flex:1}}>
@@ -36,10 +51,10 @@ const ContactUs = () => {
                                     placeholder='Enter Your Name'
                                     placeholderTextColor={'#28282B'}
                                     keyboardType='default'
-                                    value={''}
+                                    value={fullName}
                                     autoCorrect={false}
                                     autoCapitalize="none"
-                                    onChangeText={()=>{}}
+                                    onChangeText={(e)=>{setFullName(e)}}
                                     returnKeyType={"next"}
                                     style={{padding:0,paddingLeft:10,color:'#28282B'}}
                                 />
@@ -52,10 +67,10 @@ const ContactUs = () => {
                                     placeholder='Enter Your Email'
                                     placeholderTextColor={'#28282B'}
                                     keyboardType='email-address'
-                                    value={''}
+                                    value={email}
                                     autoCorrect={false}
                                     autoCapitalize="none"
-                                    onChangeText={()=>{}}
+                                    onChangeText={(e)=>{setEmail(e)}}
                                     returnKeyType={"next"}
                                     style={{padding:0,paddingLeft:10,color:'#28282B'}}
                                 />
@@ -69,10 +84,10 @@ const ContactUs = () => {
                                     placeholder='Enter Remarks'
                                     placeholderTextColor={'#28282B'}
                                     keyboardType='default'
-                                    value={''}
+                                    value={remarks}
                                     autoCorrect={false}
                                     autoCapitalize="Done"
-                                    onChangeText={()=>{}}
+                                    onChangeText={(e)=>{setRemarks(e)}}
                                     returnKeyType={"next"}
                                     style={{padding:0,paddingLeft:10,color:'#28282B'}}
                                 />

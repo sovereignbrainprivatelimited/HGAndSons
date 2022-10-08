@@ -71,15 +71,15 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* {token == '' 
-      ? */}
+      {token == '' 
+      ?
       <Stack.Screen
         options={horizontalAnimation}
         name="Login"
         component={Login}
       /> 
-       {/* :
-      <>  */}
+      :
+      <> 
       <Stack.Screen 
       options={horizontalAnimation}
       name="ContractorDashboard"
@@ -100,8 +100,8 @@ function RootNavigator() {
       name="OrderInfo"
       component={OrderInfo}
       />
-      {/* </>
-  } */}
+      </>
+  } 
     </Stack.Navigator>
   );
 }

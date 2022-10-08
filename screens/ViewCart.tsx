@@ -19,9 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 
     useEffect(()=>{
       const getData=async()=>{
-        console.log('lllll:',await getStoreValue('token'));
         axios.post('https://hgsonsapp.hgsons.in/master/view_cart.php',{Token:await getStoreValue('token')}).then((res)=>{
-          console.log('res::',res.data.data);
           setIsError(false);
           setCartData(res.data.data);
         }).catch((err)=>{

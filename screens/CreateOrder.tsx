@@ -58,27 +58,19 @@ const CreateOrder = (props:any) => {
             console.log('-------------result-----------',res.path)
         })
     }
-  const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-  ];
   
     useEffect(() => {
     const getDropdownList = async()=>{
-        axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+        axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:await getStoreValue('userId'),UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+            let arr=[]
             res.data.data.forEach((item:any)=>{
                 const data={
                     label:item.PartyName,
                     value:item.PartyId
                 }
-                partyList.push(data);
+                arr.push(data);
             })
+            setPartyList(arr)
         }).catch((err)=>{
             console.log('err:',err);
         })
@@ -109,12 +101,11 @@ const CreateOrder = (props:any) => {
         const getOrderData =async()=>{
             if(props?.route?.params?.userId !== undefined){
                 axios.post('https://hgsonsapp.hgsons.in/master/read_order.php',{OrderId:props.route.params.userId,Token:await getStoreValue("token")}).then((res)=>{
-                    console.log('res:',res.data);
                     const arr=Object.values(res.data.data);
                     let data=arr.map((item)=>{
                         return item 
                     })
-                    console.log('datafcdsfsd:',data);
+                    // console.log('data::',data[0].PartyId);
                     setValue('orderNo',data[0].OrderNo);
                     // setDeliverydate(moment(data.d).format('YYYY-MM-DD'))
                     setSelectedParty(data[0].PartyId);
@@ -132,6 +123,7 @@ const CreateOrder = (props:any) => {
                 }).catch((err)=>{
                     console.log('err:',err);
                 })
+                
                 setIsEdit(true)
             }
         }
@@ -161,17 +153,16 @@ const CreateOrder = (props:any) => {
             OrderType:"SO",
             Token: await getStoreValue("token")
         }
-        console.log('params::',param);
+        console.log('res::',param);
         if(props?.route?.params?.userId === undefined){
             axios.post('https://hgsonsapp.hgsons.in/master/create_order.php',param).then((res)=>{
-                console.log('res::',res.data.message);
+                
                 ToastAndroid.show(res.data.message,ToastAndroid.TOP);
             }).catch((err)=>{
                 console.log('err:',err);
             })
         }else{
             axios.post('https://hgsonsapp.hgsons.in/master/edit_order.php',param).then((res)=>{
-                console.log('res::',res.data);
             }).catch((err)=>{
                 console.log('err',err);
                 
@@ -272,10 +263,12 @@ const CreateOrder = (props:any) => {
             </View>
             <View style={styles.dataMain}>
                 <Text style={styles.labelText}>{'Select Party'}</Text>
+                {console.log('selected:',selectedParty)}
+                
                 <View style={[styles.inputBox,styles.select]} >
-                    <Controller
+                    {/* <Controller
                         control={control}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, value } }) => ( */}
                         <Dropdown
                           style={styles.dropdown}
                           placeholderStyle={styles.placeholderStyle}
@@ -294,12 +287,12 @@ const CreateOrder = (props:any) => {
                           setSelectedParty(item.value);
                           }} 
                         />
-                        )}
-                        name="party"
+                        {/* )} */}
+                        {/* name="party"
                         rules={{
                             required: { value: true, message: 'Enter Select Party' },
                         }}
-                    />
+                    /> */}
                 </View>
             </View>
             <View style={styles.dataMain}>

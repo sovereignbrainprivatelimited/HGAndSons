@@ -43,7 +43,6 @@ const OrderReport = ({ navigation }: any) => {
       useEffect(()=>{
         const getDropdownList = async()=>{
             axios.post('https://hgsonsapp.hgsons.in/master/karigar_list.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-              console.log('res:',res.data);
               const arr=[];
               res.data.data.forEach((item:any)=>{
                 const data={
@@ -57,7 +56,7 @@ const OrderReport = ({ navigation }: any) => {
               console.log('err:',err);
             })
         
-            axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:1,UserType:1,Token: await getStoreValue("token")}).then((res)=>{
+            axios.post('https://hgsonsapp.hgsons.in/master/party_list.php',{PartyId:await getStoreValue('userId'),UserType:1,Token: await getStoreValue("token")}).then((res)=>{
               const arr=[];
                     res.data.data.forEach((item:any)=>{
                         const data={
@@ -72,8 +71,6 @@ const OrderReport = ({ navigation }: any) => {
                 })
             axios.post('https://hgsonsapp.hgsons.in/master/order_status_dropdown.php',{UsetType:'1',Token:await getStoreValue("token")}).then((res)=>{
                 const arr=[];
-                console.log('res:::',res.data.data);
-                
                     res.data.data.forEach((item:any)=>{
                         const data={
                             label:item.OrderStatus,
@@ -93,7 +90,6 @@ const OrderReport = ({ navigation }: any) => {
       const onSearch = async()=>{
         axios.post('https://hgsonsapp.hgsons.in/master/search_order.php',{StartDate:fromdate,EndDate:toDate,PartyId:selectedcustomer,KarigarId:selectedKarigar,StatusId:selectedStatus,Token:await getStoreValue('token')}).then((res)=>{
             const arr=Object.values(res.data.data);
-            console.log('res:',arr[1]);
             let newArr=[];
                 arr.map((item)=>{
                     const data= { 
