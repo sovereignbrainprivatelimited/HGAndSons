@@ -10,7 +10,7 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import { ColorSchemeName } from "react-native";
+import { ColorSchemeName, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../types";
 import "../common/axios.config";
 import { getStoreValue } from "../common/LocalStorage";
@@ -20,6 +20,8 @@ import CreateOrder from "../screens/CreateOrder";
 import ViewCart from "../screens/ViewCart";
 import OrderInfo from "../screens/OrderInfo";
 import Catalog from "../screens/Catalog";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Navigation({
   colorScheme,
@@ -43,6 +45,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   const [token, setToken] = React.useState<any>("");
   const [userInfo, setUserInfo] = React.useState({});
+  const navigation = useNavigation();
   React.useEffect(() => {
     const getToken = async () => {
       const token = await getStoreValue("token");
@@ -74,41 +77,55 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {token == "" ? (
-        <Stack.Screen
-          options={horizontalAnimation}
-          name="Login"
-          component={Login}
-        />
-      ) : (
-        <>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="ContractorDashboard"
-            component={ContractorDrawerNavigator}
-          />
-          <Stack.Screen
-            options={{ headerTitle: "Create Order", headerShown: true }}
-            name="CreateOrder"
-            component={CreateOrder}
-          />
-          <Stack.Screen
-            options={{ headerTitle: "View Cart", headerShown: true }}
-            name="ViewCart"
-            component={ViewCart}
-          />
-          <Stack.Screen
-            options={{ headerTitle: "Order Info", headerShown: true }}
-            name="OrderInfo"
-            component={OrderInfo}
-          />
-          <Stack.Screen
-            options={{ headerTitle: "Catalog", headerShown: true }}
-            name="catalog"
-            component={Catalog}
-          />
-        </>
-      )}
+      {/* {token == "" ? ( */}
+      <Stack.Screen
+        options={horizontalAnimation}
+        name="Login"
+        component={Login}
+      />
+      {/* ) : (
+         <> */}
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ContractorDashboard"
+        component={ContractorDrawerNavigator}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "Create Order", headerShown: true }}
+        name="CreateOrder"
+        component={CreateOrder}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "View Cart", headerShown: true }}
+        name="ViewCart"
+        component={ViewCart}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "Order Info", headerShown: true }}
+        name="OrderInfo"
+        component={OrderInfo}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Catalog",
+          headerShown: true,
+          headerRight: () => (
+            <TouchableOpacity>
+              <Icon
+                onPress={() => navigation.navigate("ViewCart")}
+                name={"shopping-cart"}
+                color={"#D4AF37"}
+                size={26}
+                style={{ marginRight: 25 }}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+        name="catalog"
+        component={Catalog}
+      />
+      {/* </>
+      )} */}
     </Stack.Navigator>
   );
 }

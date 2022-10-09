@@ -22,6 +22,7 @@ const ViewCart = ({ navigation }: any) => {
   const [cartdata, setCartData] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -31,7 +32,22 @@ const ViewCart = ({ navigation }: any) => {
         })
         .then((res) => {
           setIsError(false);
-          setCartData(res.data.data);
+          let arr = [];
+          console.log("data:", res.data.data);
+          res?.data?.data?.map((item) => {
+            arr.push({
+              PartyName: item.PartyName,
+              KarigarCode: 1,
+              Purity: 11,
+              Size: 11,
+              ItemName: item.ItemName,
+              Pcs: 1,
+              Weight: 0,
+              Qty: 1,
+              order_image: item.order_image,
+            });
+          });
+          setCartData(arr);
         })
         .catch((err) => {
           setIsError(true);
@@ -41,22 +57,187 @@ const ViewCart = ({ navigation }: any) => {
     getData();
   }, []);
 
+  const onDelete = () => {
+    axios
+      .post("https://hgsonsapp.hgsons.in/master/delete_cart.php", {
+        BagId: deleteItem,
+      })
+      .then((res) => {
+        console.log("res::", res.data);
+      })
+      .catch((err) => {
+        console.log("err:", err);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ backgroundColor: "#FFFAF0" }}>
         <View style={styles.container}>
-          {cartdata.map((item) => {
+          {cartdata.map((item, index) => {
             return (
               <View style={styles.catalogMain}>
                 <View style={styles.cardMian}>
                   <View style={styles.dataTitle}>
-                    <Text style={styles.dataValue}>{"SrNo : " + 1}</Text>
-                    <Text
-                      style={styles.dataValue}
-                    >{`CatalogNo : ${item.CatalogNo}`}</Text>
-                    <Text
-                      style={styles.dataValue}
-                    >{`Catalog Date: ${item.CatalogDate}`}</Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Name"}</Text>
+                        <Text style={styles.dataLabel}>{":  "}</Text>
+                      </View>
+                      <Text style={styles.data_Value}>{item.PartyName}</Text>
+                    </View>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Karigar"}</Text>
+                        <Text style={styles.data_Value}>
+                          {item.KarigarCode}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Purity"}</Text>
+                        <Text style={styles.data_Value}>{item.Purity}</Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Size"}</Text>
+                        <Text style={styles.data_Value}>{item.Size}</Text>
+                      </View>
+                    </View>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Item"}</Text>
+                        <Text style={styles.data_Value}>{item.ItemName}</Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "35%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Pcs"}</Text>
+                        <Text style={styles.data_Value}>{item.Pcs}</Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          width: "35%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Weight"}</Text>
+                        <Text style={styles.data_Value}>{item.Weight}</Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        marginTop: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "40%",
+                        }}
+                      >
+                        <Text style={styles.dataLabel}>{"Qty"}</Text>
+                        <Text style={styles.dataLabel}>{":  "}</Text>
+                      </View>
+                      <View
+                        style={{
+                          width: "70%",
+                          display: "flex",
+                          flexDirection: "row",
+                          marginLeft: 5,
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: "red",
+                            padding: 5,
+                            width: 30,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 10,
+                          }}
+                          onPress={() => {
+                            cartdata[index].Qty -= 1;
+                            setCartData([...cartdata]);
+                            console.log("item:", item);
+                          }}
+                        >
+                          <Icon name={"minus"} color={"white"} size={18} />
+                        </TouchableOpacity>
+                        <View style={{ marginLeft: 10 }}>
+                          <Text style={styles.data_Value} key={index}>
+                            {item.Qty > 1 ? item.Qty : 1}
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: "green",
+                            padding: 5,
+                            width: 30,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 10,
+                            marginLeft: 10,
+                          }}
+                          onPress={() => {
+                            cartdata[index].Qty += 1;
+                            setCartData([...cartdata]);
+                            console.log("item:", cartdata);
+                          }}
+                        >
+                          <Icon name="plus" color={"white"} size={18} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
                   <View style={styles.imageMain}>
                     <Image
@@ -82,6 +263,7 @@ const ViewCart = ({ navigation }: any) => {
                   >
                     <TouchableOpacity
                       onPress={() => {
+                        setDeleteItem(item.BagId);
                         setShowDeleteModal(true);
                       }}
                     >
@@ -132,7 +314,10 @@ const ViewCart = ({ navigation }: any) => {
                               fontSize: 16,
                               fontWeight: "bold",
                             }}
-                            onPress={() => setShowDeleteModal(!showDeleteModal)}
+                            onPress={() => {
+                              onDelete();
+                              setShowDeleteModal(!showDeleteModal);
+                            }}
                           >
                             {"Yes"}
                           </Text>
@@ -159,6 +344,24 @@ const ViewCart = ({ navigation }: any) => {
             <Text style={styles.notFoundTxt}>{"No Data Found!"}</Text>
           </View>
         )}
+        <TouchableOpacity
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: 20,
+            marginBottom: 20,
+            padding: 15,
+            width: "90%",
+            alignSelf: "center",
+            borderRadius: 40,
+            justifyContent: "center",
+            backgroundColor: "#D4AF37",
+          }}
+        >
+          <Text style={{ fontSize: 20, color: "#28282B", fontWeight: "bold" }}>
+            {"Place Order"}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
       <View style={styles.footerMain}>
         <Text style={styles.footerTxt}>
@@ -210,7 +413,7 @@ const styles = StyleSheet.create({
   cardMian: {
     marginRight: 0,
     width: 330,
-    height: 160,
+    height: 200,
     borderRadius: 10,
     backgroundColor: "white",
     display: "flex",
@@ -243,11 +446,20 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     width: 200,
   },
-  dataValue: {
+  dataLabel: {
     fontSize: 16,
     lineHeight: 25,
     fontWeight: "500",
     color: "#D4AF37",
+  },
+  datatitle: {
+    color: "#D4AF37",
+  },
+  data_Value: {
+    fontSize: 15,
+    lineHeight: 25,
+    fontWeight: "500",
+    color: "#28282B",
   },
   centeredView: {
     flex: 1,

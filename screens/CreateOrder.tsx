@@ -216,6 +216,14 @@ const CreateOrder = (props: any) => {
             {isEdit ? "Edit Your Order" : "Create Single Order"}
           </Text>
         </View>
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            backgroundColor: "lightgray",
+            marginBottom: 10,
+          }}
+        ></View>
         <ScrollView>
           <View
             style={{
@@ -339,6 +347,15 @@ const CreateOrder = (props: any) => {
               </TouchableOpacity>
             </View>
           </View>
+          <View
+            style={{
+              width: "100%",
+              height: 1,
+              backgroundColor: "lightgray",
+              marginBottom: 10,
+              marginTop: 15,
+            }}
+          ></View>
           <View style={styles.dataMain}>
             <Text style={styles.labelText}>{"Select Party"}</Text>
             {console.log("selected:", selectedParty)}
@@ -437,6 +454,15 @@ const CreateOrder = (props: any) => {
               />
             </View>
           </View>
+          <View
+            style={{
+              width: "100%",
+              height: 1,
+              backgroundColor: "lightgray",
+              marginBottom: 10,
+              marginTop: 15,
+            }}
+          ></View>
           <View
             style={{
               display: "flex",
@@ -605,6 +631,40 @@ const CreateOrder = (props: any) => {
               </View>
             </View>
           </View>
+          <View
+            style={{
+              width: "100%",
+              height: 1,
+              backgroundColor: "lightgray",
+              marginBottom: 10,
+              marginTop: 15,
+            }}
+          ></View>
+          <View style={styles.dataMain}>
+            <Text style={styles.labelText}>{"Order Description"}</Text>
+            <View style={[styles.inputBox, styles.single]}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    placeholder="Enter Description"
+                    placeholderTextColor={"#28282B"}
+                    keyboardType="default"
+                    value={value}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={onChange}
+                    returnKeyType={"done"}
+                    style={{ padding: 0, paddingLeft: 10, color: "#28282B" }}
+                  />
+                )}
+                name="desc"
+                rules={{
+                  required: { value: true, message: "Enter Remarks" },
+                }}
+              />
+            </View>
+          </View>
           <View style={styles.dataMain}>
             <Text style={styles.labelText}>{"Remarks"}</Text>
             <View style={[styles.inputBox, styles.single]}>
@@ -764,7 +824,6 @@ export default CreateOrder;
 const styles = StyleSheet.create({
   Title: {
     width: "100%",
-    marginTop: 30,
     height: 50,
     textAlign: "center",
     alignItems: "center",
