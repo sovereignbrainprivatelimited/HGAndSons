@@ -9,14 +9,14 @@ import {
     ToastAndroid,
     ActivityIndicator,
   } from 'react-native';
-import ring from '../constants/images/ring.jpg';
+import about from '../constants/images/about.jpeg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from "axios";
 import { getStoreValue } from "../common/LocalStorage";
 import { Image } from "native-base";
 
 
-const Catalog =({navigation}:any)=>{
+const CatalogHome =({navigation}:any)=>{
 
   const imagePath='https://order.hgsons.in/uploads/order_images/'
 
@@ -26,47 +26,24 @@ const Catalog =({navigation}:any)=>{
     //     navigation.closeDrawer();
     //   },[]);
 
-      useEffect(()=>{
-        const getCatalog = async ()=>{
-            axios.post('https://hgsonsapp.hgsons.in/master/itemview.php',{UserType:1,Token: await getStoreValue("token")}).then((res)=>{
-                const arr=res.data.data.map((item)=> {return item});
-                setCatalogData(arr);
-            }).catch((err)=>{
-                console.log('err:',err);
-            })
-        }
-        getCatalog();
-      },[])
     const arr=[1,2,3,4,5,6,7,8,9]
-    const onAddProduct = async (value:any)=>{
-        axios.post('https://hgsonsapp.hgsons.in/master/add_to_cart.php',{CatalogId:value,Token:await getStoreValue("token")}).then((res)=>{
-            ToastAndroid.show('Product Added to cart Successfully',ToastAndroid.TOP);
-        }).catch((err)=>{
-            console.log('err:',err);
-        })
-    }
+   
     return(
         <SafeAreaView style={{flex:1}}>
         <ScrollView style={{backgroundColor:'#FFFAF0'}}>   
-            <TouchableOpacity style={styles.viewCart} onPress={()=>navigation.navigate('ViewCart')}>
-                <Text style={{color:'#28282B'}}>{'View '}</Text>
-                <Icon size={22} name='shopping-cart' color={'#28282B'}/>
-            </TouchableOpacity>
-        {catalogData.length!==0?<View style={styles.container}>
-            {catalogData.map((item)=>{
+
+        {arr.length!==0?<View style={styles.container}>
+            {arr.map((item)=>{
                 return(
                     <View style={styles.catalogMain}>
-                        <View style={styles.cardMian}>
+                        <TouchableOpacity style={styles.cardMian} onPress={()=> { navigation.navigate('catalog')}}>
                             <View style={styles.imageMain}>
-                                <Image source={{uri:`${imagePath}${item.order_image}`}} style={{width:'100%',height:'100%',borderRadius:15}} alt='Product Image'/>
+                                <Image source={about} style={{width:'100%',height:'100%',borderTopLeftRadius:10,borderTopRightRadius:10}} alt='Product Image'/>
                             </View>
                             <View style={styles.descMain}>
-                                <Text style={styles.productName}>{`${item.Remarks}`}</Text>
-                                <TouchableOpacity style={styles.cartIcon} onPress={()=>{onAddProduct(item.CatalogId)}}>
-                                <Icon  name="shopping-cart" size={22} color={'black'} />
-                                </TouchableOpacity>
+                                <Text style={styles.productName}>{'vfdvfds'}</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 )
             })}
@@ -81,7 +58,7 @@ const Catalog =({navigation}:any)=>{
     )
 }
 
-export default Catalog;
+export default CatalogHome;
 
 const styles=StyleSheet.create({
     container:{
@@ -119,7 +96,7 @@ const styles=StyleSheet.create({
     },
     cardMian:{
         width:150,
-        height:170,
+        height:160,
         borderRadius:10,
         backgroundColor:'white',
         shadowColor: '#000',
@@ -133,7 +110,7 @@ const styles=StyleSheet.create({
     elevation: 20,
     },
     imageMain:{
-        width: 130,
+        width: 150,
         height: 120,
         display:"flex",
         justifyContent:'center',

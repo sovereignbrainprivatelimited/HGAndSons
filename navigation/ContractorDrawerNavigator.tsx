@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Text } from 'react-native-svg';
 import ContactUs from '../screens/ContactUs';
 import AboutUs from '../screens/AboutUs';
+import CatalogHome from '../screens/CatalogHome';
 
 const ContractorDrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
@@ -20,7 +21,7 @@ const ContractorDrawerNavigator = () => {
       },
       drawerLabelStyle:{
         color:'#D4AF37'
-      }
+      },
     }}
     drawerContent={(props) => <CustomDrawer {...props} />}
     >
@@ -47,7 +48,7 @@ const ContractorDrawerNavigator = () => {
         }}
          />
          <Drawer.Screen  name="Catalog"
-      component={Catalog} 
+      component={CatalogHome} 
       options={{
         drawerIcon: ({color}) => (
           <Icon name="file" size={22} color={'#D4AF37'}/>

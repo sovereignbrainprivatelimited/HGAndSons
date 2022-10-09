@@ -92,7 +92,7 @@ const OrderInfo =(props:any)=>{
         </View>
         </ScrollView>
         <View style={styles.footerMain}>
-            <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+            <Text style={styles.footerTxt}>{'privacy policy, T&C @ H.G. Sons © 2022'}</Text>
         </View>
         </SafeAreaView>
     )

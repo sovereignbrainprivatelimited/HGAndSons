@@ -1,5 +1,7 @@
+import { Image } from "native-base";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import about from '../constants/images/about.jpeg';
 
 
 const AboutUs = () => {
@@ -12,17 +14,32 @@ const AboutUs = () => {
                         <Text style={styles.subTitle}>{'H.G. & SONS'}</Text>
                     </View>
                     <View style={styles.bodyMain}>
-                        <View style={{marginTop:10,padding:10}}>
-                            <Text style={styles.bodyTxt}>{'H.G. Group makes the rock it is today is its 85 years of legacy left behind by its founder '}</Text>
-                            <Text style={styles.bodyTxt}>{'Late Shri soni Harjivandas Govindji. Who started H.G. & Sons in 1937. And Later on under his guidance KISHORBHAI, CHANDRAKANTBHAI, MANSUKHBHAI and CHHOTALAL'}</Text>
-                            <Text style={styles.bodyTxt}>{'Second Generation of the H.G. Family started'}</Text>
+                        <View style={{width:'100%',display:'flex',flexDirection:'row',flexWrap:'wrap',paddingRight:10}}>
+                            <View style={{marginTop:20,padding:10,width:'40%'}}>
+                                <Text style={styles.bodyTxt}>{'H.G. Group makes the rock it is today is its 85 years of legacy left behind by its founder '}</Text>
+                                <Text style={{fontWeight:'bold',color:'#28282B',fontStyle:'italic'}}>{'Late Shri soni Harjivandas Govindji .'}</Text>
+                                <Text style={styles.bodyTxt}>{' Who started '}</Text>
+                                <Text style={{fontWeight:'bold',color:'#28282B'}}>{'H.G. & Sons'}</Text>
+                                <View style={{display:'flex',flexDirection:'row'}}>
+                                    <Text style={styles.bodyTxt}>{'in '}</Text>
+                                    <Text style={{textDecorationLine:'underline',fontStyle:"italic",color:"#28282B",fontSize:16}}>{'1937.'}</Text>
+                                </View>
+                                <Text style={styles.bodyTxt}>{' And Later on under his guidance'}</Text>
+                            </View>
+                            <View style={{width:'60%',height:200,backgroundColor:'red',marginTop:30}}>
+                                <Image source={about}  style={{width:'100%',height:'100%'}}/>
+                            </View>
+                        </View>
+                        <View style={{paddingLeft:10,marginTop:-5,display:'flex',flexDirection:'row',flexWrap:'wrap'}}>
+                            <Text style={{fontStyle:'italic',color:'#28282B'}}>{'KISHORBHAI, CHANDRAKANTBHAI, MANSUKHBHAI and CHHOTALAL'}<Text style={styles.bodyTxt}>{' Second Generation of the H.G. Family started.'}</Text></Text>
+                                {/* <Text style={styles.bodyTxt}>{''}</Text> */}
                         </View>
                         <View style={{marginTop:10,padding:10}}>
                             <Text style={styles.bodyTxt}>{'H.G. & Company with their entrepreneurial enthusiasm that is a Family Trade Mark.'}</Text>
                             <Text style={styles.bodyTxt}>{'They approached their work with Tradition , Honour and Discipline.'}</Text>
                             <Text style={styles.bodyTxt}>{'They worked tirelessly to take it to achieve milestone and build H.G. EMPIRE. Under their guidance the company has gone from manufacturing to marketing to distribution to spread it business across The country.'}</Text>
                         </View>
-                        <View style={{marginTop:10,padding:10}}>
+                        <View style={{marginTop:-5,padding:10}}>
                             <Text style={styles.bodyTxt}>{'H.G. & Sons started out as a jewellery manufacturer, has evolved over time into a fully'}</Text>
                             <Text style={styles.bodyTxt}>{'Integrated Jewellery Company with combined production and distribution systems'}</Text>
                             <Text style={styles.bodyTxt}>{'Encompassing everything from Jewellery Manufacturing for both Retail and wholesale.'}</Text>
@@ -40,7 +57,7 @@ const AboutUs = () => {
                             <Text style={styles.bodyTxt}>{'30-days money back guarantee'}</Text>
                         </View>
                         <View style={styles.footerMain}>
-                            <Text style={styles.footerTxt}>{'Privacy policy @ H.G.Sons, 2022'}</Text>
+                            <Text style={styles.footerTxt}>{'privacy policy, T&C @ H.G. Sons © 2022'}</Text>
                         </View>
                     </View>
                 </View>
@@ -82,7 +99,8 @@ const styles=StyleSheet.create({
         // padding:10
     },
     bodyTxt:{
-        color:'#28282B'
+        color:'#28282B',
+        fontStyle:'normal'
     },
     footerMain:{
         width:'100%',

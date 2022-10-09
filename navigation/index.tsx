@@ -7,18 +7,19 @@ import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
-} from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
-import { RootStackParamList } from '../types';
-import '../common/axios.config';
-import { getStoreValue } from '../common/LocalStorage';
-import Login from '../screens/Login';
-import ContractorDrawerNavigator from './ContractorDrawerNavigator';
-import CreateOrder from '../screens/CreateOrder';
-import ViewCart from '../screens/ViewCart';
-import OrderInfo from '../screens/OrderInfo';
+} from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as React from "react";
+import { ColorSchemeName } from "react-native";
+import { RootStackParamList } from "../types";
+import "../common/axios.config";
+import { getStoreValue } from "../common/LocalStorage";
+import Login from "../screens/Login";
+import ContractorDrawerNavigator from "./ContractorDrawerNavigator";
+import CreateOrder from "../screens/CreateOrder";
+import ViewCart from "../screens/ViewCart";
+import OrderInfo from "../screens/OrderInfo";
+import Catalog from "../screens/Catalog";
 
 export default function Navigation({
   colorScheme,
@@ -28,7 +29,8 @@ export default function Navigation({
   return (
     <NavigationContainer
       // linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       <RootNavigator />
     </NavigationContainer>
   );
@@ -39,12 +41,12 @@ export default function Navigation({
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const [token, setToken] = React.useState<any>('');
+  const [token, setToken] = React.useState<any>("");
   const [userInfo, setUserInfo] = React.useState({});
   React.useEffect(() => {
     const getToken = async () => {
-      const token = await getStoreValue('token');
-      let userInfo: any = await getStoreValue('userInfo');
+      const token = await getStoreValue("token");
+      let userInfo: any = await getStoreValue("userInfo");
       userInfo = JSON.parse(userInfo);
       setUserInfo(userInfo);
       setToken(token);
@@ -56,6 +58,7 @@ function RootNavigator() {
     cardStyleInterpolator: ({ current, layouts }: any) => {
       return {
         cardStyle: {
+          headerShown: false,
           transform: [
             {
               translateX: current.progress.interpolate({
@@ -71,37 +74,41 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {token == '' 
-      ?
-      <Stack.Screen
-        options={horizontalAnimation}
-        name="Login"
-        component={Login}
-      /> 
-      :
-      <> 
-      <Stack.Screen 
-      options={horizontalAnimation}
-      name="ContractorDashboard"
-      component={ContractorDrawerNavigator}
-      />
-      <Stack.Screen 
-      options={horizontalAnimation}
-      name="CreateOrder"
-      component={CreateOrder}
-      />
-      <Stack.Screen 
-      options={horizontalAnimation}
-      name="ViewCart"
-      component={ViewCart}
-      />
-      <Stack.Screen 
-      options={horizontalAnimation}
-      name="OrderInfo"
-      component={OrderInfo}
-      />
-      </>
-  } 
+      {token == "" ? (
+        <Stack.Screen
+          options={horizontalAnimation}
+          name="Login"
+          component={Login}
+        />
+      ) : (
+        <>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="ContractorDashboard"
+            component={ContractorDrawerNavigator}
+          />
+          <Stack.Screen
+            options={{ headerTitle: "Create Order", headerShown: true }}
+            name="CreateOrder"
+            component={CreateOrder}
+          />
+          <Stack.Screen
+            options={{ headerTitle: "View Cart", headerShown: true }}
+            name="ViewCart"
+            component={ViewCart}
+          />
+          <Stack.Screen
+            options={{ headerTitle: "Order Info", headerShown: true }}
+            name="OrderInfo"
+            component={OrderInfo}
+          />
+          <Stack.Screen
+            options={{ headerTitle: "Catalog", headerShown: true }}
+            name="catalog"
+            component={Catalog}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
